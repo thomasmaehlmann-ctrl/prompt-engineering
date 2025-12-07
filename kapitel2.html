@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Wie KI denkt (aber nicht wirklich denkt) – Effektives Prompt Engineering – leicht erklärt.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./kapitel3.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-74c88ba48ad0bebf983f0ffd06dd1671.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./kapitel2.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Wie KI denkt (aber nicht wirklich denkt)</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Effektives Prompt Engineering – leicht erklärt.</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Die neue Superkraft: Warum KI dein Leben verändern kann</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Wie KI denkt (aber nicht wirklich denkt)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Deine ersten Prompts: Schnell Erfolge sehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Die Bausteine eines perfekten Prompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Klare Anweisungen, klare Ergebnisse: Instruction Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Beispiele wirken Wunder: In-Context Learning erklärt</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Lass die KI erst denken: Chain-of-Thought für Einsteiger</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Kreativer arbeiten: Schreib-, Ideen- und Lernprompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fehler finden &amp; verbessern: Output Verification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regeln! Grammatik, Struktur und Format steuern</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Schule &amp; Studium: KI als Lern-Turbo</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Kreativprojekte: KI für Texte, Videos &amp; Social Media</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Coding mit KI: Dein persönlicher Mini-Programmiercoach</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Recherche, Faktencheck &amp; Wissenschaft</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Produktiver Alltag mit KI: Die besten Life-Hacks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Fair, sicher &amp; verantwortungsvoll mit KI umgehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Der KI-Masterplan: Dein persönliches Prompt-Portfolio</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#warum-dieses-kapitel-wichtig-ist" id="toc-warum-dieses-kapitel-wichtig-ist" class="nav-link active" data-scroll-target="#warum-dieses-kapitel-wichtig-ist"><span class="header-section-number">2.1</span> Warum dieses Kapitel wichtig ist</a></li>
+  <li><a href="#ki-denkt-nicht-wie-wir-und-genau-das-ist-der-trick" id="toc-ki-denkt-nicht-wie-wir-und-genau-das-ist-der-trick" class="nav-link" data-scroll-target="#ki-denkt-nicht-wie-wir-und-genau-das-ist-der-trick"><span class="header-section-number">2.2</span> KI denkt nicht wie wir — und genau das ist der Trick</a></li>
+  <li><a href="#warum-ki-manchmal-fehler-macht-obwohl-sie-klug-wirkt" id="toc-warum-ki-manchmal-fehler-macht-obwohl-sie-klug-wirkt" class="nav-link" data-scroll-target="#warum-ki-manchmal-fehler-macht-obwohl-sie-klug-wirkt"><span class="header-section-number">2.3</span> Warum KI manchmal Fehler macht (obwohl sie klug wirkt)</a></li>
+  <li><a href="#die-drei-denkarten-der-ki-mental-leicht-vorstellbar" id="toc-die-drei-denkarten-der-ki-mental-leicht-vorstellbar" class="nav-link" data-scroll-target="#die-drei-denkarten-der-ki-mental-leicht-vorstellbar"><span class="header-section-number">2.4</span> Die drei Denkarten der KI (mental leicht vorstellbar)</a></li>
+  <li><a href="#warum-ki-besser-schreibt-als-denkt" id="toc-warum-ki-besser-schreibt-als-denkt" class="nav-link" data-scroll-target="#warum-ki-besser-schreibt-als-denkt"><span class="header-section-number">2.5</span> Warum KI „besser schreibt, als denkt“</a></li>
+  <li><a href="#ein-modell-das-sprache-vorherfühlt" id="toc-ein-modell-das-sprache-vorherfühlt" class="nav-link" data-scroll-target="#ein-modell-das-sprache-vorherfühlt"><span class="header-section-number">2.6</span> Ein Modell, das Sprache „vorherfühlt“</a></li>
+  <li><a href="#warum-ki-so-gut-imitieren-kann" id="toc-warum-ki-so-gut-imitieren-kann" class="nav-link" data-scroll-target="#warum-ki-so-gut-imitieren-kann"><span class="header-section-number">2.7</span> Warum KI so gut imitieren kann</a></li>
+  <li><a href="#warum-gute-prompts-ki-fokussieren" id="toc-warum-gute-prompts-ki-fokussieren" class="nav-link" data-scroll-target="#warum-gute-prompts-ki-fokussieren"><span class="header-section-number">2.8</span> Warum gute Prompts KI „fokussieren“</a></li>
+  <li><a href="#warum-du-keine-technik-verstehen-musst-nur-verhalten" id="toc-warum-du-keine-technik-verstehen-musst-nur-verhalten" class="nav-link" data-scroll-target="#warum-du-keine-technik-verstehen-musst-nur-verhalten"><span class="header-section-number">2.9</span> Warum du keine Technik verstehen musst — nur Verhalten</a></li>
+  <li><a href="#warum-dieses-wissen-dich-stärker-macht" id="toc-warum-dieses-wissen-dich-stärker-macht" class="nav-link" data-scroll-target="#warum-dieses-wissen-dich-stärker-macht"><span class="header-section-number">2.10</span> Warum dieses Wissen dich stärker macht</a></li>
+  <li><a href="#warum-ki-nicht-weiß-sondern-wahrscheinlich-entscheidet" id="toc-warum-ki-nicht-weiß-sondern-wahrscheinlich-entscheidet" class="nav-link" data-scroll-target="#warum-ki-nicht-weiß-sondern-wahrscheinlich-entscheidet"><span class="header-section-number">2.11</span> Warum KI nicht „weiß“, sondern „wahrscheinlich entscheidet“</a>
+  <ul class="collapse">
+  <li><a href="#warum-ist-das-wichtig-für-dich" id="toc-warum-ist-das-wichtig-für-dich" class="nav-link" data-scroll-target="#warum-ist-das-wichtig-für-dich"><span class="header-section-number">2.11.1</span> Warum ist das wichtig für dich?</a></li>
+  <li><a href="#kurzer-alltagsvergleich" id="toc-kurzer-alltagsvergleich" class="nav-link" data-scroll-target="#kurzer-alltagsvergleich"><span class="header-section-number">2.11.2</span> ✔ Kurzer Alltagsvergleich</a></li>
+  </ul></li>
+  <li><a href="#warum-kontext-die-halbe-miete-ist" id="toc-warum-kontext-die-halbe-miete-ist" class="nav-link" data-scroll-target="#warum-kontext-die-halbe-miete-ist"><span class="header-section-number">2.12</span> Warum Kontext die halbe Miete ist</a></li>
+  <li><a href="#warum-beispiele-die-ki-magisch-besser-machen" id="toc-warum-beispiele-die-ki-magisch-besser-machen" class="nav-link" data-scroll-target="#warum-beispiele-die-ki-magisch-besser-machen"><span class="header-section-number">2.13</span> Warum Beispiele die KI magisch besser machen</a></li>
+  <li><a href="#was-passiert-wenn-ein-prompt-zu-schwach-ist" id="toc-was-passiert-wenn-ein-prompt-zu-schwach-ist" class="nav-link" data-scroll-target="#was-passiert-wenn-ein-prompt-zu-schwach-ist"><span class="header-section-number">2.14</span> Was passiert, wenn ein Prompt „zu schwach“ ist</a></li>
+  <li><a href="#wie-du-die-ki-stärker-führst-ohne-expertenwissen-zu-haben" id="toc-wie-du-die-ki-stärker-führst-ohne-expertenwissen-zu-haben" class="nav-link" data-scroll-target="#wie-du-die-ki-stärker-führst-ohne-expertenwissen-zu-haben"><span class="header-section-number">2.15</span> Wie du die KI „stärker führst“, ohne Expertenwissen zu haben</a></li>
+  <li><a href="#warum-ki-manchmal-falsche-dinge-selbstbewusst-sagt" id="toc-warum-ki-manchmal-falsche-dinge-selbstbewusst-sagt" class="nav-link" data-scroll-target="#warum-ki-manchmal-falsche-dinge-selbstbewusst-sagt"><span class="header-section-number">2.16</span> Warum KI manchmal falsche Dinge selbstbewusst sagt</a></li>
+  <li><a href="#der-wichtigste-gedanke-dieses-kapitels" id="toc-der-wichtigste-gedanke-dieses-kapitels" class="nav-link" data-scroll-target="#der-wichtigste-gedanke-dieses-kapitels"><span class="header-section-number">2.17</span> Der wichtigste Gedanke dieses Kapitels</a></li>
+  <li><a href="#ausblick-auf-kapitel-3" id="toc-ausblick-auf-kapitel-3" class="nav-link" data-scroll-target="#ausblick-auf-kapitel-3"><span class="header-section-number">2.18</span> Ausblick auf Kapitel 3</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Wie KI denkt (aber nicht wirklich denkt)</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><em>Warum du das Innenleben von ChatGPT nicht komplett verstehen musst — aber die richtigen mentalen Modelle brauchst.</em></p>
+<hr>
+<section id="warum-dieses-kapitel-wichtig-ist" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="warum-dieses-kapitel-wichtig-ist"><span class="header-section-number">2.1</span> Warum dieses Kapitel wichtig ist</h2>
+<p>Bevor du lernen kannst, mit KI richtig zu sprechen, musst du verstehen, <strong>was für ein Wesen sie eigentlich ist</strong>. Keine Sorge—das wird kein Informatikunterricht, kein Mathe-Monster, kein neuronales Netzwerk mit Formeln.</p>
+<p>Dieses Kapitel ist wie eine Art „Benimm-Regelbuch“ für eine neue, ziemlich ungewöhnliche Spezies:</p>
+<pre><code>👉 Eine Maschine, die in Sprache denkt.</code></pre>
+<p>Du musst nicht wissen, wie jeder einzelne Transistor funktioniert. Aber du brauchst ein gutes <em>Gefühl</em> dafür, wie KI Entscheidungen trifft, warum sie manchmal perfekt wirkt und manchmal völlig danebenliegt — und wie du sie steuern kannst.</p>
+<p>Stell dir vor, du würdest ein Haustier bekommen, das:</p>
+<ul>
+<li>extrem klug ist,<br>
+</li>
+<li>superschnell lernt,<br>
+</li>
+<li>dir jederzeit hilft,<br>
+</li>
+<li>aber gelegentlich völligen Quatsch erzählt,<br>
+</li>
+<li>und sehr empfindlich darauf reagiert, <em>wie</em> du etwas sagst.</li>
+</ul>
+<p>Dieses Kapitel zeigt dir:</p>
+<pre><code>👉 Wie KI tickt
+👉 Warum sie nicht „weiß“, aber „wahrscheinlichkeitsbasiert antwortet“
+👉 Wie du Missverständnisse erkennst
+👉 Wie du verhindern kannst, dass KI halluziniert
+👉 Warum KI Sprache *vorhersagt*, nicht „kennt“</code></pre>
+<p>Und am Ende weißt du, <em>warum gutes Prompting funktioniert.</em></p>
+<hr>
+</section>
+<section id="ki-denkt-nicht-wie-wir-und-genau-das-ist-der-trick" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="ki-denkt-nicht-wie-wir-und-genau-das-ist-der-trick"><span class="header-section-number">2.2</span> KI denkt nicht wie wir — und genau das ist der Trick</h2>
+<p>Wenn du ChatGPT etwas fragst, passiert im Hintergrund <strong>kein logisches Nachdenken</strong>, wie wir es tun. Die KI:</p>
+<ul>
+<li>sieht deine Eingabe,<br>
+</li>
+<li>vergleicht sie mit Milliarden Beispielen,<br>
+</li>
+<li>berechnet, welche Antwort <em>statistisch am wahrscheinlichsten</em> sinnvoll ist,<br>
+</li>
+<li>und gibt diese Antwort aus.</li>
+</ul>
+<p>Das klingt vielleicht mechanisch, aber es ist eigentlich genial.</p>
+<p>Die KI hat kein Wissen in Form von „Fakten“ gespeichert wie ein Lexikon. Stattdessen hat sie <strong>Muster</strong> gelernt:</p>
+<ul>
+<li>Wie Menschen sprechen<br>
+</li>
+<li>Welche Wörter oft zusammen auftreten<br>
+</li>
+<li>Welche Formulierungen Experten benutzen<br>
+</li>
+<li>Wie Probleme typischerweise erklärt werden<br>
+</li>
+<li>Welche Fehler Anfänger machen<br>
+</li>
+<li>Welche Struktur gute Antworten haben</li>
+</ul>
+<p>Man könnte sagen:</p>
+<pre><code>👉 Die KI kennt keine Wahrheit — sie kennt Muster.</code></pre>
+<p>Wenn du das verstehst, wirst du automatisch besser im Prompting. Denn du hörst auf, die KI wie einen „Faktenautomaten“ zu behandeln.</p>
+<p>Du begreifst:</p>
+<p>👉 <strong>Die KI ist ein Musterverstärker.</strong><br>
+👉 <strong>Du steuerst das Muster über dein Prompt.</strong></p>
+<hr>
+</section>
+<section id="warum-ki-manchmal-fehler-macht-obwohl-sie-klug-wirkt" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="warum-ki-manchmal-fehler-macht-obwohl-sie-klug-wirkt"><span class="header-section-number">2.3</span> Warum KI manchmal Fehler macht (obwohl sie klug wirkt)</h2>
+<p>Einer der größten Mythen ist:</p>
+<pre><code>👉 „KI lügt absichtlich.“</code></pre>
+<p>Das stimmt nicht. Sie hat einfach <strong>keine Realität, die sie abgleichen kann</strong>.</p>
+<p>Wenn du fragst:</p>
+<blockquote class="blockquote">
+<p>„Wer hat 1812 die Mondlandung durchgeführt?“</p>
+</blockquote>
+<p>gibt es zwei logische Optionen:</p>
+<ol type="1">
+<li>KI erkennt die absurde Frage → erklärt dir den Fehler<br>
+</li>
+<li>KI versucht trotzdem, ein Muster zu finden → halluziniert</li>
+</ol>
+<p>Manchmal weiß sie: Das ergibt keinen Sinn. Manchmal sucht sie nur nach einem Muster wie:</p>
+<p>„1812“ + „Mondlandung“ + „Wer?“ → <em>klingt wie Geschichtsfrage</em> → <em>gibt historischen Namen zurück.</em></p>
+<p>Für dich wichtig zu merken:</p>
+<p>👉 <strong>Je präziser und realistischer du fragst, desto weniger Fehler produziert die KI.</strong></p>
+<p>👉 <strong>Je vager du fragst, desto kreativer (und fehleranfälliger) wird sie.</strong></p>
+<p>Deshalb funktionieren gute Prompts.</p>
+<hr>
+</section>
+<section id="die-drei-denkarten-der-ki-mental-leicht-vorstellbar" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="die-drei-denkarten-der-ki-mental-leicht-vorstellbar"><span class="header-section-number">2.4</span> Die drei Denkarten der KI (mental leicht vorstellbar)</h2>
+<p>Damit du verstehst, <em>wie</em> ChatGPT arbeitet, brauchst du keine Formeln — nur die folgenden drei Bilder.</p>
+<pre><code>👉 1) Der Wahrscheinlichkeits-Denker</code></pre>
+<p>Die KI überlegt nicht:<br>
+„Was ist wahr?“</p>
+<p>Sondern:<br>
+„Welches Wort ist <em>wahrscheinlich</em> das richtige nächste Wort?“</p>
+<p>Wenn dein Prompt vage ist → viele mögliche Fortsetzungen Wenn dein Prompt klar ist → sehr wenige mögliche Fortsetzungen</p>
+<p>Du steuerst also die Antwort, indem du die „Wahrscheinlichkeitsräume“ verkleinerst.</p>
+<hr>
+<pre><code>👉 Der Muster-Detektiv</code></pre>
+<p>Wenn du schreibst:</p>
+<blockquote class="blockquote">
+<p>„Erkläre mir etwas wie für einen 12-Jährigen.“</p>
+</blockquote>
+<p>aktivierst du im Modell ein Muster:</p>
+<ul>
+<li>kurze Sätze<br>
+</li>
+<li>einfache Beispiele<br>
+</li>
+<li>Alltagssprache</li>
+</ul>
+<p>Wenn du schreibst:</p>
+<blockquote class="blockquote">
+<p>„Antwort bitte wie ein Professor in Linguistik.“</p>
+</blockquote>
+<p>aktiviert das ein komplett anderes Muster.</p>
+<p>KI reagiert <strong>ultra-sensibel</strong> auf Hinweise und Rollen. Darum ist „Role Prompting“ so mächtig (kommt später im Buch).</p>
+<hr>
+<pre><code>👉 Der Gedächtnis-Blender</code></pre>
+<p>Die KI erinnert sich nicht wie ein Mensch. Sie kann nicht sagen:</p>
+<p>👉 „Ich weiß noch, dass du gestern …“</p>
+<p>Jede Antwort entsteht <em>nur aus dem, was im Prompt steht</em>, plus den gelernten Mustern.</p>
+<p>Deshalb passiert’s manchmal, dass KI vergisst, was du vor 20 Nachrichten gesagt hast. Konversationen sind begrenzt.</p>
+<p>👉 <strong>Je wichtiger etwas ist, desto deutlicher muss es im Prompt stehen.</strong></p>
+<hr>
+</section>
+<section id="warum-ki-besser-schreibt-als-denkt" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="warum-ki-besser-schreibt-als-denkt"><span class="header-section-number">2.5</span> Warum KI „besser schreibt, als denkt“</h2>
+<p>Menschen denken zuerst und sprechen dann.</p>
+<p>KI spricht zuerst und denkt währenddessen.</p>
+<p>Sie ist darin unglaublich gut:</p>
+<ul>
+<li>Texte generieren<br>
+</li>
+<li>Ideen kombinieren<br>
+</li>
+<li>Beispiele formen<br>
+</li>
+<li>Strukturen nachbauen<br>
+</li>
+<li>Formulierungen verbessern</li>
+</ul>
+<p>Aber sie ist schlecht in:</p>
+<ul>
+<li>echten logischen Beweisen<br>
+</li>
+<li>Zahlen (ernsthaft… frag nie nach Rechnen ohne genaue Vorgaben)<br>
+</li>
+<li>reale Weltwissen-Checks<br>
+</li>
+<li>komplexe Abhängigkeiten</li>
+</ul>
+<p>Was bedeutet das für dich?</p>
+<p>👉 Wenn du die KI klar führst, wird sie logisch.<br>
+👉 Wenn du sie frei lässt, wird sie kreativ.</p>
+<p>Beides ist gut — solange du weißt, was du willst.</p>
+<hr>
+</section>
+<section id="ein-modell-das-sprache-vorherfühlt" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="ein-modell-das-sprache-vorherfühlt"><span class="header-section-number">2.6</span> Ein Modell, das Sprache „vorherfühlt“</h2>
+<p>Viele Einsteiger glauben, KI sei wie Wikipedia: „Da ist alles drin.“</p>
+<p>Aber LLMs funktionieren eher wie eine Art:</p>
+<pre><code>👉 Super-Autovervollständigung mit extrem viel Training.</code></pre>
+<p>Wenn du in WhatsApp schreibst:</p>
+<p>„Wir sehen uns …“</p>
+<p>und dein Handy schlägt:</p>
+<p>„morgen“<br>
+„heute Abend“<br>
+„bald“</p>
+<p>vor, dann macht dein Handy das Gleiche wie KI — nur viel primitiver.</p>
+<p>ChatGPT macht das ebenfalls, nur in einem <em>gigantisch komplexen</em> Kosmos von Mustern.</p>
+<p>Das klingt vielleicht simpel, aber hier ist die Magie:</p>
+<ul>
+<li>Wenn du Muster richtig anstößt → KI wirkt brillant<br>
+</li>
+<li>Wenn du Muster falsch anstößt → KI wird verwirrend</li>
+</ul>
+<p>Das ist wie ein Instrument:</p>
+<pre><code>👉 Die KI ist das Klavier — dein Prompt ist die Melodie.</code></pre>
+<hr>
+</section>
+<section id="warum-ki-so-gut-imitieren-kann" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="warum-ki-so-gut-imitieren-kann"><span class="header-section-number">2.7</span> Warum KI so gut imitieren kann</h2>
+<p>Egal ob du willst, dass sie schreibt wie:</p>
+<ul>
+<li>Einstein<br>
+</li>
+<li>Taylor Swift<br>
+</li>
+<li>Sherlock Holmes<br>
+</li>
+<li>dein Lieblings-YouTuber<br>
+</li>
+<li>du selbst<br>
+</li>
+<li>ein 12-jähriger oder ein Uni-Professor</li>
+</ul>
+<p>Die KI erkennt aus wenigen Wörtern, welches Muster sie anlegen soll.</p>
+<p>Daher funktionieren Prompts wie:</p>
+<blockquote class="blockquote">
+<p>„Erkläre es mir wie einem neugierigen 14-jährigen Schüler, der gerade TikTok geöffnet hat.“</p>
+</blockquote>
+<p>so extrem gut.<br>
+Du gibst der KI ein klares Muster.</p>
+<p>Je besser du diese Muster definierst, desto:</p>
+<ul>
+<li>sauberer<br>
+</li>
+<li>klarer<br>
+</li>
+<li>stärker<br>
+</li>
+<li>realistischer</li>
+</ul>
+<p>wird die Antwort.</p>
+<hr>
+</section>
+<section id="warum-gute-prompts-ki-fokussieren" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="warum-gute-prompts-ki-fokussieren"><span class="header-section-number">2.8</span> Warum gute Prompts KI „fokussieren“</h2>
+<p>Damit ein Prompt funktioniert, muss er:</p>
+<ol type="1">
+<li>der KI ein Muster geben,<br>
+</li>
+<li>den Raum möglicher Antworten einengen,<br>
+</li>
+<li>die Rolle klären,<br>
+</li>
+<li>das Ziel eindeutig machen,<br>
+</li>
+<li>die Struktur vorgeben.</li>
+</ol>
+<p>Beispiel:</p>
+<p><strong>Schlechter Prompt:</strong></p>
+<blockquote class="blockquote">
+<p>„Erklär mir Quantenphysik.“</p>
+</blockquote>
+<p>→ viel Raum, keine Richtung → Antwort meistens zu technisch, zu lang, zu abstrakt.</p>
+<p><strong>Guter Prompt:</strong></p>
+<blockquote class="blockquote">
+<p>„Erkläre Quantenphysik für eine 9. Klasse so, wie ein YouTuber es in einem 60-Sekunden-Video machen würde — mit einer einzigen einfachen Metapher.“</p>
+</blockquote>
+<p>→ klares Muster<br>
+→ klare Zielgruppe<br>
+→ klare Struktur<br>
+→ begrenzter Raum<br>
+→ Ergebnis: viel besser</p>
+<p>Du wirst im Laufe des Buchs lernen, genau diese Art von Klarheit herzustellen.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/2/ABB21.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 2.1: Das Muster-Denken der KI</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="warum-du-keine-technik-verstehen-musst-nur-verhalten" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="warum-du-keine-technik-verstehen-musst-nur-verhalten"><span class="header-section-number">2.9</span> Warum du keine Technik verstehen musst — nur Verhalten</h2>
+<p>Viele glauben, man müsse:</p>
+<ul>
+<li>neuronale Netze<br>
+</li>
+<li>Transformer-Architektur<br>
+</li>
+<li>Attention-Mechanismen<br>
+</li>
+<li>Tokenisierung<br>
+</li>
+<li>Sampling-Methoden</li>
+</ul>
+<p>kennen.</p>
+<p>Aber für den praktischen Gebrauch — also die Welt der Prompts — brauchst du das alles <strong>nicht</strong>.</p>
+<p>Du musst nur verstehen, wie die KI sich <em>verhält</em>. So wie du auch ein Auto fahren kannst, ohne einen Verbrennungsmotor zu zerlegen.</p>
+<p>Was du brauchst, ist ein realistisches mentales Modell:</p>
+<pre><code>👉 Die KI ist ein sprachbasiertes Musterorakel, das aus Beispielen lernt und Wahrscheinlichkeiten berechnet.</code></pre>
+<p>Mehr nicht.</p>
+<p>Das reicht, um ein Prompt-Profi zu werden.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/2/ABB22.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 2.2: Die KI als Muster-Orakel</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="warum-dieses-wissen-dich-stärker-macht" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="warum-dieses-wissen-dich-stärker-macht"><span class="header-section-number">2.10</span> Warum dieses Wissen dich stärker macht</h2>
+<p>Wenn du verstehst, wie KI denkt, dann:</p>
+<ul>
+<li>schreibst du bessere Prompts,<br>
+</li>
+<li>produzierst bessere Ergebnisse,<br>
+</li>
+<li>erkennst Fehler schneller,<br>
+</li>
+<li>kannst kreative Grenzen austesten,<br>
+</li>
+<li>vermeidest Frustration,<br>
+</li>
+<li>nutzt KI so, wie sie tatsächlich funktioniert.</li>
+</ul>
+<p>Dieses Kapitel ist der mentale Unterbau für alles, was folgt.</p>
+<p>Du wirst danach:</p>
+<pre><code>👉 in Teil 2 dieses Kapitels lernen, **wie du KI richtig anleitest**,  
+👉 ab Kapitel 3 lernen, **wie Prompts aufgebaut sind**,  
+👉 später erfahren, **wie Fortgeschrittenen-Techniken funktionieren**,  
+👉 und am Ende ein echter Prompt-Engineer für den Alltag sein.  </code></pre>
+</section>
+<section id="warum-ki-nicht-weiß-sondern-wahrscheinlich-entscheidet" class="level2" data-number="2.11">
+<h2 data-number="2.11" class="anchored" data-anchor-id="warum-ki-nicht-weiß-sondern-wahrscheinlich-entscheidet"><span class="header-section-number">2.11</span> Warum KI nicht „weiß“, sondern „wahrscheinlich entscheidet“</h2>
+<p>In der Schule lernst du vielleicht: Eine Antwort ist <strong>richtig</strong> oder <strong>falsch</strong>.</p>
+<p>Für KI gilt ein anderer Ansatz:<br>
+Sie entscheidet <strong>statistisch</strong>, <strong>wahrscheinlich</strong>, <strong>vorausschauend</strong>, aber nicht wie ein Mensch.<br>
+Wenn du mit ChatGPT sprichst, versucht es nicht, eine Frage wie ein Lehrer zu beantworten – sondern wie ein Textmodell:</p>
+<pre><code>👉 „Welches Wort ist das wahrscheinlichste nächste Wort?"</code></pre>
+<p>Das bedeutet:</p>
+<ul>
+<li>KI macht manchmal <strong>Fehler</strong>, die wie Menschensachen aussehen.<br>
+</li>
+<li>Oder <strong>Erklärungen</strong>, die logisch klingen, aber nicht stimmen (Halluzinationen).<br>
+</li>
+<li>Oder <strong>Vereinfachungen</strong>, die nicht zum Kontext passen.</li>
+</ul>
+<p>Das ist normal. Es hat nichts damit zu tun, dass du “falsch gefragt” hast – sondern damit, wie neuronale Netze funktionieren.</p>
+<section id="warum-ist-das-wichtig-für-dich" class="level3" data-number="2.11.1">
+<h3 data-number="2.11.1" class="anchored" data-anchor-id="warum-ist-das-wichtig-für-dich"><span class="header-section-number">2.11.1</span> Warum ist das wichtig für dich?</h3>
+<p>Weil du als Prompt-Engineer — und ja, du wirst einer — diese Grundregel brauchst:</p>
+<pre><code>👉 Je klarer du beschreibst, was wahrscheinlich sein soll, desto zuverlässiger wird die KI.</code></pre>
+<p>Wenn du z. B. sagst:</p>
+<blockquote class="blockquote">
+<p>„Erkläre mir Quantenphysik.“</p>
+</blockquote>
+<p>… dann kann alles passieren.</p>
+<p>Aber wenn du sagst:</p>
+<blockquote class="blockquote">
+<p>„Erkläre mir Quantenphysik wie eine animierte TikTok-Erklärfigur, maximal 30 Sekunden, nur mit einfachen Bildern und Vergleichen.“</p>
+</blockquote>
+<p>… dann gibst du:</p>
+<ul>
+<li>Zielgruppe<br>
+</li>
+<li>Stil<br>
+</li>
+<li>Länge<br>
+</li>
+<li>Ton<br>
+</li>
+<li>Format</li>
+</ul>
+<p>Und schon verbessert sich das Ergebnis massiv — weil du die <strong>Wahrscheinlichkeit modellierst</strong>, nicht die „Intelligenz der KI“.</p>
+<hr>
+</section>
+<section id="kurzer-alltagsvergleich" class="level3" data-number="2.11.2">
+<h3 data-number="2.11.2" class="anchored" data-anchor-id="kurzer-alltagsvergleich"><span class="header-section-number">2.11.2</span> ✔ Kurzer Alltagsvergleich</h3>
+<p>Stell dir KI vor wie jemand, der extrem gut darin ist, Muster zu erkennen – aber keine eigenen Erfahrungen hat.</p>
+<p>Wenn du sagst:</p>
+<blockquote class="blockquote">
+<p>„Beschreib mein Zimmer.”</p>
+</blockquote>
+<p>… wird die KI raten, wie typische Zimmer aussehen.</p>
+<p>Wenn du sagst:</p>
+<blockquote class="blockquote">
+<p>„Mein Zimmer ist klein, hat LED-Streifen und Gaming-Setup — schreib dafür eine stylische Roomtour.“</p>
+</blockquote>
+<p>… wird sie <em>dein</em> Zimmer beschreiben.</p>
+<p>Das ist der Unterschied zwischen:</p>
+<p>🔴 <strong>rate mal</strong><br>
+und<br>
+🟢 <strong>verwende meine Informationen clever</strong></p>
+<hr>
+</section>
+</section>
+<section id="warum-kontext-die-halbe-miete-ist" class="level2" data-number="2.12">
+<h2 data-number="2.12" class="anchored" data-anchor-id="warum-kontext-die-halbe-miete-ist"><span class="header-section-number">2.12</span> Warum Kontext die halbe Miete ist</h2>
+<p>Das Backend einer KI funktioniert so: Es betrachtet <strong>den gesamten Chatverlauf</strong> als einen einzigen Text.</p>
+<p>Jedes Mal, wenn du etwas schreibst, passiert Folgendes:</p>
+<ol type="1">
+<li>Dein Prompt wird in Tokens zerlegt.<br>
+</li>
+<li>Die KI berechnet Embeddings (Vektoren).<br>
+</li>
+<li>Sie versucht, die wahrscheinlichste Fortsetzung zu erzeugen – basierend auf allem bisherigen Input.</li>
+</ol>
+<p>Das heißt:</p>
+<pre><code>👉 KI vergisst nicht – aber sie priorisiert.</code></pre>
+<p>Wenn du 20 Nachrichten chattest und dann plötzlich sagst:</p>
+<blockquote class="blockquote">
+<p>„Schreib das bitte im Stil wie oben.“</p>
+</blockquote>
+<p>… und „oben“ war 10 Nachrichten her, kann es sein, dass die KI den Stil <strong>verwaschen</strong>.</p>
+<p>Warum?</p>
+<p>Weil lange Kontexte viele Informationen enthalten und die KI versucht, alle gleichzeitig zu berücksichtigen.</p>
+<p>Das bedeutet für dich:</p>
+<p>👉 <strong>Dein Prompt ist stärker, wenn du alles Wichtige direkt hineinpackst.</strong></p>
+<p>Ein gutes Beispiel:</p>
+<p>🔴 Schlecht:</p>
+<blockquote class="blockquote">
+<p>„Schreib den Text bitte besser.“</p>
+</blockquote>
+<p>🟢 Gut:</p>
+<blockquote class="blockquote">
+<p>„Schreib den Text in einem motivierenden Ton, mit kurzen Sätzen, in der Perspektive einer Mentorfigur, wie in einem inspirierten TED-Talk.“</p>
+</blockquote>
+<p>Je mehr Struktur, desto klarere Ergebnisse.</p>
+<hr>
+</section>
+<section id="warum-beispiele-die-ki-magisch-besser-machen" class="level2" data-number="2.13">
+<h2 data-number="2.13" class="anchored" data-anchor-id="warum-beispiele-die-ki-magisch-besser-machen"><span class="header-section-number">2.13</span> Warum Beispiele die KI magisch besser machen</h2>
+<p>Ein Geheimtrick, den viele Anfänger nicht kennen:</p>
+<blockquote class="blockquote">
+<p>Wenn du Beispiele gibst, versteht die KI deinen Stil um ein Vielfaches besser.</p>
+</blockquote>
+<p>Das nennt man <strong>In-Context-Learning</strong>.</p>
+<pre><code>👉 Beispiel ohne Vorbild:</code></pre>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Schreib eine Beschreibung über mein neues Jugendzentrum.“</p>
+</blockquote>
+<p>Antwort:<br>
+→ Kann beliebig sein.</p>
+<pre><code>👉 Beispiel *mit* Vorbild:</code></pre>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Hier ist ein Beispieltext von mir:<br>
+›Unser Streetballplatz ist nicht nur Spielfeld, sondern Treffpunkt. Hier wachsen Freundschaften und Ideen.‹<br>
+Bitte schreib in exakt diesem Stil eine Beschreibung für unser neues Jugendzentrum.”</p>
+</blockquote>
+<p>Antwort:<br>
+→ Wird deinen Stil nachahmen, auch wenn du nie erklärt hast, <em>warum</em> oder <em>wie</em>.</p>
+<p>Das ist keine Magie.<br>
+Es ist Statistik:</p>
+<pre><code>👉 Die KI lernt aus Mustern sofort — viel schneller als Menschen.</code></pre>
+<hr>
+</section>
+<section id="was-passiert-wenn-ein-prompt-zu-schwach-ist" class="level2" data-number="2.14">
+<h2 data-number="2.14" class="anchored" data-anchor-id="was-passiert-wenn-ein-prompt-zu-schwach-ist"><span class="header-section-number">2.14</span> Was passiert, wenn ein Prompt „zu schwach“ ist</h2>
+<p>Das ist einer der Gründe, warum viele junge Nutzer glauben:</p>
+<p>👉 <strong>„KI kann das nicht.“</strong></p>
+<p>Dabei ist in 90 % der Fälle <em>der Prompt</em> das Problem.</p>
+<p>Beispiele, was die KI stört:</p>
+<ul>
+<li>zu wenig Informationen<br>
+</li>
+<li>kein Format<br>
+</li>
+<li>unklare Zielgruppe<br>
+</li>
+<li>Widersprüche<br>
+</li>
+<li>fehlende Beispiele<br>
+</li>
+<li>fehlender Kontext<br>
+</li>
+<li>zu viel Kontext ohne Struktur<br>
+</li>
+<li>zu viele Ziele gleichzeitig</li>
+</ul>
+<p>💡 <strong>Ein Prompt ist wie eine Bestellung im Restaurant.</strong> Wenn du sagst:</p>
+<blockquote class="blockquote">
+<p>„Ich will was Leckeres.“</p>
+</blockquote>
+<p>… bekommst du wahrscheinlich irgendwas.</p>
+<p>Wenn du sagst:</p>
+<blockquote class="blockquote">
+<p>„Ich will eine vegane, leicht scharfe Bowl mit Erdnusssauce und knusprigem Tofu.“</p>
+</blockquote>
+<p>… bekommst du genau das.</p>
+<hr>
+</section>
+<section id="wie-du-die-ki-stärker-führst-ohne-expertenwissen-zu-haben" class="level2" data-number="2.15">
+<h2 data-number="2.15" class="anchored" data-anchor-id="wie-du-die-ki-stärker-führst-ohne-expertenwissen-zu-haben"><span class="header-section-number">2.15</span> Wie du die KI „stärker führst“, ohne Expertenwissen zu haben</h2>
+<p>Du musst kein Informatiker sein. Du musst nur wissen, wie man gute Spielregeln setzt.</p>
+<p>Hier sind vier goldene Regeln:</p>
+<hr>
+<pre><code>👉 Regel 1: Sag der KI, wer sie sein soll</code></pre>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Du bist mein Lerncoach und erklärst alles so, dass es ein 15-Jähriger versteht.“</p>
+</blockquote>
+<p>Sofort präziser.</p>
+<hr>
+<pre><code>👉 Regel 2: Sag der KI, wofür du die Antwort brauchst</code></pre>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Ich brauche das als Instagram-Carousel für junge Gründer.“</p>
+</blockquote>
+<p>Antwort wird kürzer, visueller, strukturierter.</p>
+<hr>
+<pre><code>👉 Regel 3: Sag der KI, was sie lieber vermeiden soll</code></pre>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Bitte ohne Fachbegriffe, keine komplizierten Definitionen.“</p>
+</blockquote>
+<p>Damit reduzierst du Halluzinationen und Komplexität.</p>
+<hr>
+<pre><code>👉 Regel 4: Gib der KI ein Format</code></pre>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Erstelle 3 Abschnitte à 100 Wörtern mit klaren Zwischenüberschriften.“</p>
+</blockquote>
+<p>Damit kontrollierst du die Struktur ohne technisches Know-how.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/2/ABB23.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 2.3: Wie KI Bias entschärft</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="warum-ki-manchmal-falsche-dinge-selbstbewusst-sagt" class="level2" data-number="2.16">
+<h2 data-number="2.16" class="anchored" data-anchor-id="warum-ki-manchmal-falsche-dinge-selbstbewusst-sagt"><span class="header-section-number">2.16</span> Warum KI manchmal falsche Dinge selbstbewusst sagt</h2>
+<p>Ein großes Missverständnis ist:</p>
+<pre><code>👉 „Wenn KI selbstbewusst klingt, muss es stimmen.“</code></pre>
+<p>Nein.</p>
+<p>Sprachmodelle erzeugen <em>Selbstbewusstsein</em> rein <strong>stilistisch</strong> — nicht aus Wissen.</p>
+<p>Warum passiert das?</p>
+<p>Weil viele Trainingsdaten so klingen. Wikipedia, Blogs, Nachrichten: Alles wirkt formell und sicher.</p>
+<p>Das führt zu:</p>
+<ul>
+<li>Fake-Fakten<br>
+</li>
+<li>erfundenen Quellen<br>
+</li>
+<li>falschen Zitaten<br>
+</li>
+<li>übertriebenen Vereinfachungen</li>
+</ul>
+<p>👉 <strong>Wie du das verhinderst:</strong></p>
+<p>Ganz einfach:</p>
+<blockquote class="blockquote">
+<p>„Beantworte vorsichtig und nenne Unsicherheiten, falls Daten fehlen.“</p>
+</blockquote>
+<p>Oder:</p>
+<blockquote class="blockquote">
+<p>„Wenn du etwas nicht weißt, sag es.“</p>
+</blockquote>
+<p>Das verändert den Output dramatisch.</p>
+<p>Die KI „weiß“ nicht auf einmal mehr — aber sie <strong>ändert ihren Stil</strong> und vermeidet falsche Details.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/2/ABB24.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 2.4: Was KI weiß – und was nicht</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="der-wichtigste-gedanke-dieses-kapitels" class="level2" data-number="2.17">
+<h2 data-number="2.17" class="anchored" data-anchor-id="der-wichtigste-gedanke-dieses-kapitels"><span class="header-section-number">2.17</span> Der wichtigste Gedanke dieses Kapitels</h2>
+<p>Wenn du nur <strong>eine Sache</strong> aus Kapitel 2 mitnimmst, dann diese:</p>
+<pre><code>👉 KI ist eine Muster-Maschine, keine Denk-Maschine. Du bestimmst das Muster.</code></pre>
+<p>Damit wird Prompt Engineering zu einem Werkzeug:</p>
+<ul>
+<li>nicht technisch<br>
+</li>
+<li>nicht kompliziert<br>
+</li>
+<li>nicht wie Programmieren</li>
+</ul>
+<p>Sondern eher wie:</p>
+<ul>
+<li>kreative Regie<br>
+</li>
+<li>gute Kommunikation<br>
+</li>
+<li>Struktur geben<br>
+</li>
+<li>den Frame setzen</li>
+</ul>
+<p>Und das ist, was dich — besonders als junge Person — so mächtig macht:</p>
+<p>👉 Du musst kein Experte sein, um gute Ergebnisse zu bekommen.<br>
+👉 Du musst nur wissen, wie die Maschine tickt.</p>
+<hr>
+</section>
+<section id="ausblick-auf-kapitel-3" class="level2" data-number="2.18">
+<h2 data-number="2.18" class="anchored" data-anchor-id="ausblick-auf-kapitel-3"><span class="header-section-number">2.18</span> Ausblick auf Kapitel 3</h2>
+<p>Bevor wir tiefer einsteigen, kommt jetzt der Teil, der für viele Leserinnen und Leser der <strong>magische Moment</strong> ist: Das Kapitel, in dem sich die Theorie plötzlich lebendig anfühlt.</p>
+<p>In Kapitel 2 hast du gelernt, <strong>wie KI denkt</strong> – nämlich nicht wie ein Mensch, sondern wie ein Muster-Entdecker, der die wahrscheinlichsten Wortpfade berechnet. Das klingt vielleicht abstrakt, aber genau dieses Wissen ist der Schlüssel, um deine ersten <em>wirklich guten</em> Prompts zu formulieren.</p>
+<p>In Kapitel 3 gehen wir einen Schritt weiter:<br>
+Hier wirst du sehen, wie du mit <strong>ganz einfachen Prompt-Formeln sofort bessere Ergebnisse bekommst</strong> – ohne Vorkenntnisse, ohne Frust, ohne stundenlanges Experimentieren.</p>
+<p>Du wirst entdecken:</p>
+<p>✅ <strong>Wie du in nur 10 Minuten echte „Wow, das funktioniert ja!“–Momente erzeugst</strong></p>
+<p>Wir starten mit ultrakurzen Prompts, die erstaunlich gute Resultate liefern – sogar, wenn du eigentlich noch gar nicht weißt, was du tust.</p>
+<p>✅ <strong>Was „schlechte“ Prompts sind – und wie du sie sofort verbessern kannst</strong></p>
+<p>Du lernst typische Anfängerfehler kennen:</p>
+<p>• zu vage,<br>
+• zu kurz,<br>
+• ohne Ziel,<br>
+• ohne Format,<br>
+• ohne Beispiel.</p>
+<p>Und du wirst sehen, wie du sie mit einer einfachen Technik in klare, hilfreiche Prompts verwandelst.</p>
+<p>✅ <strong>3-Alltags-Formeln für sofort bessere Antworten</strong></p>
+<p>Zum Beispiel:</p>
+<ul>
+<li><strong>Ziel + Stil + Format</strong><br>
+</li>
+<li><strong>Rolle + Aufgabe + Einschränkung</strong><br>
+</li>
+<li><strong>Input + Erwartung + Beispiel</strong></li>
+</ul>
+<p>Diese Formeln kannst du direkt in Schule, Studium, Social Media, Coding, Hobbys oder sogar in deinem Alltag einsetzen.</p>
+<p>✅ <strong>Mini-Übung: Du verbesserst drei schlechte Prompts – live im Kapitel</strong></p>
+<p>Hier wird’s praktisch:<br>
+Du bekommst drei chaotische, typische Anfänger-Prompts und machst daraus echte Profi-Anfragen. Und ja – du wirst den Unterschied sofort spüren.</p>
+<hr>
+<p>Kapitel 3 ist das Kapitel, das den Knoten löst:</p>
+<pre><code>👉 Hier beginnst du nicht nur KI zu verstehen – du beginnst sie zu beherrschen.</code></pre>
+<p>Wenn du bereit bist, deine ersten echten Erfolge zu feiern, dich überraschen zu lassen und zu merken, wie viel du schon kannst, dann ist Kapitel 3 dein Start in die praktische Prompter-Welt.</p>
+<p>Weiter geht’s!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Die neue Superkraft: Warum KI dein Leben verändern kann">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Die neue Superkraft: Warum KI dein Leben verändern kann</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./kapitel3.html" class="pagination-link" aria-label="Deine ersten Prompts: Schnell Erfolge sehen">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Deine ersten Prompts: Schnell Erfolge sehen</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7&nbsp; Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting – Effektives Prompt Engineering – leicht erklärt.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./kapitel8.html" rel="next">
+<link href="./kapitel6.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-74c88ba48ad0bebf983f0ffd06dd1671.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./kapitel7.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Effektives Prompt Engineering – leicht erklärt.</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Die neue Superkraft: Warum KI dein Leben verändern kann</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Wie KI denkt (aber nicht wirklich denkt)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Deine ersten Prompts: Schnell Erfolge sehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Die Bausteine eines perfekten Prompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Klare Anweisungen, klare Ergebnisse: Instruction Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Beispiele wirken Wunder: In-Context Learning erklärt</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel7.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Lass die KI erst denken: Chain-of-Thought für Einsteiger</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Kreativer arbeiten: Schreib-, Ideen- und Lernprompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fehler finden &amp; verbessern: Output Verification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regeln! Grammatik, Struktur und Format steuern</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Schule &amp; Studium: KI als Lern-Turbo</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Kreativprojekte: KI für Texte, Videos &amp; Social Media</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Coding mit KI: Dein persönlicher Mini-Programmiercoach</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Recherche, Faktencheck &amp; Wissenschaft</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Produktiver Alltag mit KI: Die besten Life-Hacks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Fair, sicher &amp; verantwortungsvoll mit KI umgehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Der KI-Masterplan: Dein persönliches Prompt-Portfolio</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#wann-ki-überfordert-ist-und-warum-das-nichts-mit-intelligenz-zu-tun-hat" id="toc-wann-ki-überfordert-ist-und-warum-das-nichts-mit-intelligenz-zu-tun-hat" class="nav-link active" data-scroll-target="#wann-ki-überfordert-ist-und-warum-das-nichts-mit-intelligenz-zu-tun-hat"><span class="header-section-number">7.1</span> Wann KI überfordert ist – und warum das nichts mit „Intelligenz“ zu tun hat</a></li>
+  <li><a href="#die-lösung-aufgaben-in-kleine-schritte-zerlegen" id="toc-die-lösung-aufgaben-in-kleine-schritte-zerlegen" class="nav-link" data-scroll-target="#die-lösung-aufgaben-in-kleine-schritte-zerlegen"><span class="header-section-number">7.2</span> Die Lösung: Aufgaben in kleine Schritte zerlegen</a></li>
+  <li><a href="#die-story-der-ki-chefkoch-der-rezepte-in-schritte-aufteilt" id="toc-die-story-der-ki-chefkoch-der-rezepte-in-schritte-aufteilt" class="nav-link" data-scroll-target="#die-story-der-ki-chefkoch-der-rezepte-in-schritte-aufteilt"><span class="header-section-number">7.3</span> Die Story: Der KI-Chefkoch, der Rezepte in Schritte aufteilt</a></li>
+  <li><a href="#warum-chain-prompting-auch-dein-denken-verbessert" id="toc-warum-chain-prompting-auch-dein-denken-verbessert" class="nav-link" data-scroll-target="#warum-chain-prompting-auch-dein-denken-verbessert"><span class="header-section-number">7.4</span> Warum Chain Prompting auch dein Denken verbessert</a></li>
+  <li><a href="#wie-du-deine-eigenen-aufgaben-in-mini-schritte-zerlegst" id="toc-wie-du-deine-eigenen-aufgaben-in-mini-schritte-zerlegst" class="nav-link" data-scroll-target="#wie-du-deine-eigenen-aufgaben-in-mini-schritte-zerlegst"><span class="header-section-number">7.5</span> Wie du deine eigenen Aufgaben in Mini-Schritte zerlegst</a></li>
+  <li><a href="#praxisbeispiele-chain-prompting-in-deinem-alltag" id="toc-praxisbeispiele-chain-prompting-in-deinem-alltag" class="nav-link" data-scroll-target="#praxisbeispiele-chain-prompting-in-deinem-alltag"><span class="header-section-number">7.6</span> Praxisbeispiele: Chain Prompting in deinem Alltag</a></li>
+  <li><a href="#warum-große-aufgaben-die-ki-überfordern-ein-genauer-blick" id="toc-warum-große-aufgaben-die-ki-überfordern-ein-genauer-blick" class="nav-link" data-scroll-target="#warum-große-aufgaben-die-ki-überfordern-ein-genauer-blick"><span class="header-section-number">7.7</span> Warum große Aufgaben die KI überfordern – ein genauer Blick</a></li>
+  <li><a href="#der-mini-schritt-regelkreis-das-wichtigste-mentale-modell" id="toc-der-mini-schritt-regelkreis-das-wichtigste-mentale-modell" class="nav-link" data-scroll-target="#der-mini-schritt-regelkreis-das-wichtigste-mentale-modell"><span class="header-section-number">7.8</span> Der „Mini-Schritt-Regelkreis“ (das wichtigste mentale Modell)</a></li>
+  <li><a href="#die-größten-fehler-beim-arbeiten-ohne-chain-prompting" id="toc-die-größten-fehler-beim-arbeiten-ohne-chain-prompting" class="nav-link" data-scroll-target="#die-größten-fehler-beim-arbeiten-ohne-chain-prompting"><span class="header-section-number">7.9</span> Die größten Fehler beim Arbeiten ohne Chain Prompting</a></li>
+  <li><a href="#chain-prompting-in-realen-szenarien-ausführlich-erklärt" id="toc-chain-prompting-in-realen-szenarien-ausführlich-erklärt" class="nav-link" data-scroll-target="#chain-prompting-in-realen-szenarien-ausführlich-erklärt"><span class="header-section-number">7.10</span> Chain Prompting in realen Szenarien — ausführlich erklärt</a></li>
+  <li><a href="#der-universelle-chain-prompting-bauplan-template" id="toc-der-universelle-chain-prompting-bauplan-template" class="nav-link" data-scroll-target="#der-universelle-chain-prompting-bauplan-template"><span class="header-section-number">7.11</span> Der universelle „Chain Prompting Bauplan“ (Template)</a></li>
+  <li><a href="#chain-prompting-in-einer-realen-story-der-ki-chefkoch-teil-2" id="toc-chain-prompting-in-einer-realen-story-der-ki-chefkoch-teil-2" class="nav-link" data-scroll-target="#chain-prompting-in-einer-realen-story-der-ki-chefkoch-teil-2"><span class="header-section-number">7.12</span> Chain Prompting in einer realen Story – Der KI-Chefkoch Teil 2</a></li>
+  <li><a href="#das-große-praxisprojekt-erstelle-eine-komplexe-aufgabe-schritt-für-schritt" id="toc-das-große-praxisprojekt-erstelle-eine-komplexe-aufgabe-schritt-für-schritt" class="nav-link" data-scroll-target="#das-große-praxisprojekt-erstelle-eine-komplexe-aufgabe-schritt-für-schritt"><span class="header-section-number">7.13</span> Das große Praxisprojekt: Erstelle eine komplexe Aufgabe – Schritt für Schritt</a></li>
+  <li><a href="#warum-chain-prompting-dir-hilft-die-kontrolle-zu-behalten" id="toc-warum-chain-prompting-dir-hilft-die-kontrolle-zu-behalten" class="nav-link" data-scroll-target="#warum-chain-prompting-dir-hilft-die-kontrolle-zu-behalten"><span class="header-section-number">7.14</span> Warum Chain Prompting dir hilft, die Kontrolle zu behalten</a></li>
+  <li><a href="#mini-checkliste-zum-kapitelabschluss" id="toc-mini-checkliste-zum-kapitelabschluss" class="nav-link" data-scroll-target="#mini-checkliste-zum-kapitelabschluss"><span class="header-section-number">7.15</span> Mini-Checkliste zum Kapitelabschluss</a></li>
+  <li><a href="#ausblick-auf-kapitel-8" id="toc-ausblick-auf-kapitel-8" class="nav-link" data-scroll-target="#ausblick-auf-kapitel-8"><span class="header-section-number">7.16</span> Ausblick auf Kapitel 8</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Stell dir vor, du hast eine Aufgabe vor dir, die sich anfühlt wie ein einziger, riesiger Berg. Ein Referat, das morgen fertig sein muss. Ein schwieriger Text, den du einfach nicht verstehst. Ein Essay, bei dem du gar nicht weißt, wie du anfangen sollst. Oder ein Coding-Projekt, das du zwar cool findest, aber das dir momentan wie eine komplett fremde Sprache vorkommt.</p>
+<p>In solchen Situationen passiert meistens zweierlei:</p>
+<ol type="1">
+<li><strong>Dein Gehirn schaltet in Stressmodus.</strong><br>
+</li>
+<li><strong>Eine KI schaltet in „Überforderungsmodus“.</strong></li>
+</ol>
+<p>Beides ist normal – und beides lässt sich lösen. Genau hier kommt eine der mächtigsten Prompt-Strategien ins Spiel, die du überhaupt lernen kannst:</p>
+<blockquote class="blockquote">
+<p><strong>Chain Prompting</strong> – das Zerlegen einer komplexen Aufgabe in einfache, logisch aufeinander aufbauende Mini-Schritte.</p>
+</blockquote>
+<p>Du wirst in diesem Kapitel lernen:</p>
+<pre><code>👉 warum KI manchmal nicht gut mit „großen“ Fragen umgehen kann,  
+👉 wie du deinen Denkprozess aufteilst – und die KI mit dir gemeinsam, Schritt für Schritt, durch eine Aufgabe führst,  
+👉 wie sich dadurch Ergebnisse verbessern, klarer werden und viel leichter kontrollierbar sind,  
+👉 und wie du Chain Prompting ganz praktisch für Schule, Lernen, Recherche, Social Media und Coding einsetzen kannst.  </code></pre>
+<hr>
+<section id="wann-ki-überfordert-ist-und-warum-das-nichts-mit-intelligenz-zu-tun-hat" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="wann-ki-überfordert-ist-und-warum-das-nichts-mit-intelligenz-zu-tun-hat"><span class="header-section-number">7.1</span> Wann KI überfordert ist – und warum das nichts mit „Intelligenz“ zu tun hat</h2>
+<p>Viele Menschen glauben, KI sei „superintelligent“ und könne alles sofort. Und klar, manchmal wirkt es so. Aber große Sprachmodelle arbeiten auf eine bestimmte Art, die man verstehen muss:</p>
+<p><strong>Sie generieren Wörter – nicht Pläne.</strong> Sie reagieren auf deinen Prompt – nicht auf dein langfristiges Ziel. Sie raten Wahrscheinlichkeiten – sie analysieren keine Gesamtstrategien.</p>
+<p>Wenn du also fragst:</p>
+<blockquote class="blockquote">
+<p>„Fasse das Kapitel zusammen, erkläre die Fachbegriffe, erstelle eine Tabelle, mache ein Quiz und gib mir Verbesserungstipps für meinen Essay.“</p>
+</blockquote>
+<p>…dann passiert Folgendes:</p>
+<ol type="1">
+<li>Die KI sieht einen riesigen Aufgabenblock.<br>
+</li>
+<li>Sie versucht alles gleichzeitig zu lösen.<br>
+</li>
+<li>Sie erzeugt oft etwas… Durchschnittliches.<br>
+</li>
+<li>Sie trifft Entscheidungen, die du nicht kontrollieren kannst.</li>
+</ol>
+<p>Das ist wie wenn jemand sagt:</p>
+<blockquote class="blockquote">
+<p>„Koch mir bitte ein Drei-Gänge-Menü, lerne für Mathe, mach meine Präsentation schöner, erklär mir Quantenphysik und sag mir, welche Jacke ich morgen anziehen soll.“</p>
+</blockquote>
+<p>Das ist einfach zu viel auf einmal.</p>
+<p>👉 <strong>Warum große Aufgaben die KI verwirren:</strong></p>
+<ul>
+<li>Die KI erkennt nicht automatisch, welche Schritte nötig sind.<br>
+</li>
+<li>Sie weiß nicht, welche Informationen Priorität haben.<br>
+</li>
+<li>Sie kann nicht einschätzen, in welcher Reihenfolge du arbeiten willst.<br>
+</li>
+<li>Sie versucht, eine Gesamtantwort zu generieren – ohne Plan.</li>
+</ul>
+<p>Und jetzt kommt das Interessante:<br>
+Menschen machen denselben Fehler.</p>
+<p>Wir haben die Tendenz, große Fragen groß zu stellen. Dabei funktionieren menschliches Denken <em>und</em> KI-Denken viel besser, wenn wir in <strong>Schritten</strong> arbeiten.</p>
+<hr>
+</section>
+<section id="die-lösung-aufgaben-in-kleine-schritte-zerlegen" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="die-lösung-aufgaben-in-kleine-schritte-zerlegen"><span class="header-section-number">7.2</span> Die Lösung: Aufgaben in kleine Schritte zerlegen</h2>
+<p>Chain Prompting ist wie ein Rezept – nur für deine Gedanken.</p>
+<p>Statt der KI alles auf einmal umzuhängen, machst du Folgendes:</p>
+<ol type="1">
+<li><strong>Definiere das Ziel.</strong><br>
+</li>
+<li><strong>Zerlege die Aufgabe in Schritte.</strong><br>
+</li>
+<li><strong>Lass die KI jeden Schritt einzeln ausführen.</strong><br>
+</li>
+<li><strong>Überprüfe nach jedem Schritt das Ergebnis.</strong><br>
+</li>
+<li><strong>Entscheide, wie es weitergeht.</strong></li>
+</ol>
+<p>Im Grunde sagst du:</p>
+<blockquote class="blockquote">
+<p>„Lass uns gemeinsam denken. Schritt für Schritt.“</p>
+</blockquote>
+<p>Damit passiert etwas Beeindruckendes:</p>
+<ul>
+<li>Die KI wird logischer.<br>
+</li>
+<li>Die Antworten werden klarer.<br>
+</li>
+<li>Fehler reduzieren sich massiv.<br>
+</li>
+<li>Du behältst die Kontrolle.<br>
+</li>
+<li>Jede Aufgabe fühlt sich viel leichter an.</li>
+</ul>
+<p>👉 <strong>Beispiel (schlechte Anfrage):</strong></p>
+<blockquote class="blockquote">
+<p>„Erstell mir ein Referat über den Klimawandel.“</p>
+</blockquote>
+<p>👉 <strong>Beispiel (Chain Prompting Variante):</strong></p>
+<blockquote class="blockquote">
+<ol type="1">
+<li>„Schritt 1: Erstelle eine klare Gliederung für ein 5-minütiges Referat über den Klimawandel.“<br>
+</li>
+<li>„Schritt 2: Schreibe für jeden Gliederungspunkt einen Absatz.“<br>
+</li>
+<li>„Schritt 3: Fasse die wichtigsten Zahlen und Fakten in Stichpunkten zusammen.“<br>
+</li>
+<li>„Schritt 4: Erstelle eine einfache Folienvorlage für eine Präsentation.“</li>
+</ol>
+</blockquote>
+<p>Das Ergebnis ist zehnmal besser – <strong>weil du führst</strong>.</p>
+<p>Chain Prompting macht dich zum <strong>Dirigenten</strong>, nicht zum Zuschauer.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/7/ABB71.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 7.1: Schritt für Schritt zur klaren KI-Anleitung</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="die-story-der-ki-chefkoch-der-rezepte-in-schritte-aufteilt" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="die-story-der-ki-chefkoch-der-rezepte-in-schritte-aufteilt"><span class="header-section-number">7.3</span> Die Story: Der KI-Chefkoch, der Rezepte in Schritte aufteilt</h2>
+<p>Stell dir vor, du möchtest „Lasagne“ kochen. Wenn du jemanden fragst:</p>
+<blockquote class="blockquote">
+<p>„Mach mir Lasagne! Jetzt!“</p>
+</blockquote>
+<p>…wird es schwierig. Aber wenn du sagst:</p>
+<ol type="1">
+<li><em>„Was sind die einzelnen Schritte, um Lasagne zu kochen?“</em><br>
+</li>
+<li><em>„Erkläre mir Schritt 1.“</em><br>
+</li>
+<li><em>„Okay, zeig mir Schritt 2.“</em><br>
+</li>
+<li><em>„Gut, Schritt 3 bitte.“</em></li>
+</ol>
+<p>…dann wird plötzlich alles machbar.</p>
+<p>Diese Story funktioniert perfekt für KI – und viele Schülerinnen und Schüler haben damit enorme Erfolge.</p>
+<p>👉 <strong>Die Situation:</strong></p>
+<p>Lina, 15, muss ein Projekt in Bio abgeben. Ihr Thema: „Das Immunsystem des Menschen“. Sie hat null Plan, wie sie anfangen soll.</p>
+<p>Also schreibt sie:</p>
+<blockquote class="blockquote">
+<p>„Erstell mir ein komplettes Bio-Projekt zum Immunsystem.“</p>
+</blockquote>
+<p>Die KI liefert einen langen Text, wenige Strukturpunkte, etwas zu wissenschaftlich – und es passt nicht zum Aufgabenblatt. Lina ist frustriert.</p>
+<p>Doch dann probiert sie Chain Prompting:</p>
+<hr>
+<p>👉 <strong>Schritt 1 – Ziel definieren</strong></p>
+<blockquote class="blockquote">
+<p>„Bevor du beginnst: Ich brauche ein Bio-Projekt (9. Klasse), 3–4 Seiten, klar erklärt, mit Beispielen und kleiner Grafik. Kannst du zuerst eine Gliederung vorschlagen?“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Schritt 2 – Die Struktur steht fest</strong></p>
+<blockquote class="blockquote">
+<p>„Gut, überarbeite die Gliederung so, dass sie maximal 4 Kapitel hat.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Schritt 3 – Kapitel einzeln erstellen lassen</strong></p>
+<blockquote class="blockquote">
+<p>„Jetzt Kapitel 1 bitte. Achte auf altersgerechte Sprache.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Schritt 4 – Nächster Abschnitt nach Kontrolle</strong></p>
+<blockquote class="blockquote">
+<p>„Kapitel 2 bitte, mit einem anschaulichen Beispiel.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Schritt 5 – Grafiken separat erstellen</strong></p>
+<blockquote class="blockquote">
+<p>„Erstelle eine einfache Infografik-Struktur zum Immunsystem (nur Beschreibung, keine echte Grafik).“</p>
+</blockquote>
+<hr>
+<p>Lina ist völlig überrascht:<br>
+Auf einmal fühlt sich das Projekt locker, klar und machbar an.</p>
+<p>Die KI war nicht besser als vorher. Linas <strong>Prompt-Struktur</strong> war besser.</p>
+<hr>
+</section>
+<section id="warum-chain-prompting-auch-dein-denken-verbessert" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="warum-chain-prompting-auch-dein-denken-verbessert"><span class="header-section-number">7.4</span> Warum Chain Prompting auch dein Denken verbessert</h2>
+<p>Ein wichtiger Effekt wird oft übersehen:</p>
+<p>👉 <strong>Chain Prompting trainiert dich – nicht nur die KI.</strong></p>
+<p>Denn du lernst automatisch:</p>
+<ul>
+<li>Aufgaben zu zerlegen,<br>
+</li>
+<li>Prioritäten zu setzen,<br>
+</li>
+<li>Schritte logisch anzuordnen,<br>
+</li>
+<li>Zwischenergebnisse zu prüfen,<br>
+</li>
+<li>strukturiert zu denken.</li>
+</ul>
+<p>Viele Jugendliche, die diese Methode verwenden, berichten:</p>
+<blockquote class="blockquote">
+<p>„Ich bin nicht nur besser im Prompten – ich denke klarer.“</p>
+</blockquote>
+<p>Und das stimmt. KI-Prompten ist kein „Trick“. Es ist ein Denkwerkzeug.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/7/ABB72.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 7.2: Die KI serviert klare Schritte – wie ein Rezept</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="wie-du-deine-eigenen-aufgaben-in-mini-schritte-zerlegst" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="wie-du-deine-eigenen-aufgaben-in-mini-schritte-zerlegst"><span class="header-section-number">7.5</span> Wie du deine eigenen Aufgaben in Mini-Schritte zerlegst</h2>
+<p>Es gibt vier einfache Fragen, die du dir stellen kannst:</p>
+<p>👉 <strong>Frage 1: Was ist das Endziel?</strong></p>
+<p>Je klarer das Ziel, desto leichter die Schritte.</p>
+<p>👉 <strong>Frage 2: Welche 3–6 Schritte führen dorthin?</strong></p>
+<p>Nicht zu viele – die KI soll nicht verwirrt werden. Nicht zu wenige – sonst bleibt die Aufgabe zu groß.</p>
+<p>👉 <strong>Frage 3: Was ist der erste, kleinste, logischste Schritt?</strong></p>
+<p>Das ist dein Startprompt.</p>
+<p>👉 <strong>Frage 4: Welche Art von Ergebnis brauche ich pro Schritt?</strong></p>
+<p>Format? Länge? Stil? Zielgruppe?</p>
+<p>Damit kannst du sofort jedes Projekt „ent-blocken“.</p>
+<hr>
+</section>
+<section id="praxisbeispiele-chain-prompting-in-deinem-alltag" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="praxisbeispiele-chain-prompting-in-deinem-alltag"><span class="header-section-number">7.6</span> Praxisbeispiele: Chain Prompting in deinem Alltag</h2>
+<p><strong>📘 Beispiel 1: Recherche</strong></p>
+<blockquote class="blockquote">
+<p><strong>Schritt 1:</strong> „Erstelle eine Gliederung für ein 8-minütiges Referat über künstliche Intelligenz.“<br>
+<strong>Schritt 2:</strong> „Fülle nur den ersten Gliederungspunkt aus – mit einfachen Erklärungen.“<br>
+<strong>Schritt 3:</strong> „Sammle 5 seriöse Quellen und fasse jede in einem Satz zusammen.“<br>
+<strong>Schritt 4:</strong> „Erstelle eine Tabelle: Begriff | Erklärung | Beispiel.“</p>
+</blockquote>
+<hr>
+<p><strong>📘 Beispiel 2: Lernzettel</strong></p>
+<blockquote class="blockquote">
+<p><strong>Schritt 1:</strong> „Liste die wichtigsten Begriffe zum Thema Photosynthese auf.“<br>
+<strong>Schritt 2:</strong> „Erkläre jeden Begriff in maximal 2 Sätzen.“<br>
+<strong>Schritt 3:</strong> „Fasse alles in einem Lernzettel für die 8. Klasse zusammen.“<br>
+<strong>Schritt 4:</strong> „Erstelle 5 Quizfragen (Multiple Choice).“</p>
+</blockquote>
+<hr>
+<p><strong>📘 Beispiel 3: Essay schreiben</strong></p>
+<blockquote class="blockquote">
+<p><strong>Schritt 1:</strong> „Wie lautet eine gute Gliederung für einen Essay zum Thema ‚Digitale Freiheit‘?“<br>
+<strong>Schritt 2:</strong> „Schreibe nur die Einleitung – maximal 120 Wörter.“<br>
+<strong>Schritt 3:</strong> „Jetzt bitte Hauptteil Abschnitt 1.“<br>
+<strong>Schritt 4:</strong> „Gib mir zum Schluss eine Liste mit 5 Verbesserungsmöglichkeiten.“</p>
+</blockquote>
+<hr>
+<p><strong>📘 Beispiel 4: Coding</strong></p>
+<blockquote class="blockquote">
+<p><strong>Schritt 1:</strong> „Erstelle einen einfachen Plan für ein Python-Programm, das die 10 häufigsten Wörter in einem Text zählt.“<br>
+<strong>Schritt 2:</strong> „Erkläre mir Schritt 1 des Plans ausführlich.“<br>
+<strong>Schritt 3:</strong> „Schreibe nur den Code für Schritt 1.“<br>
+<strong>Schritt 4:</strong> „Jetzt Schritt 2 bitte.“</p>
+</blockquote>
+<p>Du siehst:<br>
+Chain Prompting ist universell. Es funktioniert immer.</p>
+<hr>
+<p>Du hast bereits gelernt, warum KI manchmal überfordert wirkt, wie du Aufgaben in kleine Schritte aufteilen kannst und wie der „KI-Chefkoch“ selbst große Rezepte in handliche Portionen verwandelt. Jetzt gehen wir noch tiefer in die Praxis: Du bekommst konkrete Strategien, angewandte Beispiele, typische Fehler — und klare Schritt-für-Schritt-Templates, mit denen du Chain Prompting sofort in deinen Alltag integrieren kannst (Schule, Social Media, Coding, Lernen und mehr).</p>
+<hr>
+</section>
+<section id="warum-große-aufgaben-die-ki-überfordern-ein-genauer-blick" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="warum-große-aufgaben-die-ki-überfordern-ein-genauer-blick"><span class="header-section-number">7.7</span> Warum große Aufgaben die KI überfordern – ein genauer Blick</h2>
+<p>Stell dir einen riesigen Berg vor. Wenn du versuchst, ihn in einem Sprint zu erklimmen, scheiterst du. Aber wenn du ihn in Etappen aufteilst — mit kurzen Pausen, klaren Abschnitten und Zwischenzielen — ist er plötzlich schaffbar.</p>
+<p>Für die KI funktioniert es genauso.</p>
+<p>Wenn du ihr eine Aufgabe gibst wie:</p>
+<blockquote class="blockquote">
+<p>„Schreib mir ein Referat über Klimawandel, 1500 Wörter, mit Quellen, strukturiert, leicht verständlich, und beantworte danach noch drei Rückfragen.“</p>
+</blockquote>
+<p>… dann reagiert die KI oft so:</p>
+<ul>
+<li>Sie macht nur <em>einen Teil</em> der Aufgabe<br>
+</li>
+<li>Sie vergisst Anforderungen<br>
+</li>
+<li>Sie landet im „Halluzinationsmodus“<br>
+</li>
+<li>Sie produziert oberflächliche oder generische Ergebnisse</li>
+</ul>
+<p>Der Grund: Das Modell versucht, alle Anforderungen gleichzeitig zu erfüllen — und verliert dabei Struktur.</p>
+<p>Chain Prompting löst genau dieses Problem.</p>
+<p>Indem du Aufgaben in Mini-Schritte zerlegst, zwingst du die KI, linear, logisch und kontrolliert zu denken. Jeder Abschnitt baut auf den vorherigen auf. Und du kannst jeden Schritt überprüfen, bevor der nächste entsteht.</p>
+<hr>
+</section>
+<section id="der-mini-schritt-regelkreis-das-wichtigste-mentale-modell" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="der-mini-schritt-regelkreis-das-wichtigste-mentale-modell"><span class="header-section-number">7.8</span> Der „Mini-Schritt-Regelkreis“ (das wichtigste mentale Modell)</h2>
+<p>Dieser Regelkreis ist die einfachste und effektivste Methode, um komplexe Aufgaben KI-sicher zu machen:</p>
+<p>👉 <strong>1. Schritt: Teilaufgabe definieren</strong></p>
+<p>Klein, messbar, eindeutig formuliert.</p>
+<p>👉 <strong>2. Schritt: KI ausführen lassen</strong></p>
+<p>Die KI löst <em>nur</em> diese Teilaufgabe.</p>
+<p>👉 <strong>3. Schritt: Kontrolle &amp; Korrektur</strong></p>
+<p>Du korrigierst, gibst Feedback, schärfst nach.</p>
+<p>👉 <strong>4. Schritt: Nächste Teilaufgabe basierend auf der vorherigen erzeugen</strong></p>
+<p>Dann wiederholt sich der Kreislauf.</p>
+<p>Dieser Zyklus ist mächtig, weil du jederzeit eingreifen kannst. Du verhinderst Fehler, bevor sie sich verketten.</p>
+<hr>
+</section>
+<section id="die-größten-fehler-beim-arbeiten-ohne-chain-prompting" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="die-größten-fehler-beim-arbeiten-ohne-chain-prompting"><span class="header-section-number">7.9</span> Die größten Fehler beim Arbeiten ohne Chain Prompting</h2>
+<p>Wenn Nutzer frustriert von KI sind, liegt es fast immer an einem dieser Punkte:</p>
+<p><strong>❌ Fehler 1: Zu große Aufgaben auf einmal stellen</strong></p>
+<p>Beispiel: „Schreibe meinen gesamten Vortrag.“</p>
+<p>→ Lösung: Einteilung in Struktur, Inhalte, Beispiele, Feinschliff.</p>
+<p><strong>❌ Fehler 2: Fehlendes Feedback zwischen den Schritten</strong></p>
+<p>User akzeptieren jeden Output als „gegeben“, obwohl KI leicht verbessert werden kann.</p>
+<p>→ Lösung: Immer Feedback geben — KI arbeitet besser iterativ.</p>
+<p><strong>❌ Fehler 3: Keine klare Reihenfolge</strong></p>
+<p>„Mach mal irgendwas“ funktioniert eben nicht.</p>
+<p>→ Lösung: Mini-Schritte mit klarer Reihenfolge erzeugen.</p>
+<p><strong>❌ Fehler 4: Unklare Ziele</strong></p>
+<p>„Mach’s gut“ ist kein Ziel.</p>
+<p>→ Lösung: „Mach’s gut <em>für Zielgruppe X / Format Y / Zweck Z</em>“.</p>
+<hr>
+</section>
+<section id="chain-prompting-in-realen-szenarien-ausführlich-erklärt" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="chain-prompting-in-realen-szenarien-ausführlich-erklärt"><span class="header-section-number">7.10</span> Chain Prompting in realen Szenarien — ausführlich erklärt</h2>
+<p>Wir steigen jetzt tiefer ein. Die folgenden vier Bereiche gehören zu den häufigsten Anwendungen deiner Zielgruppe.</p>
+<hr>
+<p><strong>A) Chain Prompting für SCHULE</strong></p>
+<p>👉 <strong>Beispiel: Ein Referat zum Thema „KI in der Medizin“</strong></p>
+<p><strong>Schlechter Prompt (zu groß, unstrukturiert):</strong></p>
+<blockquote class="blockquote">
+<p>„Schreib mir ein Referat über KI in der Medizin.“</p>
+</blockquote>
+<p><strong>Besser: Schrittweise aufgebaut</strong></p>
+<blockquote class="blockquote">
+<ol type="1">
+<li>„Erstelle eine logisch aufgebaute Gliederung für ein Referat über KI in der Medizin (5–7 Abschnitte).“<br>
+</li>
+<li>„Schreibe jetzt Abschnitt 1 in ca. 120 Wörtern, leicht verständlich.“<br>
+</li>
+<li>„Verbessere Abschnitt 1 basierend auf diesem Feedback: […].“<br>
+</li>
+<li>„Schreibe jetzt Abschnitt 2.“<br>
+</li>
+<li>usw.</li>
+</ol>
+</blockquote>
+<p>Durch dieses Vorgehen erhältst du:</p>
+<ul>
+<li>Höhere Qualität<br>
+</li>
+<li>Bessere Struktur<br>
+</li>
+<li>Weniger Fehler<br>
+</li>
+<li>Kontrollierbaren Output</li>
+</ul>
+<hr>
+<p><strong>B) Chain Prompting für SOCIAL MEDIA</strong></p>
+<p>👉 <strong>Beispiel: TikTok- oder Instagram-Reel-Skript</strong></p>
+<blockquote class="blockquote">
+<ol type="1">
+<li>„Gib mir drei verschiedene Hook-Ideen zum Thema ‚Wie KI mir in der Schule hilft‘.“<br>
+</li>
+<li>„Schreibe ein 30-Sekunden-Skript basierend auf Hook Nr. 2.“<br>
+</li>
+<li>„Fasse das Skript in maximal 90 Wörter zusammen.“<br>
+</li>
+<li>„Mach den Tonfall lockerer und humorvoller.“</li>
+</ol>
+</blockquote>
+<p>So bekommt man präzise, kreative Inhalte, statt eines generischen Standard-Texts.</p>
+<hr>
+<p><strong>C) Chain Prompting für LERNEN</strong></p>
+<p>Wenn du etwas verstehen willst (z. B. Fotosynthese, Quantencomputer, Inflation), dann:</p>
+<blockquote class="blockquote">
+<ol type="1">
+<li>„Erkläre mir das Thema in 5 einfachen Sätzen wie für eine 8. Klasse.“<br>
+</li>
+<li>„Jetzt tiefer, aber ohne Fachbegriffe.“<br>
+</li>
+<li>„Jetzt mit einem Beispiel aus dem Alltag.“<br>
+</li>
+<li>„Jetzt als kurze Zusammenfassung in Stichpunkten.“</li>
+</ol>
+</blockquote>
+<p>Jeder Schritt baut verständlicher auf dem anderen auf. Das Ergebnis: echtes Verständnis statt Überforderung.</p>
+<hr>
+<p><strong>D) Chain Prompting für CODING</strong></p>
+<p>👉 <strong>Beispiel: Python-Funktion verstehen und verbessern</strong></p>
+<blockquote class="blockquote">
+<ol type="1">
+<li>„Hier ist eine Python-Funktion. Erkläre sie in einfachen Worten.“<br>
+</li>
+<li>„Erstelle nun eine Version, die robuster und kommentiert ist.“<br>
+</li>
+<li>„Finde mögliche Fehlerquellen.“<br>
+</li>
+<li>„Schreibe Unit-Tests dafür.“</li>
+</ol>
+</blockquote>
+<p>Coding wird so zu einem Prozess, den du Schritt für Schritt meistern kannst, selbst als Anfänger.</p>
+<hr>
+</section>
+<section id="der-universelle-chain-prompting-bauplan-template" class="level2" data-number="7.11">
+<h2 data-number="7.11" class="anchored" data-anchor-id="der-universelle-chain-prompting-bauplan-template"><span class="header-section-number">7.11</span> Der universelle „Chain Prompting Bauplan“ (Template)</h2>
+<p>Du kannst dieses Template in <em>jedem</em> Kontext einsetzen:</p>
+<hr>
+<p><strong>🟦 Schritt 1: Ziel klären</strong></p>
+<blockquote class="blockquote">
+<p>„Mein Ziel ist […]. Was ist eine sinnvolle Schritt-für-Schritt-Struktur, um dieses Ziel zu erreichen?“</p>
+</blockquote>
+<hr>
+<p><strong>🟦 Schritt 2: Struktur bestätigen</strong></p>
+<blockquote class="blockquote">
+<p>„Zeige mir die Schritte einzeln als Liste. Ich bestätige danach Schritt für Schritt.“</p>
+</blockquote>
+<hr>
+<p><strong>🟦 Schritt 3: Mini-Schritt starten</strong></p>
+<blockquote class="blockquote">
+<p>„Führe bitte nur Schritt 1 aus. Max. 150 Wörter.“</p>
+</blockquote>
+<hr>
+<p><strong>🟦 Schritt 4: Feedback geben</strong></p>
+<blockquote class="blockquote">
+<p>„Verbessere es basierend auf diesem Feedback: […].“</p>
+</blockquote>
+<hr>
+<p><strong>🟦 Schritt 5: Nächster Schritt</strong></p>
+<blockquote class="blockquote">
+<p>„Jetzt bitte Schritt 2.“</p>
+</blockquote>
+<hr>
+<p><strong>🟦 Schritt 6: Finaler Feinschliff</strong></p>
+<blockquote class="blockquote">
+<p>„Fasse alles zu einer finalen Version zusammen.“</p>
+</blockquote>
+<hr>
+<p>Wenn du diesen Bauplan verinnerlichst, bist du den meisten KI-Nutzern bereits meilenweit voraus.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/7/ABB73.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 7.3: Große Aufgaben in kleine Schritte zerlegen</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="chain-prompting-in-einer-realen-story-der-ki-chefkoch-teil-2" class="level2" data-number="7.12">
+<h2 data-number="7.12" class="anchored" data-anchor-id="chain-prompting-in-einer-realen-story-der-ki-chefkoch-teil-2"><span class="header-section-number">7.12</span> Chain Prompting in einer realen Story – Der KI-Chefkoch Teil 2</h2>
+<p>Im ersten Teil dieses Kapitels hast du den KI-Chefkoch kennengelernt. Jetzt setzen wir die Story fort — diesmal in einer schwierigen Situation.</p>
+<hr>
+<p>👉 <strong>Die Herausforderung: Ein Menü für 40 Gäste</strong></p>
+<p>Der KI-Chefkoch steht vor einer riesigen Aufgabe: ein komplexes Menü mit vielen Gängen, Allergien, Geschmäckern und Zeitplänen.</p>
+<p>Wenn er versucht, alles auf einmal zu planen, scheitert er.</p>
+<p>Aber er nutzt Chain Prompting:</p>
+<ol type="1">
+<li>Zutatenliste erstellen<br>
+</li>
+<li>Allergien analysieren<br>
+</li>
+<li>Menüvorschläge generieren<br>
+</li>
+<li>Reihenfolge der Zubereitung planen<br>
+</li>
+<li>Zeitplan optimieren<br>
+</li>
+<li>Einkaufszettel erstellen<br>
+</li>
+<li>Finale Zusammenfassung</li>
+</ol>
+<p>Der Clou: Kein Schritt ist zu groß. Kein Schritt enthält zu viele Entscheidungen. Jeder Abschnitt baut logisch auf dem vorherigen auf.</p>
+<hr>
+</section>
+<section id="das-große-praxisprojekt-erstelle-eine-komplexe-aufgabe-schritt-für-schritt" class="level2" data-number="7.13">
+<h2 data-number="7.13" class="anchored" data-anchor-id="das-große-praxisprojekt-erstelle-eine-komplexe-aufgabe-schritt-für-schritt"><span class="header-section-number">7.13</span> Das große Praxisprojekt: Erstelle eine komplexe Aufgabe – Schritt für Schritt</h2>
+<p>Hier kommt eine komplette Übung zum Mitmachen.</p>
+<p>👉 <strong>Deine Aufgabe: „Erstelle ein Lernheft für ein Schulfach deiner Wahl“</strong></p>
+<p>Das ist eine große Aufgabe — perfekt für Chain Prompting.</p>
+<p>So kannst du sie gliedern:</p>
+<hr>
+<p>👉 <strong>Schritt 1: Gesamtziel definieren</strong></p>
+<blockquote class="blockquote">
+<p>„Ich will ein Lernheft für das Fach X erstellen. Bitte gib mir eine sinnvolle Struktur aus 6–10 Schritten.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Schritt 2: Struktur bestätigen</strong></p>
+<p>KI zeigt dir die Schritte — du bestätigst sie.</p>
+<hr>
+<p>👉 <strong>Schritt 3: Kapitel für Kapitel erstellen</strong></p>
+<blockquote class="blockquote">
+<p>„Schreibe Kapitel 1 in ca. 120 Wörtern, leicht verständlich.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Schritt 4: Visualisierungen einbauen</strong></p>
+<blockquote class="blockquote">
+<p>„Gib mir für Kapitel 1 drei Ideen für Illustrationen.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Schritt 5: Schwierigkeit anpassen</strong></p>
+<blockquote class="blockquote">
+<p>„Vereinfache Kapitel 1 für eine 8. Klasse.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Schritt 6: Quiz-Aufgaben erstellen</strong></p>
+<blockquote class="blockquote">
+<p>„Erstelle drei Quiz-Fragen zu Kapitel 1.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Schritt 7: Nächste Kapitel analog erstellen</strong></p>
+<hr>
+</section>
+<section id="warum-chain-prompting-dir-hilft-die-kontrolle-zu-behalten" class="level2" data-number="7.14">
+<h2 data-number="7.14" class="anchored" data-anchor-id="warum-chain-prompting-dir-hilft-die-kontrolle-zu-behalten"><span class="header-section-number">7.14</span> Warum Chain Prompting dir hilft, die Kontrolle zu behalten</h2>
+<p>Chain Prompting ist nicht einfach ein Werkzeug — es ist eine Denkweise:</p>
+<ul>
+<li>Du wirst präziser<br>
+</li>
+<li>Du bekommst bessere Ergebnisse<br>
+</li>
+<li>Du sparst Zeit<br>
+</li>
+<li>Du verhinderst KI-Fehler<br>
+</li>
+<li>Du wirst Schritt für Schritt zum Profi</li>
+</ul>
+<p>Der wichtigste Vorteil:</p>
+<pre><code>👉 Du führst die KI — statt dich von ihr überraschen zu lassen.</code></pre>
+<hr>
+</section>
+<section id="mini-checkliste-zum-kapitelabschluss" class="level2" data-number="7.15">
+<h2 data-number="7.15" class="anchored" data-anchor-id="mini-checkliste-zum-kapitelabschluss"><span class="header-section-number">7.15</span> Mini-Checkliste zum Kapitelabschluss</h2>
+<p>Bevor wir das Kapitel beenden, hier die Checkliste, die du ab jetzt immer neben dir haben solltest:</p>
+<pre><code>✔ Große Aufgaben in Mini-Schritte zerlegen
+✔ Jeden Schritt einzeln ausführen lassen
+✔ Feedback geben
+✔ Nächsten Schritt erst nach Bestätigung starten
+✔ Finalen Feinschliff am Ende durchführen
+✔ Struktur vor Inhalt erzeugen
+✔ KI immer zielgerichtet führen</code></pre>
+<p>Wenn du diese Checkliste verstehst und anwendest, wirst du automatisch ein extrem guter KI-Nutzer.</p>
+<hr>
+</section>
+<section id="ausblick-auf-kapitel-8" class="level2" data-number="7.16">
+<h2 data-number="7.16" class="anchored" data-anchor-id="ausblick-auf-kapitel-8"><span class="header-section-number">7.16</span> Ausblick auf Kapitel 8</h2>
+<p>Im nächsten Kapitel gehen wir einen Schritt weiter: Wir verlassen die lineare Gedankenwelt und steigen in ein viel mächtigeres Konzept ein — das <strong>Chain of Thought</strong>.</p>
+<p>Du lernst:</p>
+<pre><code>👉 Wie du die KI „vor dem Antworten denken lässt“  
+👉 Wie du logische Fehler minimierst  
+👉 Wie du tiefere, strukturierte Begründungen erzielst  
+👉 Wie du KI zu komplexem Denken anleitest  </code></pre>
+<p>Du wirst sehen: Wenn Chain Prompting der erste große Sprung war, dann ist Chain of Thought der zweite — und er wird deine Ergebnisse noch einmal auf ein völlig neues Niveau heben.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./kapitel6.html" class="pagination-link" aria-label="Beispiele wirken Wunder: In-Context Learning erklärt">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Beispiele wirken Wunder: In-Context Learning erklärt</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./kapitel8.html" class="pagination-link" aria-label="Lass die KI erst denken: Chain-of-Thought für Einsteiger">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Lass die KI erst denken: Chain-of-Thought für Einsteiger</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>11&nbsp; Regeln! Grammatik, Struktur und Format steuern – Effektives Prompt Engineering – leicht erklärt.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./kapitel12.html" rel="next">
+<link href="./kapitel10.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-74c88ba48ad0bebf983f0ffd06dd1671.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./kapitel11.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regeln! Grammatik, Struktur und Format steuern</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Effektives Prompt Engineering – leicht erklärt.</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Die neue Superkraft: Warum KI dein Leben verändern kann</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Wie KI denkt (aber nicht wirklich denkt)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Deine ersten Prompts: Schnell Erfolge sehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Die Bausteine eines perfekten Prompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Klare Anweisungen, klare Ergebnisse: Instruction Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Beispiele wirken Wunder: In-Context Learning erklärt</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Lass die KI erst denken: Chain-of-Thought für Einsteiger</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Kreativer arbeiten: Schreib-, Ideen- und Lernprompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fehler finden &amp; verbessern: Output Verification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel11.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regeln! Grammatik, Struktur und Format steuern</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Schule &amp; Studium: KI als Lern-Turbo</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Kreativprojekte: KI für Texte, Videos &amp; Social Media</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Coding mit KI: Dein persönlicher Mini-Programmiercoach</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Recherche, Faktencheck &amp; Wissenschaft</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Produktiver Alltag mit KI: Die besten Life-Hacks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Fair, sicher &amp; verantwortungsvoll mit KI umgehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Der KI-Masterplan: Dein persönliches Prompt-Portfolio</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#warum-formatregeln-so-mächtig-sind" id="toc-warum-formatregeln-so-mächtig-sind" class="nav-link active" data-scroll-target="#warum-formatregeln-so-mächtig-sind"><span class="header-section-number">11.1</span> Warum Formatregeln so mächtig sind</a></li>
+  <li><a href="#tabellen-verstehen-und-sauber-erzeugen" id="toc-tabellen-verstehen-und-sauber-erzeugen" class="nav-link" data-scroll-target="#tabellen-verstehen-und-sauber-erzeugen"><span class="header-section-number">11.2</span> Tabellen verstehen und sauber erzeugen</a></li>
+  <li><a href="#bullet-points-das-unterschätzte-ordnungswerkzeug" id="toc-bullet-points-das-unterschätzte-ordnungswerkzeug" class="nav-link" data-scroll-target="#bullet-points-das-unterschätzte-ordnungswerkzeug"><span class="header-section-number">11.3</span> Bullet-Points: Das unterschätzte Ordnungswerkzeug</a></li>
+  <li><a href="#code-strukturen-einfach-erklärt-aber-extrem-nützlich" id="toc-code-strukturen-einfach-erklärt-aber-extrem-nützlich" class="nav-link" data-scroll-target="#code-strukturen-einfach-erklärt-aber-extrem-nützlich"><span class="header-section-number">11.4</span> Code-Strukturen: Einfach erklärt – aber extrem nützlich</a></li>
+  <li><a href="#ein-budget-planer-mit-ki-erstellen" id="toc-ein-budget-planer-mit-ki-erstellen" class="nav-link" data-scroll-target="#ein-budget-planer-mit-ki-erstellen"><span class="header-section-number">11.5</span> Ein Budget-Planer mit KI erstellen</a></li>
+  <li><a href="#die-wichtigkeit-klarer-output-formate" id="toc-die-wichtigkeit-klarer-output-formate" class="nav-link" data-scroll-target="#die-wichtigkeit-klarer-output-formate"><span class="header-section-number">11.6</span> Die Wichtigkeit klarer Output-Formate</a></li>
+  <li><a href="#die-goldene-regel-formatiere-deine-antwort-wie-folgt" id="toc-die-goldene-regel-formatiere-deine-antwort-wie-folgt" class="nav-link" data-scroll-target="#die-goldene-regel-formatiere-deine-antwort-wie-folgt"><span class="header-section-number">11.7</span> Die goldene Regel: „Formatiere deine Antwort wie folgt …“</a></li>
+  <li><a href="#mini-übung-formate-wie-ein-profi-festlegen" id="toc-mini-übung-formate-wie-ein-profi-festlegen" class="nav-link" data-scroll-target="#mini-übung-formate-wie-ein-profi-festlegen"><span class="header-section-number">11.8</span> Mini-Übung: Formate wie ein Profi festlegen</a></li>
+  <li><a href="#warum-ki-struktur-verliert-und-wie-du-das-verhinderst" id="toc-warum-ki-struktur-verliert-und-wie-du-das-verhinderst" class="nav-link" data-scroll-target="#warum-ki-struktur-verliert-und-wie-du-das-verhinderst"><span class="header-section-number">11.9</span> Warum Ki Struktur verliert – und wie du das verhinderst</a></li>
+  <li><a href="#struktur-schablonen-dein-geheimer-baukasten" id="toc-struktur-schablonen-dein-geheimer-baukasten" class="nav-link" data-scroll-target="#struktur-schablonen-dein-geheimer-baukasten"><span class="header-section-number">11.10</span> Struktur-Schablonen: Dein geheimer Baukasten</a></li>
+  <li><a href="#beispiel-wie-du-die-ki-zum-perfekten-lernzettel-zwingst" id="toc-beispiel-wie-du-die-ki-zum-perfekten-lernzettel-zwingst" class="nav-link" data-scroll-target="#beispiel-wie-du-die-ki-zum-perfekten-lernzettel-zwingst"><span class="header-section-number">11.11</span> Beispiel: Wie du die KI zum perfekten Lernzettel zwingst</a></li>
+  <li><a href="#kreativer-output-braucht-trotzdem-klare-regeln" id="toc-kreativer-output-braucht-trotzdem-klare-regeln" class="nav-link" data-scroll-target="#kreativer-output-braucht-trotzdem-klare-regeln"><span class="header-section-number">11.12</span> Kreativer Output braucht trotzdem klare Regeln</a></li>
+  <li><a href="#wie-du-die-ki-an-harte-regeln-gewöhnst" id="toc-wie-du-die-ki-an-harte-regeln-gewöhnst" class="nav-link" data-scroll-target="#wie-du-die-ki-an-harte-regeln-gewöhnst"><span class="header-section-number">11.13</span> Wie du die KI an harte Regeln gewöhnst</a></li>
+  <li><a href="#der-ki-beibringen-fehler-selbst-zu-finden" id="toc-der-ki-beibringen-fehler-selbst-zu-finden" class="nav-link" data-scroll-target="#der-ki-beibringen-fehler-selbst-zu-finden"><span class="header-section-number">11.14</span> Der KI beibringen, Fehler selbst zu finden</a></li>
+  <li><a href="#struktur-in-kombination-mit-code-der-einfache-einstieg" id="toc-struktur-in-kombination-mit-code-der-einfache-einstieg" class="nav-link" data-scroll-target="#struktur-in-kombination-mit-code-der-einfache-einstieg"><span class="header-section-number">11.15</span> Struktur in Kombination mit Code: Der einfache Einstieg</a></li>
+  <li><a href="#struktur-als-denkwerkzeug-dein-vorteil-gegenüber-anderen" id="toc-struktur-als-denkwerkzeug-dein-vorteil-gegenüber-anderen" class="nav-link" data-scroll-target="#struktur-als-denkwerkzeug-dein-vorteil-gegenüber-anderen"><span class="header-section-number">11.16</span> Struktur als Denkwerkzeug: Dein Vorteil gegenüber anderen</a></li>
+  <li><a href="#mini-praxisblock-drei-struktur-prompts-die-du-sofort-nutzen-kannst" id="toc-mini-praxisblock-drei-struktur-prompts-die-du-sofort-nutzen-kannst" class="nav-link" data-scroll-target="#mini-praxisblock-drei-struktur-prompts-die-du-sofort-nutzen-kannst"><span class="header-section-number">11.17</span> Mini-Praxisblock: Drei Struktur-Prompts, die du sofort nutzen kannst</a></li>
+  <li><a href="#der-wichtigste-gedanke-dieses-kapitels" id="toc-der-wichtigste-gedanke-dieses-kapitels" class="nav-link" data-scroll-target="#der-wichtigste-gedanke-dieses-kapitels"><span class="header-section-number">11.18</span> Der wichtigste Gedanke dieses Kapitels</a></li>
+  <li><a href="#ausblick-auf-kapitel-12" id="toc-ausblick-auf-kapitel-12" class="nav-link" data-scroll-target="#ausblick-auf-kapitel-12"><span class="header-section-number">11.19</span> Ausblick auf Kapitel 12</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regeln! Grammatik, Struktur und Format steuern</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Wenn du in den letzten Kapiteln gelernt hast, wie KI denkt, wie sie Beispiele nutzt, wie sie Aufgaben zerlegt und wie du sie zum Nachdenken bringst, kommt jetzt ein neuer Superpower-Moment:</p>
+<pre><code>👉 Du kannst der KI beibringen, in exakt dem Format zu antworten, das du brauchst.</code></pre>
+<p>Das ist einer der wichtigsten Schritte auf dem Weg von „Ich probiere mal irgendwas“ zu „Ich arbeite wie ein Profi mit generativer KI“. Denn KI-Modelle lieben es, sich kreativ auszutoben – aber manchmal brauchst du <strong>Ordnung. Struktur. Klarheit. Format.</strong> Du willst nicht:</p>
+<ul>
+<li>einen chaotischen Text,<br>
+</li>
+<li>unübersichtliche Absätze,<br>
+</li>
+<li>fehlende Listen,<br>
+</li>
+<li>oder einen Codeblock, den man nicht ausführen kann.</li>
+</ul>
+<p>Du willst stattdessen:</p>
+<ul>
+<li><strong>Tabellen</strong>, die sofort nutzbar sind,<br>
+</li>
+<li><strong>Bullet-Points</strong>, die übersichtlich sind,<br>
+</li>
+<li><strong>klare Strukturen</strong>, die du weiterverarbeiten kannst,<br>
+</li>
+<li><strong>Code</strong>, der sauber formatiert ist,<br>
+</li>
+<li><strong>Pläne</strong>, die du direkt übernehmen kannst – zum Beispiel einen Budgetplaner.</li>
+</ul>
+<p>Und genau das kannst du der KI beibringen. Mit <strong>Regeln.</strong></p>
+<p>In diesem Kapitel erfährst du, wie du der KI sagst, <em>wie</em> sie antworten soll – nicht nur <em>was</em>.</p>
+<hr>
+<section id="warum-formatregeln-so-mächtig-sind" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="warum-formatregeln-so-mächtig-sind"><span class="header-section-number">11.1</span> Warum Formatregeln so mächtig sind</h2>
+<p>Stell dir vor:<br>
+Du willst für die Schule, Uni oder Ausbildung eine übersichtliche Zusammenfassung. Du brauchst kurze Bullet-Points, keine langen Fließtexte. Aber die KI liefert dir trotzdem wieder eine halbe Seite Fließtext – nett geschrieben, aber unbrauchbar.</p>
+<p>Warum passiert das? Weil das Modell nicht weiß, dass du das Format als <strong>Priorität</strong> meinst. Erst wenn du klare Regeln gibst – und diese Regeln als „muss“ formulierst –, versteht die KI:</p>
+<pre><code>👉 „Diese Struktur ist wichtiger als mein kreativer Schreibstil.“</code></pre>
+<p>Wenn du gelernt hast, Formatregeln richtig anzuwenden, kannst du:</p>
+<ul>
+<li>Hausaufgaben schneller sortieren<br>
+</li>
+<li>Lernzettel sauber ausgeben lassen<br>
+</li>
+<li>Social-Media-Posts automatisch strukturieren<br>
+</li>
+<li>Recherche-Infos gut lesbar ordnen<br>
+</li>
+<li>Code automatisch in funktionsfähige Blöcke packen<br>
+</li>
+<li>Daten in Tabellen ausgeben lassen<br>
+</li>
+<li>Budgetpläne oder To-Do-Listen generieren<br>
+</li>
+<li>Geschäfts- oder Schulprojekte ausformatiert erstellen</li>
+</ul>
+<p><strong>Struktur ist Macht.</strong> Und jetzt bekommst du sie.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/11/ABB111.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 11.1: Die KI bringt Struktur ins Chaos – per Drag &amp; Drop</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="tabellen-verstehen-und-sauber-erzeugen" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="tabellen-verstehen-und-sauber-erzeugen"><span class="header-section-number">11.2</span> Tabellen verstehen und sauber erzeugen</h2>
+<p>Tabellen sind einer der am häufigsten unterschätzten KI-Skills. Warum? Weil Tabellen dir helfen, aus Chaos sofort Ordnung zu machen.</p>
+<p>Die wichtigsten Einsatzbereiche für Tabellen-Prompts:</p>
+<ul>
+<li>Lernübersichten<br>
+</li>
+<li>Vergleichstabellen (z. B. Autoren, historische Ereignisse, mathematische Begriffe)<br>
+</li>
+<li>Budgettabellen<br>
+</li>
+<li>Social-Media-Planer<br>
+</li>
+<li>Projektplanung<br>
+</li>
+<li>Coding-Funktionstabellen<br>
+</li>
+<li>Vokabellisten<br>
+</li>
+<li>Zeitpläne</li>
+</ul>
+<p>👉 <strong>Wie du Tabellen korrekt anforderst</strong></p>
+<p>Viele schreiben:</p>
+<blockquote class="blockquote">
+<p>„Mach mir eine Tabelle über die Ursachen des Klimawandels.“</p>
+</blockquote>
+<p>Und die KI gibt … <em>irgendetwas</em>. Mal mit Markdown, mal als Textliste, mal komisch eingerückt.</p>
+<p>Der Profi-Prompt sagt:</p>
+<blockquote class="blockquote">
+<p>„Erstelle eine Tabelle im Markdown-Format mit 3 Spalten: Ursache, Kurzbeschreibung, Beispiel. Keine zusätzlichen Erklärungen.“</p>
+</blockquote>
+<p>Warum ist der so gut?</p>
+<ul>
+<li>Er definiert <strong>Format</strong> („Markdown“).<br>
+</li>
+<li>Er definiert <strong>Spaltenanzahl</strong>.<br>
+</li>
+<li>Er definiert <strong>Spaltennamen</strong>.<br>
+</li>
+<li>Er verbietet „extra Gerede“.</li>
+</ul>
+<p>👉 <strong>Mini-Beispiel: Schulprojekt Geschichte</strong></p>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Bitte gib mir eine Tabelle im Markdown-Format mit 4 Spalten: Epoche | Zeitraum | wichtigste Erfindung | Einfluss auf die Gesellschaft. Keine Einleitung, keine Erklärung, nur die Tabelle.“</p>
+</blockquote>
+<p>Ergebnis: Meist perfekt nutzbar – für Präsentationen, Lernzettel oder Schulaufgaben.</p>
+<hr>
+</section>
+<section id="bullet-points-das-unterschätzte-ordnungswerkzeug" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="bullet-points-das-unterschätzte-ordnungswerkzeug"><span class="header-section-number">11.3</span> Bullet-Points: Das unterschätzte Ordnungswerkzeug</h2>
+<pre><code>👉 Bullet-Points sind ein Machtwerkzeug.</code></pre>
+<p>Sie zwingen die KI zu:</p>
+<ul>
+<li>Kürze<br>
+</li>
+<li>Klarheit<br>
+</li>
+<li>logischer Struktur<br>
+</li>
+<li>Übersichtlichkeit</li>
+</ul>
+<p>Wenn du lernst, sie bewusst einzusetzen, sparst du Stunden. Stunden beim Lesen, Stunden beim Präsentieren, Stunden beim Lernen.</p>
+<p>👉 <strong>Wie du perfekte Bullet-Point-Antworten erzwingst</strong></p>
+<p>Beispiel-Profi-Prompt:</p>
+<blockquote class="blockquote">
+<p>„Erstelle eine Antwort ausschließlich in Bullet-Points.<br>
+Verwende pro Punkt maximal 12 Wörter.<br>
+Mach maximal 8 Bullet-Points.<br>
+Keine Einleitung, kein Fazit.“</p>
+</blockquote>
+<p>Das funktioniert besonders gut bei:</p>
+<ul>
+<li>Lernzusammenfassungen<br>
+</li>
+<li>Social-Media-Skripten<br>
+</li>
+<li>Präsentationspunkten<br>
+</li>
+<li>Rechercheergebnissen<br>
+</li>
+<li>Argumentationslisten<br>
+</li>
+<li>Essay-Gliederungen</li>
+</ul>
+<p>Wenn du dazu noch <em>Gruppierungen</em> verlangst, wird’s noch besser:</p>
+<blockquote class="blockquote">
+<p>„Erstelle drei Gruppen von Bullet-Points: Grundlagen, Anwendungen, Beispiele.“</p>
+</blockquote>
+<p>Das ist exakt die Art von Struktur, nach der Lehrer, Dozenten und Chefs suchen.</p>
+<hr>
+</section>
+<section id="code-strukturen-einfach-erklärt-aber-extrem-nützlich" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="code-strukturen-einfach-erklärt-aber-extrem-nützlich"><span class="header-section-number">11.4</span> Code-Strukturen: Einfach erklärt – aber extrem nützlich</h2>
+<p>Auch wenn du kein Programmierer oder keine Programmiererin bist, solltest du verstehen:</p>
+<pre><code>👉 KI liebt Code – und Code zwingt KI zur Struktur.</code></pre>
+<p>Du kannst Codeblöcke nutzen für:</p>
+<ul>
+<li>mathematische Schritte<br>
+</li>
+<li>logische Listen<br>
+</li>
+<li>Datenformate<br>
+</li>
+<li>JSON-Strukturen (super in Projekten!)<br>
+</li>
+<li>To-Do-Lists<br>
+</li>
+<li>Mindmaps<br>
+</li>
+<li>Projektpläne<br>
+</li>
+<li>Social-Media-Templates<br>
+</li>
+<li>Website-Entwürfe<br>
+</li>
+<li>Arbeitsabläufe</li>
+</ul>
+<p>Der Trick ist:<br>
+Was im Codeblock steht, nimmt die KI ernster.</p>
+<p>👉 <strong>Beispiel: Strukturierter Lernplan</strong></p>
+<p>Prompt:</p>
+<pre><code>Gib den folgenden Lernplan als JSON aus:
+
+{
+  "Thema": "",
+  "Tagesplan": [],
+  "Ziele": []
+}
+
+Keine Erklärung, nur gültiges JSON.</code></pre>
+<p>Das Ergebnis ist perfekt weiterverwendbar – in Apps, Notizen, Tools, Projekten.</p>
+<p>👉 <strong>Beispiel: Mindmap als Code</strong></p>
+<pre><code>Erstelle eine Mindmap im Markdown-Tree-Format:
+
+- Hauptthema
+  - Unterpunkt 1
+    - Beispiel A
+  - Unterpunkt 2
+    - Beispiel B</code></pre>
+<p>KI liefert: eine klare Baumstruktur. Du kannst sie exportieren, ausbauen, visualisieren.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/11/ABB112.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 11.2: Wie ein Baum voller Wissen: Die KI erzeugt Listen, Tabellen und JSON</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="ein-budget-planer-mit-ki-erstellen" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="ein-budget-planer-mit-ki-erstellen"><span class="header-section-number">11.5</span> Ein Budget-Planer mit KI erstellen</h2>
+<p>Einer der nützlichsten Praxisfälle für Formatsteuerung ist ein <strong>Budget-Planer</strong>.</p>
+<p>Warum?</p>
+<p>Weil Budgets aus:</p>
+<ul>
+<li>Tabellen<br>
+</li>
+<li>Bullet-Points<br>
+</li>
+<li>klaren Kategorien<br>
+</li>
+<li>Regeln bestehen — also genau aus allem, was KI gut strukturiert.</li>
+</ul>
+<p>👉 <strong>Beispiel-Prompt für einen Monatsbudgetplaner</strong></p>
+<blockquote class="blockquote">
+<p>„Erstelle einen Monatsbudget-Planer in einer sauberen Markdown-Tabelle mit folgenden Spalten: Kategorie, Fixkosten, variable Kosten, Sparziel, Kommentar.<br>
+Danach gib mir 5 Bullet-Points mit Tipps, aber KEINEN Fließtext.“</p>
+</blockquote>
+<p>Oder noch systematischer:</p>
+<blockquote class="blockquote">
+<p>„Erstelle mir ein Budget-System in drei Teilen:</p>
+<ol type="1">
+<li>Tabelle (Markdown) mit 6 Kategorien<br>
+</li>
+<li>Kurze Regeln als Bullet-Points<br>
+</li>
+<li>Ein JSON-Datenmodell zur Weiterverarbeitung<br>
+Kein Zusatztext.“</li>
+</ol>
+</blockquote>
+<p>Damit hast du ein vollständiges System. Du kannst es sofort in Notion, Excel, Google Sheets oder ein Planungs-Tool übernehmen.</p>
+<hr>
+</section>
+<section id="die-wichtigkeit-klarer-output-formate" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="die-wichtigkeit-klarer-output-formate"><span class="header-section-number">11.6</span> Die Wichtigkeit klarer Output-Formate</h2>
+<p>Es gibt zwei Arten von KI-Nutzern:</p>
+<p>❌ <strong>Typ A: „Mach einfach irgendwas“-Nutzer</strong></p>
+<p>Sie bekommen:</p>
+<ul>
+<li>mal lange Texte<br>
+</li>
+<li>mal kurze Listen<br>
+</li>
+<li>mal Chaos<br>
+</li>
+<li>mal Genialität<br>
+</li>
+<li>oft Frust</li>
+</ul>
+<p>✅ <strong>Typ B: Format-Master</strong></p>
+<p>Sie sagen der KI exakt:</p>
+<ul>
+<li>wie viele Absätze<br>
+</li>
+<li>welche Struktur<br>
+</li>
+<li>ob Listen<br>
+</li>
+<li>ob Tabellen<br>
+</li>
+<li>ob JSON<br>
+</li>
+<li>ob Codeblock<br>
+</li>
+<li>ob kurze Sätze<br>
+</li>
+<li>ob fester Rahmen</li>
+</ul>
+<p>Und sie bekommen genau das, was sie brauchen.<br>
+Immer.<br>
+Stabil.<br>
+Wiederholbar.</p>
+<p>Wenn du Formatregeln beherrschst, wirst du feststellen:</p>
+<pre><code>👉 Die KI arbeitet plötzlich wie eine professionelle Assistenz, nicht wie ein kreativer Chaot.</code></pre>
+<p>Und genau das ist der Schritt vom Hobby-Nutzer zum Power-User.</p>
+<hr>
+</section>
+<section id="die-goldene-regel-formatiere-deine-antwort-wie-folgt" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="die-goldene-regel-formatiere-deine-antwort-wie-folgt"><span class="header-section-number">11.7</span> Die goldene Regel: „Formatiere deine Antwort wie folgt …“</h2>
+<p>Das ist die mächtigste Format-Anweisung überhaupt.</p>
+<p>Wenn du nicht sicher bist, wie du der KI sagen sollst, was du willst, dann nutze:</p>
+<blockquote class="blockquote">
+<p>„Formatiere deine Antwort wie folgt:“<br>
+<em>(und dann schreibe dein gewünschtes Format darunter)</em></p>
+</blockquote>
+<p>Zum Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Formatiere deine Antwort wie folgt:</p>
+<ol type="1">
+<li>Ein Satz als Zusammenfassung<br>
+</li>
+<li>Eine Tabelle mit 3 Spalten<br>
+</li>
+<li>5 Bullet-Points mit konkreten Tipps<br>
+</li>
+<li>Ein JSON-Block mit den wichtigsten Daten“</li>
+</ol>
+</blockquote>
+<p>Die KI folgt dieser Struktur fast fehlerfrei.</p>
+<hr>
+</section>
+<section id="mini-übung-formate-wie-ein-profi-festlegen" class="level2" data-number="11.8">
+<h2 data-number="11.8" class="anchored" data-anchor-id="mini-übung-formate-wie-ein-profi-festlegen"><span class="header-section-number">11.8</span> Mini-Übung: Formate wie ein Profi festlegen</h2>
+<p>👉 <strong>Übung 1 – Lernzettel strukturieren</strong></p>
+<p>Formuliere:</p>
+<blockquote class="blockquote">
+<p>„Formatiere deine Antwort in drei Teilen:<br>
+<strong>(1)</strong> 5 Bullet-Points mit den Grundlagen<br>
+<strong>(2)</strong> Eine Tabelle mit 4 Spalten<br>
+<strong>(3)</strong> Ein JSON mit Lernzielen.“</p>
+</blockquote>
+<p>👉 <strong>Übung 2 – Social-Media-Skript</strong></p>
+<p>Formuliere:</p>
+<blockquote class="blockquote">
+<p>„Erstelle ein 30-Sekunden-Skript für TikTok ausschließlich in Bullet-Points.“</p>
+</blockquote>
+<p>👉 <strong>Übung 3 – Code-Struktur üben</strong></p>
+<p>Formuliere:</p>
+<blockquote class="blockquote">
+<p>„Gib mir einen Plan in folgendem JSON-Format …“</p>
+</blockquote>
+<p>Wenn du diese Übungen beherrschst, kannst du fast jede Aufgabe mit der KI meistern.</p>
+<hr>
+<p>In den nächsten Abschnitten lernst du, wie du <strong>praktische Formatvorlagen</strong>, <strong>Regelsets</strong> und <strong>Mini-Workflows</strong> entwickelst, damit KI-Arbeit noch effizienter und stabiler wird.</p>
+<hr>
+<p>Im ersten Teil von Kapitel 11 hast du gelernt, wie wichtig klare Formatvorgaben für gute KI-Ergebnisse sind: Tabellen, Bullet-Points, klare Absätze, Code-Strukturen und sogar strukturiertes Budget-Planning lassen sich mit erstaunlicher Präzision steuern, wenn du weißt, wie du deine Anweisungen formulierst.</p>
+<p>Jetzt gehen wir einen Schritt weiter: Du lernst, <em>wie</em> du die KI dazu bringst, dauerhaft und zuverlässig an deiner gewünschten Struktur festzuhalten — selbst dann, wenn die Aufgabe komplex wird oder mehrere Anforderungen gleichzeitig erfüllt werden müssen.</p>
+<p>Wenn du dieses Kapitel abgeschlossen hast, wirst du in der Lage sein, die KI zu präzisen, wiederholbaren und qualitativ hochwertigen Ausgaben zu führen. Egal ob Präsentation, Hausarbeit, Content-Plan oder Lernzettel: <strong>Struktur ist die Superpower</strong>.</p>
+<hr>
+</section>
+<section id="warum-ki-struktur-verliert-und-wie-du-das-verhinderst" class="level2" data-number="11.9">
+<h2 data-number="11.9" class="anchored" data-anchor-id="warum-ki-struktur-verliert-und-wie-du-das-verhinderst"><span class="header-section-number">11.9</span> Warum Ki Struktur verliert – und wie du das verhinderst</h2>
+<p>Vielleicht ist dir das schon passiert:<br>
+Du hast die KI gebeten, eine klare Tabelle zu erzeugen, aber plötzlich steht unter der Tabelle noch ein Satz wie „Here is your table!“. Oder du willst fünf Bullet Points und bekommst acht. Oder du willst eine Liste nummeriert haben — aber die KI beginnt bei 0 oder vergisst die Nummerierung nach Punkt 4.</p>
+<p>Warum passiert das?</p>
+<p>Weil generative KI grundsätzlich <strong>frei</strong> denkt und produziert. Sie ist nicht darauf optimiert, streng formale Regeln einzuhalten, sondern darauf, „plausible“ und „hilfreiche“ Texte zu generieren.</p>
+<p>Du kannst aber gegensteuern — mit drei Methoden:</p>
+<p>👉 <strong>1. Struktur zuerst, Inhalt danach.</strong></p>
+<p>Gib immer zuerst die gewünschte <em>Form</em>, dann den Inhalt.</p>
+<p>👉 <strong>2. Explizite Formatregeln.</strong></p>
+<p>Sag exakt, was du willst:</p>
+<blockquote class="blockquote">
+<p>„Benutze exakt fünf Bullet-Points.<br>
+Keine zusätzlichen Kommentare.<br>
+Starte mit Überschrift, dann Tabelle, dann Zusammenfassung.“</p>
+</blockquote>
+<p>👉 <strong>3. Die KI an die Regeln erinnern.</strong></p>
+<p>Wenn du ein langes Projekt arbeitest, ist es völlig legitim, die KI mit einem Satz wie <em>„Bitte bleib weiterhin bei der vorgegebenen Struktur.“</em> zu stabilisieren.</p>
+<hr>
+</section>
+<section id="struktur-schablonen-dein-geheimer-baukasten" class="level2" data-number="11.10">
+<h2 data-number="11.10" class="anchored" data-anchor-id="struktur-schablonen-dein-geheimer-baukasten"><span class="header-section-number">11.10</span> Struktur-Schablonen: Dein geheimer Baukasten</h2>
+<p>Eine der mächtigsten Techniken im Prompt Engineering ist die Nutzung von <strong>Struktur-Schablonen</strong> (englisch oft „templates“ genannt). Das bedeutet: Du gibst der KI eine feste Struktur zum Ausfüllen.</p>
+<p>Beispiel:</p>
+<p><strong>Schablone:</strong></p>
+<pre><code>Titel:
+Ziel:
+Wichtige Begriffe:
+Schritte:
+Beispiel:
+Mini-Übung:</code></pre>
+<p>Wenn du diese Vorlage vorgibst, folgen die meisten KI-Systeme ihr überaus zuverlässig — deutlich besser als ohne Vorlage.</p>
+<p>👉 <strong>Warum funktionieren Schablonen so gut?</strong></p>
+<p>Weil KI Muster liebt. Wenn du ein eindeutiges Muster gibst, benutzt sie es.</p>
+<p>Du kannst Schablonen für so ziemlich alles erstellen:</p>
+<ul>
+<li>Lernzettel<br>
+</li>
+<li>Zusammenfassungen<br>
+</li>
+<li>Social-Media-Posts<br>
+</li>
+<li>Projektpläne<br>
+</li>
+<li>Code-Snippets<br>
+</li>
+<li>Budget-Planung<br>
+</li>
+<li>Wochenziele<br>
+</li>
+<li>Charakter-Designs<br>
+</li>
+<li>Schulaufsätze</li>
+</ul>
+<p>Schablonen sind wie <strong>regelbasierte Leitplanken</strong>, die die KI sicher führen.</p>
+<hr>
+</section>
+<section id="beispiel-wie-du-die-ki-zum-perfekten-lernzettel-zwingst" class="level2" data-number="11.11">
+<h2 data-number="11.11" class="anchored" data-anchor-id="beispiel-wie-du-die-ki-zum-perfekten-lernzettel-zwingst"><span class="header-section-number">11.11</span> Beispiel: Wie du die KI zum perfekten Lernzettel zwingst</h2>
+<p>Ein typischer Fehler bei Lernzetteln: Die KI beginnt zu schwafeln. Oder sie überlädt den Text. Oder sie springt zwischen Stichpunkten und Sätzen.</p>
+<p>Hier eine optimale Struktur:</p>
+<p><strong>Prompt-Vorlage (ideal für Prüfungsvorbereitung):</strong></p>
+<blockquote class="blockquote">
+<p>Erstelle einen Lernzettel mit der folgenden Struktur:</p>
+<ol type="1">
+<li>Kurze Zusammenfassung (max. 3 Sätze)<br>
+</li>
+<li>Wichtigste Begriffe: Bullet-Point-Liste mit 5–7 Begriffen und jeweils 1 Satz Erklärung<br>
+</li>
+<li>Die 3 wichtigsten Zusammenhänge (jeweils 2 Sätze)<br>
+</li>
+<li>Mini-Quiz: 5 Verständnisfragen ohne Antworten<br>
+Keine weiteren Absätze oder Extras. Halte dich strikt an die Struktur.</li>
+</ol>
+</blockquote>
+<p>Warum funktioniert das so gut?</p>
+<ul>
+<li>Die KI weiß genau, wie der Output aussehen muss.<br>
+</li>
+<li>Du kontrollierst die Länge.<br>
+</li>
+<li>Du bestimmst die Anzahl der Elemente.<br>
+</li>
+<li>Du minimierst Halluzinationen, weil du den Rahmen eng hältst.</li>
+</ul>
+<p>Wenn die KI abweicht, ist die Lösung simpel:</p>
+<blockquote class="blockquote">
+<p>„Bitte halte dich an die Struktur. Wiederhole nur das Format und fülle es korrekt aus.“</p>
+</blockquote>
+<hr>
+</section>
+<section id="kreativer-output-braucht-trotzdem-klare-regeln" class="level2" data-number="11.12">
+<h2 data-number="11.12" class="anchored" data-anchor-id="kreativer-output-braucht-trotzdem-klare-regeln"><span class="header-section-number">11.12</span> Kreativer Output braucht trotzdem klare Regeln</h2>
+<p>Viele junge Nutzer glauben:<br>
+„Wenn ich kreativ arbeiten will, darf ich der KI nicht zu viele Regeln geben, sonst wird alles langweilig.“</p>
+<p>Aber das Gegenteil ist wahr.</p>
+<p><strong>Kreativität braucht einen Rahmen.</strong></p>
+<p>Ein Beispiel:<br>
+Du willst eine Social-Media-Idee. Wenn du einfach sagst:</p>
+<blockquote class="blockquote">
+<p>„Gib mir Social-Media-Ideen.“</p>
+</blockquote>
+<p>… bekommst du ein Durcheinander.</p>
+<p>Mit Struktur aber:</p>
+<blockquote class="blockquote">
+<p>„Gib mir 5 TikTok-Ideen für Schüler, die lernen wollen.<br>
+Jedes Element enthält:<br>
+– Hook (max. 10 Wörter)<br>
+– Erklärung (max. 1 Satz)<br>
+– Beispiel-Formulierung für das Video (max. 1 Satz)“</p>
+</blockquote>
+<p>Jetzt liefert die KI präzise und kreative Ergebnisse.</p>
+<pre><code>👉 Regeln ermöglichen Kreativität.</code></pre>
+<hr>
+</section>
+<section id="wie-du-die-ki-an-harte-regeln-gewöhnst" class="level2" data-number="11.13">
+<h2 data-number="11.13" class="anchored" data-anchor-id="wie-du-die-ki-an-harte-regeln-gewöhnst"><span class="header-section-number">11.13</span> Wie du die KI an harte Regeln gewöhnst</h2>
+<p>Wenn du möchtest, dass die KI in all deinen Projekten sauber strukturiert arbeitet, kannst du eine Art „Arbeitsweise“ etablieren.</p>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Ab jetzt: Immer klar strukturierter Output. Verwende Überschriften und Bullet-Points. Keine unnötigen Kommentare.“</p>
+</blockquote>
+<p>Oder:</p>
+<blockquote class="blockquote">
+<p>„Wenn du dir bei Daten unsicher bist, markiere den Punkt mit [Unsicher] statt Vermutungen zu machen.“</p>
+</blockquote>
+<p>Solche Regeln führen dazu, dass die KI dauerhaft disziplinierter antwortet.</p>
+<hr>
+</section>
+<section id="der-ki-beibringen-fehler-selbst-zu-finden" class="level2" data-number="11.14">
+<h2 data-number="11.14" class="anchored" data-anchor-id="der-ki-beibringen-fehler-selbst-zu-finden"><span class="header-section-number">11.14</span> Der KI beibringen, Fehler selbst zu finden</h2>
+<p>Du kannst Formatregeln mit Selbstkontrolle kombinieren:</p>
+<blockquote class="blockquote">
+<p>„Analysiere deinen Output und überprüfe, ob du alle Formatregeln eingehalten hast.<br>
+Wenn nicht, korrigiere dich selbst.“</p>
+</blockquote>
+<p>Diese Technik wird oft <strong>Self-Verification</strong> genannt — und sie funktioniert erstaunlich gut.</p>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Gib erst deine Antwort aus.<br>
+Dann überprüfe sie in einer zweiten Ausgabe unter der Überschrift ›Formatcheck‹ und verbessere sie.“</p>
+</blockquote>
+<p>Dies ist eine Art Mini-Programmierung über Prompting — und unglaublich nützlich für saubere Ergebnisse.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/11/ABB113.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 11.3: Eine KI, die sich selbst überprüft – für verlässliche Ergebnisse</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="struktur-in-kombination-mit-code-der-einfache-einstieg" class="level2" data-number="11.15">
+<h2 data-number="11.15" class="anchored" data-anchor-id="struktur-in-kombination-mit-code-der-einfache-einstieg"><span class="header-section-number">11.15</span> Struktur in Kombination mit Code: Der einfache Einstieg</h2>
+<p>Auch wenn du nicht programmieren kannst, kannst du mit Struktur-Prompts Code-ähnliche Ausgaben erzeugen.</p>
+<p>Beispiel:<br>
+<strong>Einfache JSON-Formatierung</strong></p>
+<blockquote class="blockquote">
+<p>„Gib die Informationen im folgenden JSON-Format aus:<br>
+{<br>
+‘Begriff’: ‘…’,<br>
+‘Definition’: ‘…’,<br>
+‘Beispiel’: ‘…’<br>
+}<br>
+Keine weiteren Kommentare.“</p>
+</blockquote>
+<p>Oder YAML, Markdown oder Tabellen in GitHub-Stil.</p>
+<p>Warum lohnt sich das?<br>
+Weil:</p>
+<ol type="1">
+<li>Du bringst die KI dazu, Abläufe strukturiert zu denken.<br>
+</li>
+<li>Du kannst die Ergebnisse später leichter weiterverarbeiten.<br>
+</li>
+<li>Du lernst eine extrem wertvolle Grundkompetenz für die Zukunft.</li>
+</ol>
+<hr>
+</section>
+<section id="struktur-als-denkwerkzeug-dein-vorteil-gegenüber-anderen" class="level2" data-number="11.16">
+<h2 data-number="11.16" class="anchored" data-anchor-id="struktur-als-denkwerkzeug-dein-vorteil-gegenüber-anderen"><span class="header-section-number">11.16</span> Struktur als Denkwerkzeug: Dein Vorteil gegenüber anderen</h2>
+<p>Es stimmt:<br>
+Die meisten Menschen tippen einfach drauflos.</p>
+<p>Nur wenige nutzen klare Formatregeln.</p>
+<p>Wenn du lernst, gute Output-Strukturen zu definieren:</p>
+<ul>
+<li>entsteht weniger Chaos<br>
+</li>
+<li>bekommst du schneller verwertbare Ergebnisse<br>
+</li>
+<li>kannst du große Projekte planbar machen<br>
+</li>
+<li>kannst du Inhalte leicht weitergeben (z. B. an Freunde oder Mitschüler)<br>
+</li>
+<li>sparst du massiv Zeit</li>
+</ul>
+<p><strong>Und jetzt kommt der entscheidende Punkt:</strong></p>
+<pre><code>👉 Gute Struktur macht dich zum Regisseur — nicht zum Zuschauer.</code></pre>
+<p>Du bestimmst, <em>wie</em> gedacht wird.<br>
+Die KI folgt.</p>
+<hr>
+</section>
+<section id="mini-praxisblock-drei-struktur-prompts-die-du-sofort-nutzen-kannst" class="level2" data-number="11.17">
+<h2 data-number="11.17" class="anchored" data-anchor-id="mini-praxisblock-drei-struktur-prompts-die-du-sofort-nutzen-kannst"><span class="header-section-number">11.17</span> Mini-Praxisblock: Drei Struktur-Prompts, die du sofort nutzen kannst</h2>
+<p>👉 <strong>1. Strukturierter Lernzettel</strong></p>
+<blockquote class="blockquote">
+<p>„Erstelle einen Lernzettel in dieser Struktur:<br>
+– Kurze Einführung (max. 3 Sätze)<br>
+– Die 5 wichtigsten Begriffe (je 1 Satz)<br>
+– 3 Schlüsselzusammenhänge (je 2 Sätze)<br>
+– Mini-Quiz (5 Fragen)<br>
+Keine weiteren Elemente.“</p>
+</blockquote>
+<p>👉 <strong>2. Strukturierter Social-Media-Post</strong></p>
+<blockquote class="blockquote">
+<p>„Gib mir einen TikTok-Post mit folgender Struktur:<br>
+– Hook (max. 8 Wörter)<br>
+– Inhalt (2 Bullet-Points)<br>
+– Call to Action (max. 1 Satz)<br>
+Keine Emojis, keine zusätzlichen Kommentare.“</p>
+</blockquote>
+<p>👉 <strong>3. Strukturierter Projektplan</strong></p>
+<blockquote class="blockquote">
+<p>„Erstelle einen Projektplan mit folgender Struktur:<br>
+Abschnitt 1: Ziel<br>
+Abschnitt 2: Schritte (nummeriert)<br>
+Abschnitt 3: Risiken<br>
+Abschnitt 4: Zeitplan<br>
+Keine weiteren Absätze.“</p>
+</blockquote>
+<p>Diese drei Vorlagen wirst du immer wieder benutzen.</p>
+<hr>
+</section>
+<section id="der-wichtigste-gedanke-dieses-kapitels" class="level2" data-number="11.18">
+<h2 data-number="11.18" class="anchored" data-anchor-id="der-wichtigste-gedanke-dieses-kapitels"><span class="header-section-number">11.18</span> Der wichtigste Gedanke dieses Kapitels</h2>
+<pre><code>👉 Struktur ist kein Hindernis, sondern eine Superkraft.</code></pre>
+<p>Je klarer du Formate, Regeln und Layouts vorgibst, desto stärker kannst du KI steuern. Wenn du die Form kontrollierst, kontrollierst du automatisch auch die Qualität. Und genau das unterscheidet Anfänger von echten Prompt-Profis.</p>
+<hr>
+</section>
+<section id="ausblick-auf-kapitel-12" class="level2" data-number="11.19">
+<h2 data-number="11.19" class="anchored" data-anchor-id="ausblick-auf-kapitel-12"><span class="header-section-number">11.19</span> Ausblick auf Kapitel 12</h2>
+<p>Im nächsten Kapitel wechseln wir von strukturierten Formaten direkt in deinen Alltag als Lernende(r): Schule, Studium, Prüfungen, Hausaufgaben – überall kann KI dir Zeit sparen und Verständnis vertiefen. Wir schauen uns an, wie du mit wenigen Prompts Lernzettel erstellst, dich auf Tests vorbereitest, komplexe Texte zusammenfasst und KI als verständliche, geduldige Nachhilfe nutzt.</p>
+<p><strong>In Kapitel 12 erfährst du:</strong></p>
+<pre><code>👉 wie KI dir beim Lernen wirklich Arbeit abnimmt, ohne dich abhängig zu machen,  
+👉 wie du bessere Notizen, Zusammenfassungen und Erklärungen bekommst,  
+👉 wie du Referate, Recherche und Quellen sauber mit KI vorbereitest,
+👉 und wie du dir damit ein Lernsystem baust, das dich im Alltag stärker macht.</code></pre>
+<p>Weiter geht’s – hin zu deinem persönlichen Lern-Turbo! 🚀</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./kapitel10.html" class="pagination-link" aria-label="Fehler finden &amp; verbessern: Output Verification">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fehler finden &amp; verbessern: Output Verification</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./kapitel12.html" class="pagination-link" aria-label="Schule &amp; Studium: KI als Lern-Turbo">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Schule &amp; Studium: KI als Lern-Turbo</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
