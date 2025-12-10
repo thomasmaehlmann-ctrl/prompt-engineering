@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>17&nbsp; Fair, sicher &amp; verantwortungsvoll mit KI umgehen – Effektives Prompt Engineering – leicht erklärt.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./kapitel18.html" rel="next">
+<link href="./kapitel16.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-74c88ba48ad0bebf983f0ffd06dd1671.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./kapitel17.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Fair, sicher &amp; verantwortungsvoll mit KI umgehen</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Effektives Prompt Engineering – leicht erklärt.</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Die neue Superkraft: Warum KI dein Leben verändern kann</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Wie KI denkt (aber nicht wirklich denkt)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Deine ersten Prompts: Schnell Erfolge sehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Die Bausteine eines perfekten Prompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Klare Anweisungen, klare Ergebnisse: Instruction Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Beispiele wirken Wunder: In-Context Learning erklärt</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Lass die KI erst denken: Chain-of-Thought für Einsteiger</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Kreativer arbeiten: Schreib-, Ideen- und Lernprompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fehler finden &amp; verbessern: Output Verification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regeln! Grammatik, Struktur und Format steuern</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Schule &amp; Studium: KI als Lern-Turbo</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Kreativprojekte: KI für Texte, Videos &amp; Social Media</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Coding mit KI: Dein persönlicher Mini-Programmiercoach</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Recherche, Faktencheck &amp; Wissenschaft</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Produktiver Alltag mit KI: Die besten Life-Hacks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel17.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Fair, sicher &amp; verantwortungsvoll mit KI umgehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Der KI-Masterplan: Dein persönliches Prompt-Portfolio</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#warum-dieses-kapitel-wichtig-ist-egal-wie-gut-du-schon-prompten-kannst" id="toc-warum-dieses-kapitel-wichtig-ist-egal-wie-gut-du-schon-prompten-kannst" class="nav-link active" data-scroll-target="#warum-dieses-kapitel-wichtig-ist-egal-wie-gut-du-schon-prompten-kannst"><span class="header-section-number">17.1</span> Warum dieses Kapitel wichtig ist – egal wie gut du schon prompten kannst</a></li>
+  <li><a href="#bias-warum-ki-manchmal-unfair-denkt-und-wie-du-es-erkennst" id="toc-bias-warum-ki-manchmal-unfair-denkt-und-wie-du-es-erkennst" class="nav-link" data-scroll-target="#bias-warum-ki-manchmal-unfair-denkt-und-wie-du-es-erkennst"><span class="header-section-number">17.2</span> Bias: Warum KI manchmal unfair denkt (und wie du es erkennst)</a></li>
+  <li><a href="#datenschutz-privatsphäre-was-du-nie-eingeben-solltest" id="toc-datenschutz-privatsphäre-was-du-nie-eingeben-solltest" class="nav-link" data-scroll-target="#datenschutz-privatsphäre-was-du-nie-eingeben-solltest"><span class="header-section-number">17.3</span> Datenschutz &amp; Privatsphäre: Was du nie eingeben solltest</a></li>
+  <li><a href="#gesunde-ki-nutzung-wie-du-clever-bleibst-ohne-abhängig-zu-werden" id="toc-gesunde-ki-nutzung-wie-du-clever-bleibst-ohne-abhängig-zu-werden" class="nav-link" data-scroll-target="#gesunde-ki-nutzung-wie-du-clever-bleibst-ohne-abhängig-zu-werden"><span class="header-section-number">17.4</span> Gesunde KI-Nutzung: Wie du clever bleibst, ohne abhängig zu werden</a></li>
+  <li><a href="#sicherheit-für-schüler-wie-du-dich-vor-risiken-schützt" id="toc-sicherheit-für-schüler-wie-du-dich-vor-risiken-schützt" class="nav-link" data-scroll-target="#sicherheit-für-schüler-wie-du-dich-vor-risiken-schützt"><span class="header-section-number">17.5</span> Sicherheit für Schüler: Wie du dich vor Risiken schützt</a></li>
+  <li><a href="#ethik-verantwortung-ki-ist-kein-spielzeug-du-bist-der-pilot" id="toc-ethik-verantwortung-ki-ist-kein-spielzeug-du-bist-der-pilot" class="nav-link" data-scroll-target="#ethik-verantwortung-ki-ist-kein-spielzeug-du-bist-der-pilot"><span class="header-section-number">17.6</span> Ethik &amp; Verantwortung: KI ist kein Spielzeug – du bist der Pilot</a></li>
+  <li><a href="#dein-persönlicher-ki-schutzschirm-die-5-goldenen-regeln" id="toc-dein-persönlicher-ki-schutzschirm-die-5-goldenen-regeln" class="nav-link" data-scroll-target="#dein-persönlicher-ki-schutzschirm-die-5-goldenen-regeln"><span class="header-section-number">17.7</span> Dein persönlicher KI-Schutzschirm: Die 5 goldenen Regeln</a></li>
+  <li><a href="#das-ki-warnsystem-woran-du-erkennst-dass-etwas-nicht-stimmt" id="toc-das-ki-warnsystem-woran-du-erkennst-dass-etwas-nicht-stimmt" class="nav-link" data-scroll-target="#das-ki-warnsystem-woran-du-erkennst-dass-etwas-nicht-stimmt"><span class="header-section-number">17.8</span> Das KI-Warnsystem: Woran du erkennst, dass etwas nicht stimmt</a></li>
+  <li><a href="#bias-verstehen-der-blinde-fleck-jeder-ki" id="toc-bias-verstehen-der-blinde-fleck-jeder-ki" class="nav-link" data-scroll-target="#bias-verstehen-der-blinde-fleck-jeder-ki"><span class="header-section-number">17.9</span> Bias verstehen – der blinde Fleck jeder KI</a></li>
+  <li><a href="#ki-sicherheit-für-die-schule-darauf-achten-lehrer-wirklich" id="toc-ki-sicherheit-für-die-schule-darauf-achten-lehrer-wirklich" class="nav-link" data-scroll-target="#ki-sicherheit-für-die-schule-darauf-achten-lehrer-wirklich"><span class="header-section-number">17.10</span> KI-Sicherheit für die Schule: Darauf achten Lehrer wirklich</a></li>
+  <li><a href="#sicherheit-bei-social-media-ki-tools" id="toc-sicherheit-bei-social-media-ki-tools" class="nav-link" data-scroll-target="#sicherheit-bei-social-media-ki-tools"><span class="header-section-number">17.11</span> Sicherheit bei Social Media &amp; KI-Tools</a></li>
+  <li><a href="#blind-spots-der-ki-was-ki-nicht-weiß-und-nicht-kann" id="toc-blind-spots-der-ki-was-ki-nicht-weiß-und-nicht-kann" class="nav-link" data-scroll-target="#blind-spots-der-ki-was-ki-nicht-weiß-und-nicht-kann"><span class="header-section-number">17.12</span> Blind Spots der KI – was KI <em>nicht</em> weiß und <em>nicht</em> kann</a></li>
+  <li><a href="#dein-notfall-kit-was-tun-wenn-ki-etwas-gefährliches-erzeugt" id="toc-dein-notfall-kit-was-tun-wenn-ki-etwas-gefährliches-erzeugt" class="nav-link" data-scroll-target="#dein-notfall-kit-was-tun-wenn-ki-etwas-gefährliches-erzeugt"><span class="header-section-number">17.13</span> Dein Notfall-Kit: Was tun, wenn KI etwas Gefährliches erzeugt?</a></li>
+  <li><a href="#mini-übung-ki-zu-deinem-sicherheitsprofi-machen" id="toc-mini-übung-ki-zu-deinem-sicherheitsprofi-machen" class="nav-link" data-scroll-target="#mini-übung-ki-zu-deinem-sicherheitsprofi-machen"><span class="header-section-number">17.14</span> Mini-Übung: KI zu deinem Sicherheitsprofi machen</a></li>
+  <li><a href="#ausblick-auf-kapitel-18" id="toc-ausblick-auf-kapitel-18" class="nav-link" data-scroll-target="#ausblick-auf-kapitel-18"><span class="header-section-number">17.15</span> Ausblick auf Kapitel 18</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Fair, sicher &amp; verantwortungsvoll mit KI umgehen</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><em>Warum Verantwortung der wichtigste Skill der KI-Zukunft ist</em></p>
+<hr>
+<p>Stell dir vor, du hast ein extrem starkes Werkzeug – so etwas wie ein Super-Lexikon, das nicht nur antwortet, sondern mitdenkt, für dich Ideen spinnt, Inhalte erschafft und sogar Dinge erklärt, die du selbst kaum verstanden hast. Großartig, oder?</p>
+<p>Aber jedes mächtige Werkzeug hat zwei Seiten. Je stärker es ist, desto wichtiger wird die Frage:</p>
+<pre><code>👉 Wie nutzt man es so, dass man sich selbst, anderen und der Welt nicht schadet?</code></pre>
+<p>Genau darum geht es in diesem Kapitel.</p>
+<p>Künstliche Intelligenz kann dir helfen zu lernen, kreativer zu sein, dich zu organisieren, Fehler zu finden, neue Perspektiven zu entdecken – doch gleichzeitig können Dinge passieren, die du vielleicht nicht willst: verzerrte Informationen, unbeabsichtigte Vorurteile, zu starke Abhängigkeit, Datenschutz-Risiken oder schlicht das Gefühl, ohne KI nicht mehr denken zu können.</p>
+<p>Dieses Kapitel führt dich durch die wichtigsten Grundlagen, damit du KI <strong>stark UND sicher</strong> nutzen kannst. So wie man Schwimmen lernt: Spaß haben und gleichzeitig wissen, wie man nicht untergeht.</p>
+<hr>
+<section id="warum-dieses-kapitel-wichtig-ist-egal-wie-gut-du-schon-prompten-kannst" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="warum-dieses-kapitel-wichtig-ist-egal-wie-gut-du-schon-prompten-kannst"><span class="header-section-number">17.1</span> Warum dieses Kapitel wichtig ist – egal wie gut du schon prompten kannst</h2>
+<p>Vielleicht denkst du: „Ich habe schon 16 Kapitel durch. Ich kann KI super nutzen. Warum jetzt Sicherheit?“</p>
+<p>Weil Fähigkeiten ohne Verantwortung schnell zum Risiko werden.</p>
+<p>Ein paar Beispiele:</p>
+<pre><code>👉 Wenn du ChatGPT ohne zu prüfen zitierst, kann dein Schulprojekt falsche Informationen enthalten.
+👉 Wenn du persönliche Daten unbedacht eingibst, können sie von KI-Systemen verarbeitet werden – und du weißt nicht immer genau, wo sie landen.
+👉 Wenn du KI benutzt, um Hausaufgaben komplett automatisiert zu erledigen, verpasst du Fähigkeiten, die du später brauchst.
+👉 Wenn du nicht erkennst, wann KI voreingenommen ist, übernimmst du unbewusst Meinungen oder Muster, die du eigentlich nicht teilen würdest.</code></pre>
+<p>Die gute Nachricht:<br>
+<strong>Wenn du das Kapitel gelesen hast, bist du klüger als 95 % aller KI-Nutzer.</strong><br>
+Denn der Großteil nutzt KI – aber denkt nicht darüber nach <em>wie verantwortungsvoll</em>.</p>
+<p>Du gehörst dann zu denen, die KI intelligent, reflektiert und selbstbestimmt nutzen.</p>
+<hr>
+</section>
+<section id="bias-warum-ki-manchmal-unfair-denkt-und-wie-du-es-erkennst" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="bias-warum-ki-manchmal-unfair-denkt-und-wie-du-es-erkennst"><span class="header-section-number">17.2</span> Bias: Warum KI manchmal unfair denkt (und wie du es erkennst)</h2>
+<p>„Bias“ bedeutet Verzerrung oder Voreingenommenheit. KI hat keine eigenen Gefühle oder Überzeugungen – aber sie wird mit menschlichen Daten trainiert.</p>
+<p><strong>Und Menschen haben Bias.</strong></p>
+<p>Beispiele für typische Verzerrungen:</p>
+<ul>
+<li>KI beschreibt bestimmte Berufe häufiger mit einem bestimmten Gender.<br>
+</li>
+<li>Sie bevorzugt Informationen, die im Internet oft vorkommen – selbst wenn sie falsch oder einseitig sind.<br>
+</li>
+<li>Sie gibt Antworten, die bestimmte Sichtweisen stärker betonen als andere.</li>
+</ul>
+<p>Warum passiert das?<br>
+Weil KI aus Mustern lernt – und das Internet ist voller Muster, die nicht neutral sind.</p>
+<p>👉 <strong>Wie du Bias erkennst:</strong></p>
+<ol type="1">
+<li><strong>Wenn etwas zu klischeehaft klingt</strong> → kritisch hinterfragen.<br>
+</li>
+<li><strong>Wenn KI nur einen Standpunkt nennt</strong> → nach Alternativen fragen:<br>
+<em>„Gibt es noch andere Perspektiven?“</em><br>
+</li>
+<li><strong>Wenn dir etwas unfair vorkommt</strong> → nach Erklärungen fragen:<br>
+<em>„Welche möglichen Verzerrungen beeinflussen diese Antwort?“</em><br>
+</li>
+<li><strong>Immer Gegenchecken</strong>, wenn es um Menschen, Gruppen oder sensible Themen geht.</li>
+</ol>
+<p>Bias macht KI nicht böse. Aber sie kann ungerecht wirken, wenn du nicht aufpasst.</p>
+<p>Und genau dafür brauchst du dieses Kapitel.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/17/ABB171.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 17.1: Von verzerrt zu ausgewogen – dank KI</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="datenschutz-privatsphäre-was-du-nie-eingeben-solltest" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="datenschutz-privatsphäre-was-du-nie-eingeben-solltest"><span class="header-section-number">17.3</span> Datenschutz &amp; Privatsphäre: Was du nie eingeben solltest</h2>
+<p>Viele unterschätzen diesen Punkt – gerade Schüler und Studierende.</p>
+<p>„Ich tippe irgendwas ein, ist doch egal. Wird schon passen.“</p>
+<p>Nein – ist es nicht.<br>
+Auch wenn moderne KI-Systeme hohe Datenschutzstandards haben, gilt immer:</p>
+<p>👉 <strong>Regel Nr. 1: Nie persönliche Daten eingeben.</strong></p>
+<p>Dazu gehören:</p>
+<ul>
+<li>Vollständiger Name<br>
+</li>
+<li>Adresse<br>
+</li>
+<li>Telefonnummer<br>
+</li>
+<li>Passwörter<br>
+</li>
+<li>Schulnamen<br>
+</li>
+<li>Namen von Lehrkräften<br>
+</li>
+<li>Private Infos über andere<br>
+</li>
+<li>Gesundheitsdaten<br>
+</li>
+<li>Fotos von Personen (außer du hast klare Erlaubnis)</li>
+</ul>
+<p>KI ist kein Tagebuch – und du solltest sie auch nicht wie eines behandeln.</p>
+<p>👉 <strong>Regel Nr. 2: Wenn du etwas heikel findest, gib es nicht ein.</strong></p>
+<p>Frag dich immer:</p>
+<blockquote class="blockquote">
+<p>„Würde ich diese Information einem Fremden im Internet geben?“</p>
+</blockquote>
+<p>Wenn nein → nicht eingeben.</p>
+<p>👉 <strong>Regel Nr. 3: Immer nur das Minimum teilen.</strong></p>
+<p>Beispiel:</p>
+<p>❌ „Ich heiße Jana Müller, gehe aufs Gymnasium München West, meine Lehrerin Frau Schneider hat mir einen Projektauftrag übergeben.“<br>
+✔️ „Ich bin Schülerin und habe ein Projekt zum Thema XY.“</p>
+<p>Du kannst alles prompten – ohne deine Identität preiszugeben.</p>
+<hr>
+</section>
+<section id="gesunde-ki-nutzung-wie-du-clever-bleibst-ohne-abhängig-zu-werden" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="gesunde-ki-nutzung-wie-du-clever-bleibst-ohne-abhängig-zu-werden"><span class="header-section-number">17.4</span> Gesunde KI-Nutzung: Wie du clever bleibst, ohne abhängig zu werden</h2>
+<p>KI kann dich extrem produktiv machen – aber sie kann auch dazu verführen, Aufgaben abzugeben, die du eigentlich selbst lösen solltest.</p>
+<p><strong>Gefahr #1: KI macht alles – du lernst nichts mehr.</strong><br>
+KI soll dir helfen zu lernen, nicht das Lernen ersetzen.</p>
+<p><strong>Gefahr #2: KI ersetzt das Denken.</strong><br>
+Wenn du KI wie ein externes Gehirn behandelst, verlierst du langfristig Fähigkeiten.</p>
+<p><strong>Gefahr #3: KI nimmt dir die Motivation.</strong><br>
+Wenn du zu oft abkürzt, verlierst du Stolz und Fortschrittsgefühl.</p>
+<p>👉 <strong>So nutzt du KI gesund:</strong></p>
+<ul>
+<li><p><strong>Regel 1: KI erklärt – du entscheidest.</strong><br>
+Lass dir Dinge erklären, aber bewerte selbst.</p></li>
+<li><p><strong>Regel 2: KI unterstützt – du lernst.</strong><br>
+Nutze KI für Struktur, Beispiele, Ideen – nicht für komplette Lösungen.</p></li>
+<li><p><strong>Regel 3: KI erweitert – du denkst weiter.</strong><br>
+Sie hilft dir, aber du führst das Denken.</p></li>
+<li><p><strong>Regel 4: KI-Pausen einbauen.</strong><br>
+1–2 Stunden am Tag komplett KI-frei – gut für Fokus &amp; Kreativität.</p></li>
+<li><p><strong>Regel 5: Sei transparent.</strong><br>
+Wenn du KI benutzt, sag es offen – das ist fair und professionell.</p></li>
+</ul>
+<hr>
+</section>
+<section id="sicherheit-für-schüler-wie-du-dich-vor-risiken-schützt" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="sicherheit-für-schüler-wie-du-dich-vor-risiken-schützt"><span class="header-section-number">17.5</span> Sicherheit für Schüler: Wie du dich vor Risiken schützt</h2>
+<p>Viele junge Menschen nutzen KI ohne Anleitung. Das ist okay – aber riskant.</p>
+<p>Hier die wichtigsten Sicherheitsregeln:</p>
+<p><strong>🔐 1. Jede Antwort hinterfragen</strong></p>
+<p>KI kann überzeugend falsch liegen.<br>
+Stell immer die Fragen:</p>
+<ul>
+<li>„Stimmt das wirklich?“<br>
+</li>
+<li>„Kann ich das verifizieren?“<br>
+</li>
+<li>„Welche Quelle nennt die KI?“</li>
+</ul>
+<p><strong>🛑 2. Niemals KI bitten, Regeln zu brechen</strong></p>
+<p>Also keine Prompts wie:</p>
+<ul>
+<li>„Schreib meine Mathearbeit für mich.“<br>
+</li>
+<li>„Mach die ganze Hausaufgabe exakt so, dass es keiner merkt.“</li>
+</ul>
+<p>Das schadet dir langfristig. Und es verstößt gegen Schulregeln.</p>
+<p><strong>🧭 3. KI nicht als moralische Instanz behandeln</strong></p>
+<p>KI weiß nicht, was gut oder schlecht ist.<br>
+Sie gibt Muster wieder – keine Werte.</p>
+<p><strong>🧩 4. KI nicht für Entscheidungen benutzen, die wichtig oder persönlich sind</strong></p>
+<p>KI kann:</p>
+<p>✔️ erklären<br>
+✔️ analysieren<br>
+✔️ strukturieren<br>
+✔️ Ideen liefern</p>
+<p>Aber KI sollte NICHT:</p>
+<p>❌ Entscheidungen über Freundschaften treffen<br>
+❌ medizinische oder psychologische Diagnosen liefern<br>
+❌ rechtliche oder finanzielle Ratschläge geben<br>
+❌ als Ersatz für persönliche Hilfe dienen</p>
+<p><strong>🧊 5. Wenn dir KI-Antworten unangenehm vorkommen – Pause.</strong></p>
+<p>Jede KI-Interaktion sollte sich gut anfühlen.<br>
+Wenn nicht → Abstand nehmen, mit Erwachsenen sprechen.</p>
+<hr>
+</section>
+<section id="ethik-verantwortung-ki-ist-kein-spielzeug-du-bist-der-pilot" class="level2" data-number="17.6">
+<h2 data-number="17.6" class="anchored" data-anchor-id="ethik-verantwortung-ki-ist-kein-spielzeug-du-bist-der-pilot"><span class="header-section-number">17.6</span> Ethik &amp; Verantwortung: KI ist kein Spielzeug – du bist der Pilot</h2>
+<p>KI kann schreiben, rechnen, strukturieren, analysieren, übersetzen, zusammenfassen, erklären, umformulieren, Geschichten erfinden – unglaubliche Fähigkeiten.</p>
+<p>Aber das Wichtigste:</p>
+<blockquote class="blockquote">
+<p><strong>KI hat keine Verantwortung. Menschen schon.</strong></p>
+</blockquote>
+<p>Darum bist DU der Pilot.</p>
+<p>DU entscheidest:</p>
+<ul>
+<li>Welche Fragen du stellst<br>
+</li>
+<li>Wie du die Antworten verwendest<br>
+</li>
+<li>Ob du fair bleibst<br>
+</li>
+<li>Ob du transparent bist<br>
+</li>
+<li>Ob du Quellen prüfst<br>
+</li>
+<li>Ob du Grenzen respektierst<br>
+</li>
+<li>Ob du KI sinnvoll &amp; gesund nutzt</li>
+</ul>
+<p>Empathie, Mitgefühl, Werte und Fairness kannst du nicht auslagern.<br>
+Sie kommen von dir.</p>
+<p>👉 <strong>Die vier goldenen Fragen verantwortungsvoller KI-Nutzung</strong></p>
+<ol type="1">
+<li><strong>Ist das fair?</strong><br>
+</li>
+<li><strong>Ist das sicher?</strong><br>
+</li>
+<li><strong>Ist das respektvoll?</strong><br>
+</li>
+<li><strong>Würde ich dazu stehen, wenn es jemand sieht?</strong></li>
+</ol>
+<p>Wenn du alle vier Fragen mit <em>Ja</em> beantworten kannst → alles okay.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/17/ABB172.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 17.2: KI zeigt den Weg – du steuerst</figcaption>
+</figure>
+</div>
+<hr>
+<p>Im ersten Teil dieses Kapitels hast du gelernt, warum KI zwar unfassbar hilfreich, aber nicht immer zuverlässig oder neutral ist — und dass du als Nutzer/-in eine wichtige Rolle dabei spielst, KI verantwortungsvoll zu verwenden. In diesem zweiten Teil gehen wir nun <strong>noch konkreter</strong> darauf ein, <em>wie</em> du KI in der Praxis sicher nutzen kannst. Du lernst dabei echte Alltagsstrategien, Warnsignale, Kontrollfragen und einfache Regeln, die dir helfen, Risiken zu vermeiden.</p>
+<p>Dieses Kapitel ist eines der wichtigsten im ganzen Buch:<br>
+Denn KI-Kompetenz bedeutet nicht nur „coole Prompts schreiben“, sondern auch <strong>bewusst entscheiden</strong>, <strong>kritisch denken</strong> und <strong>sicher bleiben</strong>.</p>
+<hr>
+</section>
+<section id="dein-persönlicher-ki-schutzschirm-die-5-goldenen-regeln" class="level2" data-number="17.7">
+<h2 data-number="17.7" class="anchored" data-anchor-id="dein-persönlicher-ki-schutzschirm-die-5-goldenen-regeln"><span class="header-section-number">17.7</span> Dein persönlicher KI-Schutzschirm: Die 5 goldenen Regeln</h2>
+<p>Viele Jugendliche nutzen heute KI ähnlich wie eine Suchmaschine — schnell, spontan, oft ohne nachzudenken. Aber KI ist <em>keine</em> Suchmaschine.<br>
+Sie ist ein Sprachmodell, das Muster vorhersagt.</p>
+<p>Damit du nicht in typische Fallen tappst, gibt es fünf einfache Regeln, die du dir merken kannst:</p>
+<p>👉 <strong>Regel 1: Nie private Daten teilen</strong></p>
+<p>Keine echten Namen, privaten Adressen, Gesundheitsdaten, Passwörter, Schuldaten, Zahlungsinfos oder Probleme anderer Menschen eingeben.<br>
+Frage dich immer:</p>
+<p><strong>„Würde ich das auch einem Fremden auf der Straße erzählen?“</strong> Wenn nein → dann nicht eingeben.</p>
+<hr>
+<p>👉 <strong>Regel 2: KI ist kein Lehrerersatz – sondern ein Lernpartner</strong></p>
+<p>Du kannst KI fragen, erklären lassen, testen lassen, umformulieren, vereinfachen — alles super! Aber KI sollte <strong>nicht für dich denken</strong> oder <strong>alles übernehmen</strong>.</p>
+<p>Stell dir vor:</p>
+<blockquote class="blockquote">
+<p>KI ist wie ein superhilfreicher Mitschüler.<br>
+Er erklärt dir Sachen, aber er <em>bestimmt nicht</em> was richtig ist.</p>
+</blockquote>
+<p>Wenn du etwas nicht verstehst → KI kann dir helfen.<br>
+Aber du bleibst der Boss.</p>
+<hr>
+<p>👉 <strong>Regel 3: Niemals 100 % vertrauen – immer 10 % prüfen</strong></p>
+<p>Eine der wichtigsten KI-Regeln überhaupt:</p>
+<p><strong>→ KI kann überzeugend sein – und trotzdem falsch.</strong></p>
+<p>Völlig normale „Halluzinationen“ sind z. B.:</p>
+<ul>
+<li>erfundene Fakten<br>
+</li>
+<li>erfundene Quellen<br>
+</li>
+<li>falsch zitierte Personen<br>
+</li>
+<li>logische Fehler<br>
+</li>
+<li>veraltete Informationen</li>
+</ul>
+<p>Darum:<br>
+<strong>Immer eine zweite Quelle prüfen.</strong><br>
+Oder die KI selbst auffordern, sich zu überprüfen.</p>
+<hr>
+<p>👉 <strong>Regel 4: Achte auf manipulative Sprache</strong></p>
+<p>Auch wenn KI neutral entwickelt wird, kann sie <em>unbeabsichtigt</em> Inhalte wiedergeben, die problematisch sind — z. B. Vorurteile, Stereotype oder verzerrte Darstellungen.</p>
+<p>Wenn dir etwas auffällt wie:<br>
+„Alle X sind so…“<br>
+„Frauen/Männer machen immer…“<br>
+„Bestimmte Gruppen sind weniger geeignet…“</p>
+<p>→ Stopp!<br>
+→ Nachfragen!<br>
+→ Korrigieren!</p>
+<p>Du kannst die KI auch direkt anweisen, neutrale, inklusive oder wissenschaftliche Alternativen zu erzeugen.</p>
+<hr>
+<p>👉 <strong>Regel 5: Nutze KI nicht, um anderen zu schaden</strong></p>
+<p>Keine Beleidigungen, kein Cybermobbing, keine Fakes, keine manipulierenden Texte, keine „Ich will jemanden austricksen“-Prompts.</p>
+<p>KI ist ein kreatives Werkzeug, aber auch ein Machtwerkzeug.<br>
+Mit Macht kommt Verantwortung.</p>
+<hr>
+</section>
+<section id="das-ki-warnsystem-woran-du-erkennst-dass-etwas-nicht-stimmt" class="level2" data-number="17.8">
+<h2 data-number="17.8" class="anchored" data-anchor-id="das-ki-warnsystem-woran-du-erkennst-dass-etwas-nicht-stimmt"><span class="header-section-number">17.8</span> Das KI-Warnsystem: Woran du erkennst, dass etwas nicht stimmt</h2>
+<p>Hier sind die fünf klassischen roten Flaggen, die dir zeigen:<br>
+<strong>„Vorsicht! Besser prüfen.“</strong></p>
+<ol type="1">
+<li><p><strong>Zu glatt formulierte Antworten</strong><br>
+Wenn eine Antwort perfekt klingt — aber du merkst, sie hat kaum konkrete Details oder Belege.</p></li>
+<li><p><strong>Widersprüche</strong><br>
+KI kann zwei Sätze schreiben, die nicht zusammenpassen.<br>
+Wenn etwas „komisch“ wirkt → nachhaken.</p></li>
+<li><p><strong>Zahlen ohne Quellen</strong><br>
+Wenn die KI Statistiken nennt, aber die Quelle fehlt oder nicht existiert.</p></li>
+<li><p><strong>Übermäßige Selbstsicherheit</strong><br>
+KI schreibt selten: „Ich bin mir nicht sicher.“<br>
+Deshalb musst <em>du</em> kritisch bleiben.</p></li>
+<li><p><strong>Emotionale Extreme</strong><br>
+Wenn eine KI aufgeladene, dramatische oder sehr polarisierende Aussagen macht → doppelt prüfen.</p></li>
+</ol>
+</section>
+<section id="bias-verstehen-der-blinde-fleck-jeder-ki" class="level2" data-number="17.9">
+<h2 data-number="17.9" class="anchored" data-anchor-id="bias-verstehen-der-blinde-fleck-jeder-ki"><span class="header-section-number">17.9</span> Bias verstehen – der blinde Fleck jeder KI</h2>
+<p>Was bedeutet Bias nochmal?</p>
+<p><strong>Bias = ein Muster, das unfair bevorzugt oder benachteiligt.</strong></p>
+<p>Da KI aus Daten lernt — und Daten oft Vorurteile enthalten — entstehen solche Muster automatisch.<br>
+Nicht, weil jemand es absichtlich wollte, sondern weil:</p>
+<pre><code>👉 KI lernt aus der Welt. Und die Welt ist nicht perfekt.</code></pre>
+<p>Typische Bias-Arten:</p>
+<ul>
+<li>Geschlechts-Bias<br>
+</li>
+<li>Kultur-Bias<br>
+</li>
+<li>Alters-Bias<br>
+</li>
+<li>Sprach-Bias<br>
+</li>
+<li>Berufs-Bias<br>
+</li>
+<li>Länder-Bias<br>
+</li>
+<li>algorithmische Verzerrungen</li>
+</ul>
+<p>Was du dagegen tun kannst:<br>
+➤ Neutralere Formulierungen wählen<br>
+➤ KI direkt zu Fairness verpflichten<br>
+➤ Beispiele hinzufügen („Write without stereotypes…“)<br>
+➤ alternative Perspektiven anfordern<br>
+➤ kritisch mitdenken</p>
+<hr>
+</section>
+<section id="ki-sicherheit-für-die-schule-darauf-achten-lehrer-wirklich" class="level2" data-number="17.10">
+<h2 data-number="17.10" class="anchored" data-anchor-id="ki-sicherheit-für-die-schule-darauf-achten-lehrer-wirklich"><span class="header-section-number">17.10</span> KI-Sicherheit für die Schule: Darauf achten Lehrer wirklich</h2>
+<p>Viele Schülerinnen und Schüler fragen sich:<br>
+<strong>„Darf ich KI für Hausaufgaben nutzen?“</strong></p>
+<p>Die ehrliche Antwort:<br>
+Es hängt von der Schule und der Aufgabenart ab.</p>
+<p>ABER:<br>
+Lehrer achten vor allem auf <strong>Transparenz</strong>.<br>
+Wenn du KI genutzt hast, reicht oft ein Satz wie:</p>
+<blockquote class="blockquote">
+<p>„Ich habe ChatGPT genutzt, um mir bei der Struktur zu helfen.“</p>
+</blockquote>
+<p>Das wirkt ehrlich, reif und verantwortungsvoll.</p>
+<p>Was Lehrer <em>nicht</em> mögen:</p>
+<ul>
+<li>komplette fertige KI-Texte<br>
+</li>
+<li>Ideen als eigene verkaufen<br>
+</li>
+<li>Quellen faken<br>
+</li>
+<li>Ausreden wie „Die KI hat das so gesagt…“</li>
+</ul>
+<p><strong>Merke:</strong><br>
+KI ist ein Werkzeug.<br>
+Du bist der Autor.</p>
+<hr>
+</section>
+<section id="sicherheit-bei-social-media-ki-tools" class="level2" data-number="17.11">
+<h2 data-number="17.11" class="anchored" data-anchor-id="sicherheit-bei-social-media-ki-tools"><span class="header-section-number">17.11</span> Sicherheit bei Social Media &amp; KI-Tools</h2>
+<p>Viele bekannte Tools (Insta, TikTok, YouTube) nutzen KI hinter den Kulissen. Manche Apps wirken harmlos, sammeln aber riesige Mengen an Daten.</p>
+<p>Checkliste, bevor du eine App nutzt:<br>
+✔ Welche Daten braucht sie wirklich?<br>
+✔ Kann ich ohne persönlichen Login testen?<br>
+✔ Ist die Firma seriös?<br>
+✔ Gibt es eine Web-Version ohne App-Tracking?<br>
+✔ Muss mein Gesicht/Körper/Fotos hochgeladen werden?</p>
+<p>Und ganz wichtig:<br>
+<strong>Nie KI-Avatare oder Bilder von dir erstellen, wenn du nicht weißt, wer sie speichert.</strong></p>
+<hr>
+</section>
+<section id="blind-spots-der-ki-was-ki-nicht-weiß-und-nicht-kann" class="level2" data-number="17.12">
+<h2 data-number="17.12" class="anchored" data-anchor-id="blind-spots-der-ki-was-ki-nicht-weiß-und-nicht-kann"><span class="header-section-number">17.12</span> Blind Spots der KI – was KI <em>nicht</em> weiß und <em>nicht</em> kann</h2>
+<p>KI ist beeindruckend, aber es gibt Dinge, bei denen sie automatisch an Grenzen stößt:</p>
+<p>👉 1. <strong>Persönliche Erfahrungen</strong></p>
+<p>KI kann keine echten Gefühle besitzen oder deine Situation „fühlen“.</p>
+<p>👉 2. <strong>Echtzeitwissen</strong></p>
+<p>Viele Modelle kennen den aktuellen Tag nicht.</p>
+<p>👉 3. <strong>Geheimnisse</strong></p>
+<p>KI hat keine verborgenen Datenbanken oder „Insider-Infos“.</p>
+<p>👉 4. <strong>Subjektive Wahrheiten</strong></p>
+<p>KI kann Meinungen darstellen, aber nicht festlegen, was „wirklich richtig“ ist.</p>
+<p>👉 5. <strong>Komplexe moralische Entscheidungen</strong></p>
+<p>Dafür brauchst du deine eigenen Werte — nicht nur Algorithmen.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/17/ABB173.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 17.3: Verstehen beginnt dort, wo wir genau hinschauen</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="dein-notfall-kit-was-tun-wenn-ki-etwas-gefährliches-erzeugt" class="level2" data-number="17.13">
+<h2 data-number="17.13" class="anchored" data-anchor-id="dein-notfall-kit-was-tun-wenn-ki-etwas-gefährliches-erzeugt"><span class="header-section-number">17.13</span> Dein Notfall-Kit: Was tun, wenn KI etwas Gefährliches erzeugt?</h2>
+<p>Wenn du etwas bekommst, das dir unangenehm vorkommt, gilt:</p>
+<p>👉 <strong>1. Sofort abbrechen</strong></p>
+<p>Schreibe:<br>
+„Stop.“<br>
+oder<br>
+„Das möchte ich nicht.“</p>
+<p>👉 <strong>2. Neu formulieren</strong></p>
+<p>Mehr Kontext geben, Regeln setzen.</p>
+<p>👉 <strong>3. Alternativen anfordern</strong></p>
+<p>Frage nach neutraleren Perspektiven.</p>
+<p>👉 <strong>4. Bei extremen Inhalten: melden</strong></p>
+<p>Viele KI-Systeme haben Meldefunktionen.</p>
+<p>👉 <strong>5. Jemandem erzählen (Eltern, Lehrer, Vertrauensperson)</strong></p>
+<p>Es ist <em>kein</em> Zeichen von Schwäche — sondern von Reife.</p>
+<hr>
+</section>
+<section id="mini-übung-ki-zu-deinem-sicherheitsprofi-machen" class="level2" data-number="17.14">
+<h2 data-number="17.14" class="anchored" data-anchor-id="mini-übung-ki-zu-deinem-sicherheitsprofi-machen"><span class="header-section-number">17.14</span> Mini-Übung: KI zu deinem Sicherheitsprofi machen</h2>
+<p>Probiere diese drei Prompts aus, um KI aktiv zu „faireren“ Antworten zu bringen:</p>
+<p>👉 <strong>Prompt 1 – Bias erkennen</strong></p>
+<blockquote class="blockquote">
+<p>„Erkläre mir mögliche Vorurteile in diesem Text und zeige mir, wie man ihn fairer formuliert.“</p>
+</blockquote>
+<p>👉 <strong>Prompt 2 – Faktencheck</strong></p>
+<blockquote class="blockquote">
+<p>„Gib mir drei mögliche Fehler in deiner letzten Antwort und verbessere sie.“</p>
+</blockquote>
+<p>👉 <strong>Prompt 3 – sichere Alternativen</strong></p>
+<blockquote class="blockquote">
+<p>„Formuliere deine Antwort so, dass sie für Schüler unter 16 Jahren sicher und verantwortungsvoll ist.“</p>
+</blockquote>
+<hr>
+</section>
+<section id="ausblick-auf-kapitel-18" class="level2" data-number="17.15">
+<h2 data-number="17.15" class="anchored" data-anchor-id="ausblick-auf-kapitel-18"><span class="header-section-number">17.15</span> Ausblick auf Kapitel 18</h2>
+<p>Im nächsten Kapitel geht es um etwas sehr Besonderes:<br>
+<strong>Dein persönlicher KI-Masterplan.</strong></p>
+<p>Du wirst lernen…</p>
+<pre><code>👉 wie du Schritt für Schritt immer besser im Prompting wirst
+👉 wie du dir ein professionelles Prompt-Portfolio aufbaust
+👉 welche Vorlagen, Tools und Formate du speichern solltest
+👉 wie du die „große Abschluss-Challenge“ meisterst</code></pre>
+<p>Kapitel 18 zeigt dir, wie du von einem KI-Einsteiger zu einem KI-Profi wirst — ganz ohne Stress, aber mit System.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./kapitel16.html" class="pagination-link" aria-label="Produktiver Alltag mit KI: Die besten Life-Hacks">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Produktiver Alltag mit KI: Die besten Life-Hacks</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./kapitel18.html" class="pagination-link" aria-label="Der KI-Masterplan: Dein persönliches Prompt-Portfolio">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Der KI-Masterplan: Dein persönliches Prompt-Portfolio</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

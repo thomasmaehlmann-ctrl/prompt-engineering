@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Beispiele wirken Wunder: In-Context Learning erklärt – Effektives Prompt Engineering – leicht erklärt.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./kapitel7.html" rel="next">
+<link href="./kapitel5.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-74c88ba48ad0bebf983f0ffd06dd1671.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./kapitel6.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Beispiele wirken Wunder: In-Context Learning erklärt</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Effektives Prompt Engineering – leicht erklärt.</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Die neue Superkraft: Warum KI dein Leben verändern kann</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Wie KI denkt (aber nicht wirklich denkt)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Deine ersten Prompts: Schnell Erfolge sehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Die Bausteine eines perfekten Prompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Klare Anweisungen, klare Ergebnisse: Instruction Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel6.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Beispiele wirken Wunder: In-Context Learning erklärt</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Lass die KI erst denken: Chain-of-Thought für Einsteiger</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Kreativer arbeiten: Schreib-, Ideen- und Lernprompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fehler finden &amp; verbessern: Output Verification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regeln! Grammatik, Struktur und Format steuern</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Schule &amp; Studium: KI als Lern-Turbo</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Kreativprojekte: KI für Texte, Videos &amp; Social Media</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Coding mit KI: Dein persönlicher Mini-Programmiercoach</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Recherche, Faktencheck &amp; Wissenschaft</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Produktiver Alltag mit KI: Die besten Life-Hacks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Fair, sicher &amp; verantwortungsvoll mit KI umgehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Der KI-Masterplan: Dein persönliches Prompt-Portfolio</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#warum-beispiele-mehr-sagen-als-anweisungen" id="toc-warum-beispiele-mehr-sagen-als-anweisungen" class="nav-link active" data-scroll-target="#warum-beispiele-mehr-sagen-als-anweisungen"><span class="header-section-number">6.1</span> Warum Beispiele mehr sagen als Anweisungen</a></li>
+  <li><a href="#die-metapher-der-ki-zeigen-wie-es-richtig-geht" id="toc-die-metapher-der-ki-zeigen-wie-es-richtig-geht" class="nav-link" data-scroll-target="#die-metapher-der-ki-zeigen-wie-es-richtig-geht"><span class="header-section-number">6.2</span> Die Metapher: „Der KI zeigen, wie es richtig geht“</a></li>
+  <li><a href="#warum-ki-sich-so-stark-an-beispielen-orientiert" id="toc-warum-ki-sich-so-stark-an-beispielen-orientiert" class="nav-link" data-scroll-target="#warum-ki-sich-so-stark-an-beispielen-orientiert"><span class="header-section-number">6.3</span> Warum KI sich so stark an Beispielen orientiert</a></li>
+  <li><a href="#die-drei-modi-1-shot-2-shot-multi-shot" id="toc-die-drei-modi-1-shot-2-shot-multi-shot" class="nav-link" data-scroll-target="#die-drei-modi-1-shot-2-shot-multi-shot"><span class="header-section-number">6.4</span> Die drei Modi: 1-Shot, 2-Shot, Multi-Shot</a></li>
+  <li><a href="#warum-beispiele-oft-besser-funktionieren-als-anweisungen" id="toc-warum-beispiele-oft-besser-funktionieren-als-anweisungen" class="nav-link" data-scroll-target="#warum-beispiele-oft-besser-funktionieren-als-anweisungen"><span class="header-section-number">6.5</span> Warum Beispiele oft besser funktionieren als Anweisungen</a></li>
+  <li><a href="#beispiel-schule-hausaufgaben" id="toc-beispiel-schule-hausaufgaben" class="nav-link" data-scroll-target="#beispiel-schule-hausaufgaben"><span class="header-section-number">6.6</span> Beispiel: Schule – Hausaufgaben</a></li>
+  <li><a href="#beispiel-social-media-hook-schreiben" id="toc-beispiel-social-media-hook-schreiben" class="nav-link" data-scroll-target="#beispiel-social-media-hook-schreiben"><span class="header-section-number">6.7</span> Beispiel: Social Media – Hook schreiben</a></li>
+  <li><a href="#beispiel-lernen-zusammenfassungsstile" id="toc-beispiel-lernen-zusammenfassungsstile" class="nav-link" data-scroll-target="#beispiel-lernen-zusammenfassungsstile"><span class="header-section-number">6.8</span> Beispiel: Lernen – Zusammenfassungsstile</a></li>
+  <li><a href="#beispiel-coding-muster-für-fehlermeldungserklärungen" id="toc-beispiel-coding-muster-für-fehlermeldungserklärungen" class="nav-link" data-scroll-target="#beispiel-coding-muster-für-fehlermeldungserklärungen"><span class="header-section-number">6.9</span> Beispiel: Coding – Muster für Fehlermeldungserklärungen</a></li>
+  <li><a href="#mini-übung-zeige-der-ki-wie-es-geht" id="toc-mini-übung-zeige-der-ki-wie-es-geht" class="nav-link" data-scroll-target="#mini-übung-zeige-der-ki-wie-es-geht"><span class="header-section-number">6.10</span> Mini-Übung: „Zeige der KI, wie es geht“</a></li>
+  <li><a href="#wie-du-beispiele-in-der-praxis-einsetzt-ganz-ohne-komplizierte-theorie" id="toc-wie-du-beispiele-in-der-praxis-einsetzt-ganz-ohne-komplizierte-theorie" class="nav-link" data-scroll-target="#wie-du-beispiele-in-der-praxis-einsetzt-ganz-ohne-komplizierte-theorie"><span class="header-section-number">6.11</span> Wie du Beispiele in der Praxis einsetzt – ganz ohne komplizierte Theorie</a></li>
+  <li><a href="#der-rote-faden-für-gute-beispiele" id="toc-der-rote-faden-für-gute-beispiele" class="nav-link" data-scroll-target="#der-rote-faden-für-gute-beispiele"><span class="header-section-number">6.12</span> Der „rote Faden“ für gute Beispiele</a></li>
+  <li><a href="#shot-beispiele-ein-beispiel-ein-treffer" id="toc-shot-beispiele-ein-beispiel-ein-treffer" class="nav-link" data-scroll-target="#shot-beispiele-ein-beispiel-ein-treffer"><span class="header-section-number">6.13</span> 1-Shot-Beispiele: Ein Beispiel, ein Treffer</a></li>
+  <li><a href="#shot-beispiele-wenn-du-ein-muster-noch-klarer-zeigen-willst" id="toc-shot-beispiele-wenn-du-ein-muster-noch-klarer-zeigen-willst" class="nav-link" data-scroll-target="#shot-beispiele-wenn-du-ein-muster-noch-klarer-zeigen-willst"><span class="header-section-number">6.14</span> 2-Shot-Beispiele: Wenn du ein Muster noch klarer zeigen willst</a></li>
+  <li><a href="#multi-shot-wenn-du-absolute-präzision-willst" id="toc-multi-shot-wenn-du-absolute-präzision-willst" class="nav-link" data-scroll-target="#multi-shot-wenn-du-absolute-präzision-willst"><span class="header-section-number">6.15</span> Multi-Shot: Wenn du absolute Präzision willst</a></li>
+  <li><a href="#beispiele-für-das-lernen-schule-prüfungen-nachhilfe" id="toc-beispiele-für-das-lernen-schule-prüfungen-nachhilfe" class="nav-link" data-scroll-target="#beispiele-für-das-lernen-schule-prüfungen-nachhilfe"><span class="header-section-number">6.16</span> Beispiele für das Lernen: Schule, Prüfungen &amp; Nachhilfe</a></li>
+  <li><a href="#beispiele-für-social-media-der-ki-zeigen-wie-du-klingst" id="toc-beispiele-für-social-media-der-ki-zeigen-wie-du-klingst" class="nav-link" data-scroll-target="#beispiele-für-social-media-der-ki-zeigen-wie-du-klingst"><span class="header-section-number">6.17</span> Beispiele für Social Media: Der KI zeigen, wie du klingst</a></li>
+  <li><a href="#beispiele-fürs-lernen-programmieren-coding" id="toc-beispiele-fürs-lernen-programmieren-coding" class="nav-link" data-scroll-target="#beispiele-fürs-lernen-programmieren-coding"><span class="header-section-number">6.18</span> Beispiele fürs Lernen: Programmieren (Coding)</a>
+  <ul class="collapse">
+  <li><a href="#beispiel-python-lernformat" id="toc-beispiel-python-lernformat" class="nav-link" data-scroll-target="#beispiel-python-lernformat"><span class="header-section-number">6.18.1</span> <strong>Beispiel: Python-Lernformat</strong></a></li>
+  </ul></li>
+  <li><a href="#tipps-mit-denen-deine-beispiele-sofort-besser-werden" id="toc-tipps-mit-denen-deine-beispiele-sofort-besser-werden" class="nav-link" data-scroll-target="#tipps-mit-denen-deine-beispiele-sofort-besser-werden"><span class="header-section-number">6.19</span> Tipps, mit denen deine Beispiele sofort besser werden</a></li>
+  <li><a href="#kleine-abschlussübung-du-wirst-selbst-zum-prompt-coach" id="toc-kleine-abschlussübung-du-wirst-selbst-zum-prompt-coach" class="nav-link" data-scroll-target="#kleine-abschlussübung-du-wirst-selbst-zum-prompt-coach"><span class="header-section-number">6.20</span> Kleine Abschlussübung: Du wirst selbst zum Prompt-Coach</a></li>
+  <li><a href="#kurze-zusammenfassung-was-du-aus-diesem-kapitel-mitnehmen-solltest" id="toc-kurze-zusammenfassung-was-du-aus-diesem-kapitel-mitnehmen-solltest" class="nav-link" data-scroll-target="#kurze-zusammenfassung-was-du-aus-diesem-kapitel-mitnehmen-solltest"><span class="header-section-number">6.21</span> Kurze Zusammenfassung: Was du aus diesem Kapitel mitnehmen solltest</a></li>
+  <li><a href="#ausblick-auf-kapitel-7" id="toc-ausblick-auf-kapitel-7" class="nav-link" data-scroll-target="#ausblick-auf-kapitel-7"><span class="header-section-number">6.22</span> Ausblick auf Kapitel 7</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Beispiele wirken Wunder: In-Context Learning erklärt</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="warum-beispiele-mehr-sagen-als-anweisungen" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="warum-beispiele-mehr-sagen-als-anweisungen"><span class="header-section-number">6.1</span> Warum Beispiele mehr sagen als Anweisungen</h2>
+<p>Erinnerst du dich an die letzten Male, in denen du etwas Neues lernen wolltest? Vielleicht ein Matheproblem, eine Programmieraufgabe oder ein gutes Social-Media-Intro. Wahrscheinlich hast du intuitiv das gemacht, was alle guten Lernenden tun: <strong>Du hast dir Beispiele angeschaut.</strong></p>
+<p>Beispiele sind wie kleine Abkürzungen im Denken. Sie zeigen nicht nur <em>was</em> man tun soll, sondern <em>wie</em>. Genau so funktioniert auch KI. ChatGPT, Gemini, Claude, Llama – alle großen Modelle verstehen Muster über Beispiele. Und wenn du ihnen zeigst, wie etwas aussehen soll, dann erzeugen sie Ergebnisse, die deinem Beispiel erstaunlich ähnlich sind, nur angepasst an dein Ziel.</p>
+<p>Diese Fähigkeit heißt:</p>
+<pre><code>👉 In-Context Learning (ICL)</code></pre>
+<p>Der Name klingt kompliziert, aber der Kern ist simpel:</p>
+<blockquote class="blockquote">
+<p>Du gibst ein Beispiel, und die KI lernt kurzzeitig „innerhalb dieses Gesprächs“, wie sie antworten soll.</p>
+</blockquote>
+<p>Es ist, als würdest du der KI ein Minigesetzbuch schreiben, das nur für diese Aufgabe gilt.</p>
+<hr>
+</section>
+<section id="die-metapher-der-ki-zeigen-wie-es-richtig-geht" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="die-metapher-der-ki-zeigen-wie-es-richtig-geht"><span class="header-section-number">6.2</span> Die Metapher: „Der KI zeigen, wie es richtig geht“</h2>
+<p>Stell dir vor, du willst jemandem beibringen, wie man ein gutes TikTok-Intro schreibt. Du könntest folgendes sagen:</p>
+<blockquote class="blockquote">
+<p>„Schreib einfach ein gutes Intro.“</p>
+</blockquote>
+<p>Oder du könntest folgendes tun:</p>
+<p>→ Ein Beispiel zeigen.</p>
+<blockquote class="blockquote">
+<p>„Hier ist ein starkes Intro:<br>
+<em>‚Stop scrolling — you’re about to learn the shortcut that saved me hours last week…’</em>.<br>
+Schreibe jetzt ein Intro im gleichen Stil für das Thema XY.“</p>
+</blockquote>
+<p>Im zweiten Fall hat die KI einen <strong>Rahmen</strong>, den sie versteht. Ein Beispiel ist wie ein Startpunkt, an dem das Modell Muster erkennt:</p>
+<ul>
+<li>Tonfall<br>
+</li>
+<li>Satzrhythmus<br>
+</li>
+<li>Struktur<br>
+</li>
+<li>Ziel<br>
+</li>
+<li>Stil</li>
+</ul>
+<p>Beispiele sind wie eine Taschenlampe: Sie zeigen der KI die Richtung.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/6/ABB61.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 6.1: Beispiel rein – bessere Antwort raus</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="warum-ki-sich-so-stark-an-beispielen-orientiert" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="warum-ki-sich-so-stark-an-beispielen-orientiert"><span class="header-section-number">6.3</span> Warum KI sich so stark an Beispielen orientiert</h2>
+<p>Sprachmodelle sind Muster-Modelle. Sie wurden darauf trainiert, <strong>den wahrscheinlichsten nächsten Text zu erzeugen</strong>, basierend auf all den Beispielen, die sie je gesehen haben. Deshalb lieben sie es, wenn du ihnen neue Beispiele direkt im Prompt gibst — selbst einfache Micro-Beispiele können das ganze Ergebnis verändern.</p>
+<p>👉 Ein Beispiel ohne Beispiel 😉</p>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Erkläre Photosynthese für Kinder.“</p>
+</blockquote>
+<p>Das Ergebnis kann gut sein… oder zu wissenschaftlich… oder zu simpel.</p>
+<p>👉 Ein Beispiel mit Beispiel</p>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Schreibe Erklärungen im folgenden Stil:<br>
+Beispiel: <em>‚Stell dir vor, eine Pflanze ist wie eine kleine Küche, die Licht in Energie kocht.‘</em><br>
+Erkläre jetzt Photosynthese im gleichen Stil.“</p>
+</blockquote>
+<p>Jetzt hat die KI einen klaren „Stil-Seed“. Und die Antwort wird <strong>konkret</strong>, <strong>sprechender</strong>, <strong>kindgerechter</strong>.</p>
+<hr>
+</section>
+<section id="die-drei-modi-1-shot-2-shot-multi-shot" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="die-drei-modi-1-shot-2-shot-multi-shot"><span class="header-section-number">6.4</span> Die drei Modi: 1-Shot, 2-Shot, Multi-Shot</h2>
+<p>👉 <strong>1-Shot</strong> – <em>Ein Beispiel genügt</em></p>
+<p>Du gibst <strong>ein einziges Beispiel</strong>, das zeigt, wie die Antwort aussehen soll.</p>
+<p>🌟 Perfekt für:</p>
+<ul>
+<li>Schreibstil nachahmen<br>
+</li>
+<li>Struktur vorgeben<br>
+</li>
+<li>Tonfall definieren</li>
+</ul>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Schreibe wie im folgenden Beispiel eine Lernkarte zum Thema ‚Diffusion‘:<br>
+<strong>Beispiel:</strong><br>
+<em>Frage: Warum ist der Himmel blau?<br>
+Antwort: Weil Luftteilchen das Sonnenlicht streuen – und Blau am stärksten.</em><br>
+Jetzt zum Thema Diffusion.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>2-Shot</strong> – <em>Zwei Beispiele schaffen Klarheit</em></p>
+<p>Zwei Beispiele zeigen ein Muster. Die KI erkennt: „Ah, so sehen die Antworten <strong>konsequent</strong> aus!“</p>
+<p>🌟 Perfekt für:</p>
+<ul>
+<li>Aufgaben mit festen Regeln<br>
+</li>
+<li>Formatvorgaben<br>
+</li>
+<li>wiederholbare Strukturen</li>
+</ul>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Hier sind zwei Beispiele für kurze Fachtext-Zusammenfassungen:<br>
+<strong>Beispiel 1:</strong> …<br>
+<strong>Beispiel 2:</strong> …<br>
+Schreibe jetzt eine Zusammenfassung im gleichen Muster über XYZ.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Multi-Shot</strong> – <em>Du bringst der KI einen Stil wirklich bei</em></p>
+<p>Mehrere Beispiele (3–10) erzeugen einen Mini-Datensatz. Je mehr Beispiele, desto klarer erkennt das Modell das Muster.</p>
+<p>🌟 Perfekt für:</p>
+<ul>
+<li>Social-Media-Stile<br>
+</li>
+<li>Schreibstile<br>
+</li>
+<li>längere strukturierte Aufgaben<br>
+</li>
+<li>komplexe Formate (z. B. Lernkarten, Checks, Analysen)</li>
+</ul>
+<hr>
+</section>
+<section id="warum-beispiele-oft-besser-funktionieren-als-anweisungen" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="warum-beispiele-oft-besser-funktionieren-als-anweisungen"><span class="header-section-number">6.5</span> Warum Beispiele oft besser funktionieren als Anweisungen</h2>
+<p>Wenn du nur sagst:</p>
+<ul>
+<li>„Schreibe im TikTok-Stil.“<br>
+</li>
+<li>„Mach die Erklärung jugendlich.“<br>
+</li>
+<li>„Schreibe wie ein Experte.“</li>
+</ul>
+<p>Dann stellt sich die KI intern die Frage:</p>
+<p>„Welche von den Millionen möglichen Interpretationen wünscht die Person?“</p>
+<p>Aber wenn du ein Beispiel gibst, gibst du ihr:</p>
+<ul>
+<li><strong>Tonfall</strong><br>
+</li>
+<li><strong>Länge</strong><br>
+</li>
+<li><strong>Formulierungsmuster</strong><br>
+</li>
+<li><strong>Rhythmus</strong><br>
+</li>
+<li><strong>Level</strong></li>
+</ul>
+<p>Beispiele sind wie ein Shortcut zwischen deinem Kopf und der KI.</p>
+<hr>
+</section>
+<section id="beispiel-schule-hausaufgaben" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="beispiel-schule-hausaufgaben"><span class="header-section-number">6.6</span> Beispiel: Schule – Hausaufgaben</h2>
+<p>👉 Ohne Beispiel</p>
+<blockquote class="blockquote">
+<p>„Erkläre den Unterschied zwischen Mitose und Meiose.“</p>
+</blockquote>
+<p>→ KI erklärt, aber vielleicht zu ausführlich.</p>
+<p>👉 Mit Beispiel</p>
+<blockquote class="blockquote">
+<p>„Schreibe Erklärungen in folgendem Stil:<br>
+<em>Beispiel:</em><br>
+‚Osmose ist wie wenn Wasser durch eine Tür in einen Raum wandert, um dort die Konzentration auszugleichen.‘<br>
+Jetzt: Erkläre den Unterschied zwischen Mitose und Meiose.“</p>
+</blockquote>
+<p>→ Die KI erklärt verständlicher und bildhafter.</p>
+<hr>
+</section>
+<section id="beispiel-social-media-hook-schreiben" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="beispiel-social-media-hook-schreiben"><span class="header-section-number">6.7</span> Beispiel: Social Media – Hook schreiben</h2>
+<p>👉 Beispielvorgabe</p>
+<blockquote class="blockquote">
+<p>„Schreibe Hooks im folgenden Muster:<br>
+<em>Beispiel:</em> ‚Stop scrolling – das hier wird dein Gehirn sprengen…‘<br>
+Jetzt eine Hook zum Thema XY.“</p>
+</blockquote>
+<p>Die KI wird extrem präzise im Stil — weil sie ein Muster sieht.</p>
+<hr>
+</section>
+<section id="beispiel-lernen-zusammenfassungsstile" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="beispiel-lernen-zusammenfassungsstile"><span class="header-section-number">6.8</span> Beispiel: Lernen – Zusammenfassungsstile</h2>
+<p>👉 Beispielvorgabe</p>
+<blockquote class="blockquote">
+<p>„Schreibe Zusammenfassungen wie:<br>
+<em>Beispiel: ‚Kurz, klar, knapp: Der Begriff Osmose bedeutet…’</em><br>
+Jetzt Thema: Französische Revolution.“</p>
+</blockquote>
+<p>→ Die KI folgt dem exakten Stil.</p>
+<hr>
+</section>
+<section id="beispiel-coding-muster-für-fehlermeldungserklärungen" class="level2" data-number="6.9">
+<h2 data-number="6.9" class="anchored" data-anchor-id="beispiel-coding-muster-für-fehlermeldungserklärungen"><span class="header-section-number">6.9</span> Beispiel: Coding – Muster für Fehlermeldungserklärungen</h2>
+<p>👉 Beispiel</p>
+<blockquote class="blockquote">
+<p>„Erkläre Fehlermeldungen im folgenden Muster:<br>
+<em>Beispiel:</em><br>
+‚Fehler: NameError<br>
+Grund: Du hast eine Variable verwendet, die es nicht gibt.<br>
+Fix: Definiere die Variable vorher.‘<br>
+Jetzt erkläre den Fehler „TypeError: unsupported operand type(s)“.“</p>
+</blockquote>
+<p>→ Du bekommst strukturierte, einheitliche Antworten.</p>
+<hr>
+</section>
+<section id="mini-übung-zeige-der-ki-wie-es-geht" class="level2" data-number="6.10">
+<h2 data-number="6.10" class="anchored" data-anchor-id="mini-übung-zeige-der-ki-wie-es-geht"><span class="header-section-number">6.10</span> Mini-Übung: „Zeige der KI, wie es geht“</h2>
+<p>Verbessere diese drei Prompts, indem du ein Beispiel hinzufügst:</p>
+<ol type="1">
+<li>„Schreibe ein Motivationszitat.“<br>
+</li>
+<li>„Erkläre kurz, wie Wechselstrom funktioniert.“<br>
+</li>
+<li>„Gib mir ein Intro für ein YouTube-Video über Programmieren.“</li>
+</ol>
+<p>Überlege: Welches Beispiel würde der KI helfen, deinen Stil zu erkennen?</p>
+<hr>
+<p>👉 <strong>Zwischenfazit</strong></p>
+<p>Mit Beispielen steuerst du die KI wie ein Navigator.<br>
+Ohne Beispiele: <em>Die KI rät.</em><br>
+Mit Beispielen: <em>Die KI folgt deinem Weg.</em></p>
+<p>In den folgenden Abschnitten des Kapitels gehen wir tiefer:</p>
+<ul>
+<li>Wie du perfekte Beispiele auswählst<br>
+</li>
+<li>Wie du KI auf ein bestimmtes Format „trainierst“<br>
+</li>
+<li>Wie du Multi-Shot-Prompts baust<br>
+</li>
+<li>praktische Übungen</li>
+</ul>
+</section>
+<section id="wie-du-beispiele-in-der-praxis-einsetzt-ganz-ohne-komplizierte-theorie" class="level2" data-number="6.11">
+<h2 data-number="6.11" class="anchored" data-anchor-id="wie-du-beispiele-in-der-praxis-einsetzt-ganz-ohne-komplizierte-theorie"><span class="header-section-number">6.11</span> Wie du Beispiele in der Praxis einsetzt – ganz ohne komplizierte Theorie</h2>
+<p>Bisher hast du gelernt, dass KI nicht wie ein Mensch versteht, sondern Muster erkennt – und dass Beispiele für sie wie „Mini-Landkarten“ funktionieren. Jetzt gehen wir einen Schritt weiter: Wir schauen uns an, <strong>wie du diese Beispiele in echten Situationen nutzt</strong>, egal ob in der Schule, für Social Media, fürs Lernen oder fürs Programmieren.</p>
+<p>Der große Trick dabei ist: <strong>Du musst nicht viele Beispiele geben.</strong> Oft reicht eines. Manchmal brauchst du zwei oder drei, damit die KI wirklich genau weiß, wohin sie will. Aber du brauchst nie zehn oder zwanzig – das wäre Zeitverschwendung.</p>
+<p>Wenn du dieses Kapitel einmal verstanden hast, wirst du in der Lage sein, KI so zu steuern, wie ein Regisseur seine Schauspieler führt: nicht mit komplizierten Regeln, sondern mit <strong>Vormachen statt Erklären</strong>. Und das macht alles so unglaublich einfach.</p>
+<hr>
+</section>
+<section id="der-rote-faden-für-gute-beispiele" class="level2" data-number="6.12">
+<h2 data-number="6.12" class="anchored" data-anchor-id="der-rote-faden-für-gute-beispiele"><span class="header-section-number">6.12</span> Der „rote Faden“ für gute Beispiele</h2>
+<p>Damit deine Beispiele wirken, sollten sie drei Eigenschaften haben. Denk daran wie an eine kleine Checkliste:</p>
+<p><strong>1. Verständlich:</strong><br>
+Kurze Sätze, klare Struktur, kein unnötiger Kram.</p>
+<p><strong>2. Wiederholbar:</strong><br>
+Die KI muss erkennen können, wie dein Beispiel aufgebaut ist, damit sie es kopieren kann.</p>
+<p><strong>3. Übertragbar:</strong><br>
+Das Beispiel sollte nah genug an der Aufgabe sein, aber nicht komplett identisch.</p>
+<p>Beispiele sind wie Lego-Steine: Die KI baut daraus etwas Neues, aber mit dem gleichen Prinzip.</p>
+<hr>
+</section>
+<section id="shot-beispiele-ein-beispiel-ein-treffer" class="level2" data-number="6.13">
+<h2 data-number="6.13" class="anchored" data-anchor-id="shot-beispiele-ein-beispiel-ein-treffer"><span class="header-section-number">6.13</span> 1-Shot-Beispiele: Ein Beispiel, ein Treffer</h2>
+<p>Ein <strong>1-Shot-Beispiel</strong> bedeutet: Du zeigst der KI <strong>ein einziges gutes Beispiel</strong>, bevor du deine eigentliche Aufgabe stellst.</p>
+<p>Das ist perfekt für Aufgaben wie:</p>
+<ul>
+<li>Texte vereinfachen<br>
+</li>
+<li>Etwas erklären<br>
+</li>
+<li>Einen Tonfall vormachen<br>
+</li>
+<li>Etwas schreiben lassen „wie“ eine bestimmte Person<br>
+</li>
+<li>Kleine Probleme lösen</li>
+</ul>
+<p>👉 <strong>Beispiel: Erklärungen für Jüngere</strong></p>
+<p><strong>Dein Beispiel:</strong></p>
+<blockquote class="blockquote">
+<p>„Beispiel:<br>
+Erklärung für 10-Jährige: ‚Ein Akku speichert Energie, ähnlich wie ein Wasserballon Wasser speichert. Wenn du dein Smartphone benutzt, lässt du ein bisschen von dieser gespeicherten Energie heraus.‘“</p>
+</blockquote>
+<p><strong>Deine Anfrage:</strong></p>
+<blockquote class="blockquote">
+<p>„Jetzt erkläre mir bitte Quantenphysik für 10-Jährige im gleichen Stil.“</p>
+</blockquote>
+<p>Die KI hat damit alles, was sie braucht: Tonfall, Zielgruppe, Länge, Bildsprache.</p>
+<hr>
+</section>
+<section id="shot-beispiele-wenn-du-ein-muster-noch-klarer-zeigen-willst" class="level2" data-number="6.14">
+<h2 data-number="6.14" class="anchored" data-anchor-id="shot-beispiele-wenn-du-ein-muster-noch-klarer-zeigen-willst"><span class="header-section-number">6.14</span> 2-Shot-Beispiele: Wenn du ein Muster noch klarer zeigen willst</h2>
+<p>Beim <strong>2-Shot</strong> gibst du zwei Beispiele, um der KI klarere Grenzen zu setzen. Das ist nützlich, wenn:</p>
+<ul>
+<li>ein bestimmter Stil sehr wichtig ist<br>
+</li>
+<li>die Aufgabe etwas komplexer ist<br>
+</li>
+<li>du maximale Kontrolle über Struktur und Format willst</li>
+</ul>
+<p>👉 <strong>Beispiel: Instagram-Bildunterschriften</strong></p>
+<p><strong>Beispiel 1:</strong></p>
+<blockquote class="blockquote">
+<p>„Cute Post: Kurzer Satz, Emojis, freundlicher Tonfall:<br>
+‚Chilling mit meinem neuen Hoodie ☁️✨’“</p>
+</blockquote>
+<p><strong>Beispiel 2:</strong></p>
+<blockquote class="blockquote">
+<p>„Sportlicher Post: Klar, motivierend, 1 Satz + 1 motivierender Zusatz:<br>
+‚Heute Beine brennen lassen 💪🔥 – Schritt für Schritt!’“</p>
+</blockquote>
+<p><strong>Deine Anfrage:</strong></p>
+<blockquote class="blockquote">
+<p>„Schreibe nun eine Bildunterschrift für einen Skateboard-Post im gleichen zweistufigen Stil.“</p>
+</blockquote>
+<p>Hier erkennt die KI das Muster:<br>
+→ Kategorie benennen<br>
+→ kurzer Satz<br>
+→ passende Emojis<br>
+→ Motivations-Anhang nur bei sportlichen Themen</p>
+<p>Mit zwei Beispielen ist das extrem stabil.</p>
+<hr>
+</section>
+<section id="multi-shot-wenn-du-absolute-präzision-willst" class="level2" data-number="6.15">
+<h2 data-number="6.15" class="anchored" data-anchor-id="multi-shot-wenn-du-absolute-präzision-willst"><span class="header-section-number">6.15</span> Multi-Shot: Wenn du absolute Präzision willst</h2>
+<p>Multi-Shot (3 oder mehr Beispiele) brauchst du <strong>fast nie</strong>.</p>
+<p>Typische Fälle:</p>
+<ul>
+<li>Du baust eine große Podcast-Serie<br>
+</li>
+<li>Du willst, dass KI exakt wie deine Marke klingt<br>
+</li>
+<li>Du erstellst ein komplexes Lernformat<br>
+</li>
+<li>Du willst sehr präzisen Programmierstil vorgeben</li>
+</ul>
+<p>Mehr Beispiele = mehr Kontrolle, aber auch mehr Aufwand.</p>
+<p>👉 <strong>Beispiel: Lernkartenformat</strong></p>
+<p>Du gibst drei Beispiele für dein ideal aufgebautes Lernkartenformat.</p>
+<p>Danach sagst du:</p>
+<blockquote class="blockquote">
+<p>„Bitte erstelle jetzt 20 Lernkarten im gleichen Format für das Thema ‚Photosynthese‘.“</p>
+</blockquote>
+<p>Die KI folgt dann dem Muster deiner Beispiele – Struktur, Länge, Formatierung, Stil.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/6/ABB62.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 6.2: Beispiele zeigen – Struktur zurückbekommen</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="beispiele-für-das-lernen-schule-prüfungen-nachhilfe" class="level2" data-number="6.16">
+<h2 data-number="6.16" class="anchored" data-anchor-id="beispiele-für-das-lernen-schule-prüfungen-nachhilfe"><span class="header-section-number">6.16</span> Beispiele für das Lernen: Schule, Prüfungen &amp; Nachhilfe</h2>
+<p>Hier sind konkrete Vorlagen, die du direkt kopieren kannst.</p>
+<p>👉 <strong>1-Shot Beispiel: Geschichtszusammenfassung</strong></p>
+<blockquote class="blockquote">
+<p>„Beispiel-Zusammenfassung (kurz, 80 Wörter, klare Sprache):<br>
+‚Der Versailler Vertrag wurde 1919 nach dem Ersten Weltkrieg geschlossen. Er gab Deutschland die Schuld am Krieg, verlangte hohe Reparationszahlungen und schränkte das Militär stark ein. Viele Menschen in Deutschland empfanden den Vertrag als ungerecht. Das führte zu wirtschaftlichen Problemen und politischer Unzufriedenheit, die später den Aufstieg extremistischer Parteien begünstigte.‘</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Bitte fasse nun die Französische Revolution im gleichen Stil zusammen.“</p>
+</blockquote>
+<p>Die KI erkennt:<br>
+→ 80 Wörter<br>
+→ klare Sprache<br>
+→ neutrales Niveau<br>
+→ keine komplizierten Begriffe</p>
+<hr>
+<p>👉 <strong>2-Shot Beispiel: Mathematik erklären (ohne rechnen)!</strong></p>
+<blockquote class="blockquote">
+<p><strong>Beispiel 1:</strong><br>
+„Erkläre so, dass ich es mir bildlich vorstellen kann.<br>
+‚Brüche sind wie Pizzastücke: Je mehr Stücke, desto kleiner jedes einzelne.‘“</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Beispiel 2:</strong><br>
+„Erkläre mit einem realen Beispiel.<br>
+‚Wahrscheinlichkeit ist wie Würfeln – du schaust, wie oft ein bestimmtes Ergebnis passieren kann.‘“</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Deine Aufgabe:</strong><br>
+„Erkläre mir bitte den Dreisatz im gleichen anschaulichen Stil.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Mini-Übung: Verbessere die Beispiele</strong></p>
+<p>Hier drei schlechte Versuche – verbessere sie mit dem In-Context-Prinzip:</p>
+<ul>
+<li>„Erkläre bitte Geschichte einfach.“<br>
+</li>
+<li>„Mach meine Mathehausaufgaben leichter.“<br>
+</li>
+<li>„Fasse den Text kurz.“</li>
+</ul>
+<p>Du kannst daraus gute <strong>Beispiel-Prompts</strong> machen:</p>
+<ul>
+<li>„Beispiel: kurze Erklärung für 12-Jährige … Jetzt erkläre bitte X im gleichen Stil.“<br>
+</li>
+<li>„Beispiel: erst Problem, dann Lösung … Jetzt löse bitte folgende Aufgabe:“<br>
+</li>
+<li>„Beispiel: 3 Sätze + 1 Fazit … Jetzt fasse bitte diesen Text so zusammen:“</li>
+</ul>
+<p>Das ist der Kern des In-Context-Learnings: Du formst die Antwort, indem du die Form vormachst.</p>
+<hr>
+</section>
+<section id="beispiele-für-social-media-der-ki-zeigen-wie-du-klingst" class="level2" data-number="6.17">
+<h2 data-number="6.17" class="anchored" data-anchor-id="beispiele-für-social-media-der-ki-zeigen-wie-du-klingst"><span class="header-section-number">6.17</span> Beispiele für Social Media: Der KI zeigen, wie du klingst</h2>
+<p>Viele junge Menschen wollen:</p>
+<ul>
+<li>kreativer werden<br>
+</li>
+<li>schneller posten<br>
+</li>
+<li>ihre eigene „Stimme“ entwickeln<br>
+</li>
+<li>Posts wiedererkennbar machen</li>
+</ul>
+<p>Das geht mit In-Context perfekt.</p>
+<p>👉 <strong>Beispiel: Dein persönlicher Stil</strong></p>
+<blockquote class="blockquote">
+<p>„Beispiel 1 – Humorvoll:<br>
+‚Ich habe heute gelernt, dass Kaffee nicht meine Probleme löst. Aber er hilft mir wenigstens zuzugucken, wie sie größer werden. 😅☕‘</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Beispiel 2 – Motivational:<br>
+‚Auch kleine Schritte bringen dich voran. Wichtig ist nur, dass du gehst. ✨🚶‘</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Bitte schreibe jetzt eine Bildunterschrift für meinen Lern-Account im gleichen Mischstil: humorvoll + motivierend.“</p>
+</blockquote>
+<p>Die KI erkennt Tonfall, Satzlänge, Mischung, Emojis – und kopiert exakt das Muster.</p>
+<hr>
+</section>
+<section id="beispiele-fürs-lernen-programmieren-coding" class="level2" data-number="6.18">
+<h2 data-number="6.18" class="anchored" data-anchor-id="beispiele-fürs-lernen-programmieren-coding"><span class="header-section-number">6.18</span> Beispiele fürs Lernen: Programmieren (Coding)</h2>
+<p>Wenn du programmierst, sind Beispiele wie eine Vorlage oder ein Template. Du zeigst der KI, wie du etwas haben willst, und sie baut dir genau das nach.</p>
+<section id="beispiel-python-lernformat" class="level3" data-number="6.18.1">
+<h3 data-number="6.18.1" class="anchored" data-anchor-id="beispiel-python-lernformat"><span class="header-section-number">6.18.1</span> <strong>Beispiel: Python-Lernformat</strong></h3>
+<blockquote class="blockquote">
+<p>„Beispiel-Erklärung:<br>
+<strong>Titel:</strong> Was macht eine Variable?<br>
+<strong>Kurz:</strong> Eine Variable ist wie eine beschriftete Box, in der du einen Wert speicherst.<br>
+<strong>Code:</strong> x = 10<br>
+<strong>Warum wichtig:</strong> Du brauchst Variablen, um Werte zu speichern, die du später benutzen willst.“</p>
+</blockquote>
+<p><strong>Deine Anfrage:</strong></p>
+<blockquote class="blockquote">
+<p>„Bitte erkläre mir jetzt Schleifen im gleichen Format.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Beispiel: Fehler erklären</strong></p>
+<blockquote class="blockquote">
+<p>„Beispiel:<br>
+<strong>Fehler:</strong> NameError<br>
+<strong>Warum passiert das?</strong><br>
+Die Variable wurde benutzt, bevor sie erstellt wurde.<br>
+<strong>Wie behebe ich das?</strong><br>
+Definiere sie vorher.“</p>
+</blockquote>
+<p><strong>Deine Anfrage:</strong></p>
+<blockquote class="blockquote">
+<p>„Erkläre bitte einen SyntaxError im gleichen Format.“</p>
+</blockquote>
+<p>Hier lernt KI durch Muster:<br>
+→ Fehlertitel<br>
+→ Warum<br>
+→ Lösung</p>
+<p>Du musst nie wieder kryptische Fehlermeldungen googeln.</p>
+<hr>
+</section>
+</section>
+<section id="tipps-mit-denen-deine-beispiele-sofort-besser-werden" class="level2" data-number="6.19">
+<h2 data-number="6.19" class="anchored" data-anchor-id="tipps-mit-denen-deine-beispiele-sofort-besser-werden"><span class="header-section-number">6.19</span> Tipps, mit denen deine Beispiele sofort besser werden</h2>
+<p>Hier einige Faustregeln, die du ab sofort immer anwenden kannst:</p>
+<hr>
+<p><strong>⭐ Regel 1: Verwende kurze Abschnitte</strong></p>
+<p>Die KI erkennt Muster besser, wenn sie klar getrennt sind.</p>
+<hr>
+<p><strong>⭐ Regel 2: Markiere dein Beispiel deutlich</strong></p>
+<p>Nutze:</p>
+<ul>
+<li>„Beispiel:“<br>
+</li>
+<li>„Sample:“<br>
+</li>
+<li>„Vorlage:“<br>
+</li>
+<li>„Struktur:“</li>
+</ul>
+<p>Nur ein Wort – und alles wird doppelt so gut.</p>
+<hr>
+<p><strong>⭐ Regel 3: Stelle danach immer eine klare Aufgabe</strong></p>
+<p>Nach dem Beispiel sagst du:</p>
+<p>„Nun mache das Gleiche für …“</p>
+<p>Das ist der Schlüssel.</p>
+<hr>
+<p><strong>⭐ Regel 4: Beispiele müssen nicht perfekt sein</strong></p>
+<p>KI versteht auch unvollkommene Beispiele – es reicht, wenn das Muster klar ist.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/6/ABB63.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 6.3: Klare Prompts führen zu klaren Antworten</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="kleine-abschlussübung-du-wirst-selbst-zum-prompt-coach" class="level2" data-number="6.20">
+<h2 data-number="6.20" class="anchored" data-anchor-id="kleine-abschlussübung-du-wirst-selbst-zum-prompt-coach"><span class="header-section-number">6.20</span> Kleine Abschlussübung: Du wirst selbst zum Prompt-Coach</h2>
+<p>Hier kannst du sofort üben.</p>
+<hr>
+<p>👉 <strong>Aufgabe 1: Schule</strong></p>
+<p>Schlechter Prompt:</p>
+<blockquote class="blockquote">
+<p>„Erkläre mir den Klimawandel einfach.“</p>
+</blockquote>
+<p>Verbessere ihn:</p>
+<blockquote class="blockquote">
+<p>„Beispiel:<br>
+Erklärung für 12-Jährige, 4 Sätze, ein Vergleich aus dem Alltag.<br>
+‚Ein Treibhaus speichert Wärme, damit Pflanzen wachsen können. Die Erde funktioniert ähnlich, aber gerade wird sie zu warm, weil zu viel CO₂ in der Luft ist. Dadurch bleibt mehr Wärme gefangen. Deshalb verändert sich unser Klima.‘<br>
+Erkläre jetzt bitte den Treibhauseffekt im gleichen Stil.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Aufgabe 2: Social Media</strong></p>
+<p>Schlechter Prompt:</p>
+<blockquote class="blockquote">
+<p>„Schreibe eine coole Caption.“</p>
+</blockquote>
+<p>Verbessere ihn:</p>
+<blockquote class="blockquote">
+<p>„Beispiel:<br>
+‚Feeling good, doing my thing ✨🔥‘<br>
+Bitte erstelle eine ähnlich kurze, positive Caption für ein Foto auf dem ich in der Bibliothek lerne.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Aufgabe 3: Coding</strong></p>
+<p>Schlechter Prompt:</p>
+<blockquote class="blockquote">
+<p>„Erkläre mir Listen in Python.“</p>
+</blockquote>
+<p>Verbessere ihn:</p>
+<blockquote class="blockquote">
+<p>„Beispiel-Format:<br>
+<strong>Titel</strong><br>
+<strong>Kurz erklärt</strong><br>
+<strong>Code-Beispiel</strong><br>
+<strong>Warum wichtig</strong><br>
+Erkläre jetzt bitte das Konzept einer Python-Liste im gleichen Format.“</p>
+</blockquote>
+<hr>
+</section>
+<section id="kurze-zusammenfassung-was-du-aus-diesem-kapitel-mitnehmen-solltest" class="level2" data-number="6.21">
+<h2 data-number="6.21" class="anchored" data-anchor-id="kurze-zusammenfassung-was-du-aus-diesem-kapitel-mitnehmen-solltest"><span class="header-section-number">6.21</span> Kurze Zusammenfassung: Was du aus diesem Kapitel mitnehmen solltest</h2>
+<pre><code>👉 Beispiele sind wie kleine Spickzettel für KI.  
+👉 KI kopiert Muster – je klarer das Muster, desto besser das Ergebnis.  
+👉 Mit 1-, 2- oder Multi-Shot kannst du steuern, wie genau die KI dir folgen soll.  
+👉 Egal ob Schule, Social Media oder Coding: Mit Beispielen wirst du besser verstanden.  
+👉 Ohne Theorie, ohne Mathe – nur durch gutes Vormachen.  </code></pre>
+<hr>
+</section>
+<section id="ausblick-auf-kapitel-7" class="level2" data-number="6.22">
+<h2 data-number="6.22" class="anchored" data-anchor-id="ausblick-auf-kapitel-7"><span class="header-section-number">6.22</span> Ausblick auf Kapitel 7</h2>
+<p>Im nächsten Kapitel geht es um <strong>Chain-of-Thought</strong> – also darum, wie du KI dazu bringst, <strong>Schritt für Schritt zu denken</strong>, statt einfach nur schnelle Antworten auszugeben.</p>
+<p>Du wirst lernen:</p>
+<p>👉 warum „Lautes Denken“ der KI bessere Ergebnisse bringt<br>
+👉 wie du komplexe Probleme in einzelne Schritte zerlegst<br>
+👉 wie du KI dazu bringst, logisch statt impulsiv zu antworten<br>
+👉 wie Chain-of-Thought dir beim Lernen, Rechnen, Schreiben und Planen hilft</p>
+<p>Kapitel 7 zeigt dir, wie KI <strong>genau so denkt, wie du es brauchst – Schritt für Schritt.</strong></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./kapitel5.html" class="pagination-link" aria-label="Klare Anweisungen, klare Ergebnisse: Instruction Prompting">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Klare Anweisungen, klare Ergebnisse: Instruction Prompting</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./kapitel7.html" class="pagination-link" aria-label="Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

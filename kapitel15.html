@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>15&nbsp; Recherche, Faktencheck &amp; Wissenschaft – Effektives Prompt Engineering – leicht erklärt.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./kapitel16.html" rel="next">
+<link href="./kapitel14.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-74c88ba48ad0bebf983f0ffd06dd1671.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./kapitel15.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Recherche, Faktencheck &amp; Wissenschaft</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Effektives Prompt Engineering – leicht erklärt.</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Die neue Superkraft: Warum KI dein Leben verändern kann</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Wie KI denkt (aber nicht wirklich denkt)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Deine ersten Prompts: Schnell Erfolge sehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Die Bausteine eines perfekten Prompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Klare Anweisungen, klare Ergebnisse: Instruction Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Beispiele wirken Wunder: In-Context Learning erklärt</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Lass die KI erst denken: Chain-of-Thought für Einsteiger</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Kreativer arbeiten: Schreib-, Ideen- und Lernprompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fehler finden &amp; verbessern: Output Verification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regeln! Grammatik, Struktur und Format steuern</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Schule &amp; Studium: KI als Lern-Turbo</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Kreativprojekte: KI für Texte, Videos &amp; Social Media</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Coding mit KI: Dein persönlicher Mini-Programmiercoach</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel15.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Recherche, Faktencheck &amp; Wissenschaft</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Produktiver Alltag mit KI: Die besten Life-Hacks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Fair, sicher &amp; verantwortungsvoll mit KI umgehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Der KI-Masterplan: Dein persönliches Prompt-Portfolio</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#die-neue-rolle-der-ki-nicht-wissensmaschine-sondern-denkpartner" id="toc-die-neue-rolle-der-ki-nicht-wissensmaschine-sondern-denkpartner" class="nav-link active" data-scroll-target="#die-neue-rolle-der-ki-nicht-wissensmaschine-sondern-denkpartner"><span class="header-section-number">15.1</span> Die neue Rolle der KI: Nicht Wissensmaschine, sondern Denkpartner</a></li>
+  <li><a href="#wie-du-ki-als-rechercheassistent-verwendest-statt-als-faktengeber" id="toc-wie-du-ki-als-rechercheassistent-verwendest-statt-als-faktengeber" class="nav-link" data-scroll-target="#wie-du-ki-als-rechercheassistent-verwendest-statt-als-faktengeber"><span class="header-section-number">15.2</span> Wie du KI als Rechercheassistent verwendest (statt als Faktengeber)</a></li>
+  <li><a href="#warum-du-quellen-immer-hinterfragen-musst-selbst-wenn-ki-hilft" id="toc-warum-du-quellen-immer-hinterfragen-musst-selbst-wenn-ki-hilft" class="nav-link" data-scroll-target="#warum-du-quellen-immer-hinterfragen-musst-selbst-wenn-ki-hilft"><span class="header-section-number">15.3</span> Warum du Quellen immer hinterfragen musst (selbst wenn KI hilft)</a></li>
+  <li><a href="#die-5-fragen-methode-für-wissenschaftliches-denken" id="toc-die-5-fragen-methode-für-wissenschaftliches-denken" class="nav-link" data-scroll-target="#die-5-fragen-methode-für-wissenschaftliches-denken"><span class="header-section-number">15.4</span> Die „5-Fragen-Methode“ für wissenschaftliches Denken</a></li>
+  <li><a href="#fake-informationen-schnell-erkennen" id="toc-fake-informationen-schnell-erkennen" class="nav-link" data-scroll-target="#fake-informationen-schnell-erkennen"><span class="header-section-number">15.5</span> Fake-Informationen schnell erkennen</a></li>
+  <li><a href="#tools-denkmodelle-strategien-für-zuverlässige-recherche" id="toc-tools-denkmodelle-strategien-für-zuverlässige-recherche" class="nav-link" data-scroll-target="#tools-denkmodelle-strategien-für-zuverlässige-recherche"><span class="header-section-number">15.6</span> Tools, Denkmodelle &amp; Strategien für zuverlässige Recherche</a></li>
+  <li><a href="#mini-übung-werde-selbst-zum-faktenprüfer" id="toc-mini-übung-werde-selbst-zum-faktenprüfer" class="nav-link" data-scroll-target="#mini-übung-werde-selbst-zum-faktenprüfer"><span class="header-section-number">15.7</span> Mini-Übung: Werde selbst zum Faktenprüfer</a></li>
+  <li><a href="#ki-als-detective-mehrstufige-prüfmethoden" id="toc-ki-als-detective-mehrstufige-prüfmethoden" class="nav-link" data-scroll-target="#ki-als-detective-mehrstufige-prüfmethoden"><span class="header-section-number">15.8</span> KI als Detective: Mehrstufige Prüfmethoden</a></li>
+  <li><a href="#die-ki-als-sparringspartner-für-kritisches-denken" id="toc-die-ki-als-sparringspartner-für-kritisches-denken" class="nav-link" data-scroll-target="#die-ki-als-sparringspartner-für-kritisches-denken"><span class="header-section-number">15.9</span> Die KI als Sparringspartner für kritisches Denken</a></li>
+  <li><a href="#fake-informationen-erkennen-auch-wenn-sie-gut-klingen" id="toc-fake-informationen-erkennen-auch-wenn-sie-gut-klingen" class="nav-link" data-scroll-target="#fake-informationen-erkennen-auch-wenn-sie-gut-klingen"><span class="header-section-number">15.10</span> Fake-Informationen erkennen (auch wenn sie gut klingen)</a></li>
+  <li><a href="#tools-strategien-und-workflows-für-wissenschaftliche-aufgaben" id="toc-tools-strategien-und-workflows-für-wissenschaftliche-aufgaben" class="nav-link" data-scroll-target="#tools-strategien-und-workflows-für-wissenschaftliche-aufgaben"><span class="header-section-number">15.11</span> Tools, Strategien und Workflows für wissenschaftliche Aufgaben</a></li>
+  <li><a href="#wissenschaftliches-denken-lernen-ohne-mathe" id="toc-wissenschaftliches-denken-lernen-ohne-mathe" class="nav-link" data-scroll-target="#wissenschaftliches-denken-lernen-ohne-mathe"><span class="header-section-number">15.12</span> Wissenschaftliches Denken lernen – ohne Mathe</a></li>
+  <li><a href="#mini-übungen-dein-persönlicher-faktencheck-trainer" id="toc-mini-übungen-dein-persönlicher-faktencheck-trainer" class="nav-link" data-scroll-target="#mini-übungen-dein-persönlicher-faktencheck-trainer"><span class="header-section-number">15.13</span> Mini-Übungen: Dein persönlicher Faktencheck-Trainer</a></li>
+  <li><a href="#fazit-von-kapitel-15" id="toc-fazit-von-kapitel-15" class="nav-link" data-scroll-target="#fazit-von-kapitel-15"><span class="header-section-number">15.14</span> Fazit von Kapitel 15</a></li>
+  <li><a href="#ausblick-auf-kapitel-16" id="toc-ausblick-auf-kapitel-16" class="nav-link" data-scroll-target="#ausblick-auf-kapitel-16"><span class="header-section-number">15.15</span> Ausblick auf Kapitel 16</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Recherche, Faktencheck &amp; Wissenschaft</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><em>Wie KI dein smarter Recherchepartner wird</em></p>
+<hr>
+<p>Du hast inzwischen gelernt, wie du KI kreativ nutzt, wie sie dir beim Lernen hilft und wie du sogar kleine Coding-Projekte damit umsetzen kannst. Jetzt kommen wir in ein neues Terrain:</p>
+<pre><code>👉 Wissen, Recherche, Wissenschaft</code></pre>
+<p>Und hier wird es erst richtig spannend.</p>
+<p>Denn KI kann im Jahr 2026 so viel mehr, als nur Texte schreiben und Ideen liefern. Sie kann dir auch helfen, Informationen aufzubereiten, komplexe Themen zu erklären, Quellen zu prüfen und bessere Entscheidungen zu treffen – <strong>wenn du weißt, wie du sie richtig einsetzt</strong>.</p>
+<p>Doch gleichzeitig ist dies der Bereich, in dem Nutzer am stärksten Fehler machen. Warum? Weil KI sprachlich sehr überzeugend klingt – auch dann, wenn sie etwas Falsches sagt.</p>
+<p>In diesem Kapitel zeige ich dir:</p>
+<p>👉 wie du KI zu deinem persönlichen Rechercheassistenten machst,<br>
+👉 wie du Quellen richtig hinterfragst,<br>
+👉 wie du Fake-Informationen erkennst,<br>
+👉 und welche Tools, Denkmodelle und Strategien dich wirklich weiterbringen.</p>
+<p>Du brauchst dafür kein Vorwissen – nur Neugier.</p>
+<hr>
+<section id="die-neue-rolle-der-ki-nicht-wissensmaschine-sondern-denkpartner" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="die-neue-rolle-der-ki-nicht-wissensmaschine-sondern-denkpartner"><span class="header-section-number">15.1</span> Die neue Rolle der KI: Nicht Wissensmaschine, sondern Denkpartner</h2>
+<p>Vielleicht denkst du:<br>
+„Aber KI weiß doch alles, oder?“</p>
+<p>Nein. Und das ist die wichtigste Grundlage für professionelles Recherchieren.</p>
+<p>KI ist <strong>kein Lexikon</strong>, kein Wikipedia-Ersatz, kein allwissendes Archiv.</p>
+<p>Sie ist ein <strong>Wahrscheinlichkeitsmodell</strong>, das Muster aus riesigen Textmengen gelernt hat.<br>
+Das bedeutet:</p>
+<ul>
+<li>KI ist super darin, dir <strong>Informationen zu erklären</strong>.<br>
+</li>
+<li>KI kann dir <strong>Themen ordnen und strukturieren</strong>.<br>
+</li>
+<li>KI kann dir helfen zu verstehen, <strong>wo du weiter recherchieren musst</strong>.<br>
+</li>
+<li>KI kann dir sogar zeigen, <strong>welche Fragen du noch nicht gestellt hast</strong>.</li>
+</ul>
+<p>Aber:</p>
+<p>➡️ <strong>KI weiß nicht, ob eine Information wahr ist.</strong><br>
+➡️ <strong>KI überprüft Fakten nicht automatisch.</strong><br>
+➡️ <strong>KI kann Fehler machen – und klingt dabei absolut überzeugt.</strong></p>
+<p>Deshalb behandeln wir KI ab jetzt nicht mehr als „Antwortmaschine“, sondern als das, was sie tatsächlich ist:</p>
+<p>🔍 <strong>Ein Denkpartner, der dir hilft zu verstehen – aber nicht für dich entscheidet.</strong></p>
+<hr>
+</section>
+<section id="wie-du-ki-als-rechercheassistent-verwendest-statt-als-faktengeber" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="wie-du-ki-als-rechercheassistent-verwendest-statt-als-faktengeber"><span class="header-section-number">15.2</span> Wie du KI als Rechercheassistent verwendest (statt als Faktengeber)</h2>
+<p>Wenn du KI als Recherchetool nutzt, verändert sich deine Rolle.<br>
+Du bist <strong>Redakteur</strong>. <strong>Detektiv</strong>. <strong>Wissenschaftler</strong>.</p>
+<p>KI liefert dir den Rohstoff, aber du prüfst die Echtheit.</p>
+<p>Hier ist ein typischer Workflow, der dir in Schule, Studium und Alltag massiv Zeit spart.</p>
+<hr>
+<p>👉 <strong>Schritt 1: Thema grob klären lassen (Überblick)</strong></p>
+<p>Stell Fragen wie:</p>
+<blockquote class="blockquote">
+<p>„Erkläre mir bitte das Thema <em>XYZ</em> wie einem Anfänger und liste die wichtigsten Unterthemen auf.“</p>
+</blockquote>
+<p>Damit baust du ein erstes mentales Gerüst auf.</p>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Erkläre mir das Thema <em>Quantencomputer</em> leicht verständlich und liste die 7 wichtigsten Teilfragen auf, die man kennen sollte.“</p>
+</blockquote>
+<p>KI erkennt Muster – und hilft dir, den Anfang zu finden.</p>
+<hr>
+<p>👉 <strong>Schritt 2: Unbekanntes sichtbar machen</strong></p>
+<p>Eine extrem starke Frage lautet:</p>
+<blockquote class="blockquote">
+<p>„Welche Begriffe, Modelle oder Konzepte sollte ich kennen, um <em>XYZ</em> zu verstehen?“</p>
+</blockquote>
+<p>KI versucht dann nicht, Fakten zu erfinden, sondern strukturiert dein Lernen.</p>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>„Welche Grundbegriffe sollte ich für das Thema <em>Klimadatenanalyse</em> kennen?“</p>
+</blockquote>
+<p>Du arbeitest damit wie ein Profi:<br>
+Du klärst zuerst <em>was</em> wichtig ist – und nicht nur <em>was KI weiß</em>.</p>
+<hr>
+<p>👉 <strong>Schritt 3: Perspektiven abgleichen</strong></p>
+<p>Statt eine einzelne KI-Antwort zu nehmen, mach folgendes:</p>
+<blockquote class="blockquote">
+<p>„Gib mir drei unterschiedliche Sichtweisen auf das Thema <em>XYZ</em> und erkläre jeweils, warum diese Perspektive existiert.“</p>
+</blockquote>
+<p>Warum das so gut funktioniert:</p>
+<ul>
+<li>KI halluziniert weniger, wenn sie nicht „die eine Wahrheit“ finden muss.<br>
+</li>
+<li>Du bekommst ein umfassenderes Bild.<br>
+</li>
+<li>Du erkennst sofort, wo die Kontroversen liegen.</li>
+</ul>
+<p>Das ist echtes wissenschaftliches Denken.</p>
+<hr>
+<p>👉 <strong>Schritt 4: KI nach Quellen suchen lassen</strong></p>
+<p>Hier kommt einer der größten Mindshifts:</p>
+<pre><code>KI ist nicht gut darin, Quellen korrekt zu zitieren – 
+aber extrem gut darin, dir zu zeigen, *wo* du suchen musst.</code></pre>
+<p>Frag KI also nicht:</p>
+<blockquote class="blockquote">
+<p>„Gib mir eine Quelle.“</p>
+</blockquote>
+<p>Sondern:</p>
+<blockquote class="blockquote">
+<p>„Welche Organisationen, Institute oder Datenbanken sind für das Thema <em>XYZ</em> relevant?“</p>
+</blockquote>
+<p>Oder:</p>
+<blockquote class="blockquote">
+<p>„Welche Suchbegriffe sollte ich auf Google Scholar eingeben, um gute wissenschaftliche Quellen zu finden?“</p>
+</blockquote>
+<p>So nutzt du KI wie einen Recherche-Coach – nicht wie eine Bibliothek.</p>
+<hr>
+<p>👉 <strong>Schritt 5: Ergebnisse kritisch prüfen</strong></p>
+<p>Erst hier kommt deine menschliche Stärke ins Spiel:<br>
+Urteilsfähigkeit.</p>
+<p>Wir sprechen später noch ausführlich darüber, wie man Fake-Informationen erkennt.<br>
+Aber schon jetzt kannst du eine Frage einführen, die praktisch Pflicht wird:</p>
+<blockquote class="blockquote">
+<p>„Welche Unsicherheiten oder offenen Fragen gibt es zu diesem Thema?“</p>
+</blockquote>
+<p>Oder:</p>
+<blockquote class="blockquote">
+<p>„Wo könnten in deinen Antworten Fehler oder Wissenslücken liegen?“</p>
+</blockquote>
+<p>Diese Meta-Fragen reduzieren Halluzinationen massiv.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15/ABB151.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 15.1: Gemeinsam Wissen entdecken – mit KI als Forschungsbegleiter</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="warum-du-quellen-immer-hinterfragen-musst-selbst-wenn-ki-hilft" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="warum-du-quellen-immer-hinterfragen-musst-selbst-wenn-ki-hilft"><span class="header-section-number">15.3</span> Warum du Quellen immer hinterfragen musst (selbst wenn KI hilft)</h2>
+<p>Die wichtigste Fähigkeit der Zukunft ist nicht Wissen – sondern <strong>Wissen prüfen</strong>.</p>
+<p>Wenn du KI verwendest, musst du drei Dinge im Blick behalten:</p>
+<p>👉 <strong>(1) KI kann richtige Dinge falsch erklären.</strong></p>
+<p>Beispiel:<br>
+Die KI kennt das Konzept, mischt aber Details.</p>
+<p>👉 <strong>(2) KI kann falsche Dinge richtig klingen lassen.</strong></p>
+<p>Das nennt man „Halluzinationen“. Aber besser ist der Begriff:<br>
+➡️ <strong>Überzeugende Fehler</strong></p>
+<p>👉 <strong>(3) KI kann ursprüngliche Quellen nicht im Wortlaut abrufen.</strong></p>
+<p>Sie fasst Muster zusammen – nicht Dokumente.</p>
+<p>Daher trainieren wir jetzt systematisches Hinterfragen.</p>
+<hr>
+</section>
+<section id="die-5-fragen-methode-für-wissenschaftliches-denken" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="die-5-fragen-methode-für-wissenschaftliches-denken"><span class="header-section-number">15.4</span> Die „5-Fragen-Methode“ für wissenschaftliches Denken</h2>
+<p>Stell KI <strong>nicht</strong> die Frage:</p>
+<blockquote class="blockquote">
+<p>„Ist das richtig?“</p>
+</blockquote>
+<p>Stell stattdessen diese fünf:</p>
+<ol type="1">
+<li><p><strong>„Woher stammt dieses Wissen typischerweise?“</strong><br>
+(z. B. Physik-Lehrbücher, WHO-Daten, EU-Statistiken)</p></li>
+<li><p><strong>„Wie sicher bist du dir und warum?“</strong><br>
+-&gt; KI schätzt Unsicherheit besser als Wahrheit.</p></li>
+<li><p><strong>„Welche Fachbegriffe oder Modelle sind relevant?“</strong><br>
+-&gt; Du erkennst, wie tief das Thema geht.</p></li>
+<li><p><strong>„Welche alternativen Erklärungen gibt es?“</strong><br>
+-&gt; Wissenschaft = Vergleich, nicht Bestätigung.</p></li>
+<li><p><strong>„Wo finde ich zuverlässige Primärquellen?“</strong><br>
+-&gt; Du bekommst Datenbanken statt erfundener Zitate.</p></li>
+</ol>
+<p>Nutze KI also wie ein Coach, der dich auf die richtige Spur bringt.</p>
+<hr>
+</section>
+<section id="fake-informationen-schnell-erkennen" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="fake-informationen-schnell-erkennen"><span class="header-section-number">15.5</span> Fake-Informationen schnell erkennen</h2>
+<p>Hier sind vier typische KI-Fehler, die du sofort entlarven kannst.</p>
+<hr>
+<p>👉 <strong>Fehler 1: „Zu glatt, zu perfekt“</strong></p>
+<p>Wenn etwas wie Marketing klingt, ist es meistens kein wissenschaftlicher Fakt. Frag dann:</p>
+<blockquote class="blockquote">
+<p>„Welche Kritikpunkte gibt es daran?“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Fehler 2: „Sehr kleine Details erklärt, aber große Grundlagen fehlen“</strong></p>
+<p>Das passiert, wenn KI rät.<br>
+Lösung:</p>
+<blockquote class="blockquote">
+<p>„Erkläre das bitte zuerst in sehr einfachen Grundprinzipien.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Fehler 3: „Fachbegriffe erscheinen, die nicht existieren“</strong></p>
+<p>Dann sag:</p>
+<blockquote class="blockquote">
+<p>„Gib mir Beispiele aus echten wissenschaftlichen Quellen.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Fehler 4: „Komplexe Zahlen, aber ohne Referenzen“</strong></p>
+<p>Zahlen ohne Quelle = Warnsignal.</p>
+<p>Frag:</p>
+<blockquote class="blockquote">
+<p>„Nenne bitte die Art der Quelle, aus der diese Zahl typischerweise stammt (z. B. WHO, OECD, IMF).“</p>
+</blockquote>
+</section>
+<section id="tools-denkmodelle-strategien-für-zuverlässige-recherche" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="tools-denkmodelle-strategien-für-zuverlässige-recherche"><span class="header-section-number">15.6</span> Tools, Denkmodelle &amp; Strategien für zuverlässige Recherche</h2>
+<p>Hier erhältst du ein Toolkit, mit dem du jede KI – egal welches Modell – sicher und effektiv nutzen kannst.</p>
+<hr>
+<p><strong>🔧 Tool 1: Die „Drei-Ebenen-Abfrage“</strong></p>
+<p>Immer dreistufig fragen:</p>
+<ol type="1">
+<li><strong>Überblick</strong><br>
+</li>
+<li><strong>Vertiefung</strong><br>
+</li>
+<li><strong>Kritische Bewertung</strong></li>
+</ol>
+<p>Dies verhindert fast alle Halluzinationen.</p>
+<hr>
+<p><strong>🔧 Tool 2: Die „Begriffe-ins-Licht-Methode“</strong></p>
+<p>Bitten:</p>
+<blockquote class="blockquote">
+<p>„Liste die 10 wichtigsten Begriffe auf, die ich verstehen muss, um <em>XYZ</em> sauber zu erklären.“</p>
+</blockquote>
+<p>Dann arbeitet ihr jeden Begriff einzeln durch.</p>
+<hr>
+<p><strong>🔧 Tool 3: Die „Doppelperspektive“</strong></p>
+<p>Lass dir das Thema einmal erklären wie für:</p>
+<ul>
+<li>eine 12-jährige Person<br>
+</li>
+<li>und wie für eine Expertin</li>
+</ul>
+<p>Wenn beide Erklärungen übereinstimmen, ist die KI-Ausgabe stabil und wohl weniger spekulativ.</p>
+<hr>
+<p><strong>🔧 Tool 4: Der „Suchstrategie-Generator“</strong></p>
+<p>Stell die Frage:</p>
+<blockquote class="blockquote">
+<p>„Welche Suchbegriffe sollte ich in Google/Google Scholar/YouTube eingeben, um gute Quellen zu finden?“</p>
+</blockquote>
+<p>Die KI kann keine echten Quellen liefern – aber sie kann <em>exzellent</em> sagen, wonach du suchen musst.</p>
+<hr>
+<p><strong>🔧 Tool 5: Die „Red Team“-Frage</strong></p>
+<p>Diese Frage entlarvt schnell falsche Antworten:</p>
+<blockquote class="blockquote">
+<p>„Wenn du deine eigene Antwort kritisieren müsstest: Welche drei Schwachstellen würdest du finden?“</p>
+</blockquote>
+<p>Die KI prüft sich hier selbst – ein mächtiger Trick.</p>
+<hr>
+</section>
+<section id="mini-übung-werde-selbst-zum-faktenprüfer" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="mini-übung-werde-selbst-zum-faktenprüfer"><span class="header-section-number">15.7</span> Mini-Übung: Werde selbst zum Faktenprüfer</h2>
+<p>Wähle ein Thema, zum Beispiel:</p>
+<ul>
+<li>Ernährung<br>
+</li>
+<li>Geschichte<br>
+</li>
+<li>Klimawandel<br>
+</li>
+<li>Gaming-Technologie<br>
+</li>
+<li>Psychologie</li>
+</ul>
+<p>Dann:</p>
+<ol type="1">
+<li>Lass dir einen Überblick geben.<br>
+</li>
+<li>Frag nach Unsicherheiten.<br>
+</li>
+<li>Lass dir Suchbegriffe geben.<br>
+</li>
+<li>Prüfe zwei echte Quellen (Wikipedia + seriöse Organisation).<br>
+</li>
+<li>Passe deine Erkenntnisse an.</li>
+</ol>
+<p>Nach drei Durchgängen wirst du feststellen:</p>
+<p>➡️ <strong>Du denkst wissenschaftlicher – automatisch.</strong><br>
+➡️ <strong>Du erkennst Unsinn viel schneller.</strong><br>
+➡️ <strong>Du arbeitest wie ein Profi-Researcher.</strong></p>
+<hr>
+<p>Nachdem wir im ersten Teil dieses Kapitels die Grundlagen geklärt haben – wie KI dir beim Recherchieren hilft, wie du Quellen kritisch sortierst und warum KI nicht „die Wahrheit“, sondern Muster liefert – gehen wir jetzt noch tiefer in die Praxis.</p>
+<p>Dieser Teil zeigt dir:</p>
+<ul>
+<li>Wie du KI als <em>mehrstufiges</em> Recherchewerkzeug nutzt</li>
+<li>Wie du Faktenchecks automatisierst</li>
+<li>Wie du mit KI wissenschaftliche Argumente prüfst</li>
+<li>Wie du typische Fake-Informationen entlarvst</li>
+<li>Wie du mit Strategien, Tools und Denkmodellen sicherer wirst</li>
+</ul>
+<p>Du brauchst dafür kein wissenschaftliches Vorwissen. Nur Neugier.</p>
+<hr>
+</section>
+<section id="ki-als-detective-mehrstufige-prüfmethoden" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="ki-als-detective-mehrstufige-prüfmethoden"><span class="header-section-number">15.8</span> KI als Detective: Mehrstufige Prüfmethoden</h2>
+<p>Viele Menschen stellen KI eine Frage — und nehmen die erste Antwort einfach hin.<br>
+Das ist, als würdest du einem Fremden zufällig auf der Straße eine seriöse Wissensfrage stellen und seine spontane Antwort als endgültige Wahrheit betrachten.</p>
+<p><strong>Der Trick ist: KI muss arbeiten. Mehrstufig. Systematisch.</strong></p>
+<p>👉 <strong>Die 3-Schritte-Recherchematrix</strong></p>
+<p>Du kannst jedes Thema so prüfen:</p>
+<p>1️⃣ <strong>Erste Orientierung</strong></p>
+<blockquote class="blockquote">
+<p>„Gib mir einen Überblick über X.“</p>
+</blockquote>
+<p>2️⃣ <strong>Vertiefung</strong></p>
+<blockquote class="blockquote">
+<p>„Welche Begriffe, Theorien oder Streitpunkte sind wichtig?“</p>
+</blockquote>
+<p>3️⃣ <strong>Faktenprüfung</strong></p>
+<blockquote class="blockquote">
+<p>„Welche Aussagen über X sind umstritten? Welche sind gut belegt? Gib Quellen an.“</p>
+</blockquote>
+<p>Der Effekt:<br>
+Du zwingst die KI, ihre erste grobe Idee zu überarbeiten und genauer zu werden.</p>
+<p>👉 <strong>Prompts für echte Praxis</strong></p>
+<p><strong>Prompt:</strong></p>
+<blockquote class="blockquote">
+<p>„Erstelle eine Übersicht über das Thema <em>Mikroplastik im Trinkwasser</em>. Markiere, welche Fakten gut belegt sind, welche umstritten sind und welche oft falsch dargestellt werden. Nenne typische Missverständnisse.“</p>
+</blockquote>
+<p><strong>Prompt:</strong></p>
+<blockquote class="blockquote">
+<p>„Welche Quellen oder Studien zu <em>Smartphone-Nutzung und Schlafqualität</em> gelten als zuverlässig? Woran erkennt man das?“</p>
+</blockquote>
+<p>Du wirst merken:<br>
+Die KI schärft ihren Ton, wenn du nach Belegen fragst.</p>
+<hr>
+</section>
+<section id="die-ki-als-sparringspartner-für-kritisches-denken" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="die-ki-als-sparringspartner-für-kritisches-denken"><span class="header-section-number">15.9</span> Die KI als Sparringspartner für kritisches Denken</h2>
+<p>KI ist nicht nur ein Wissenslieferant, sondern auch ein Trainer für Fragenstellen.</p>
+<p>👉 <strong>Der 5-Fragen-Test</strong></p>
+<p>Du kannst zu jeder Behauptung fünf Prüf-Fragen stellen:</p>
+<ol type="1">
+<li><p><strong>Wer behauptet das?</strong><br>
+Ein Experte? Ein Blog? Eine zufällige Person?</p></li>
+<li><p><strong>Worauf basiert es?</strong><br>
+Daten? Studien? Meinung? Hörensagen?</p></li>
+<li><p><strong>Ist die Aussage quantifizierbar?</strong><br>
+„Viele Menschen…“ ist schwach. „67 % der Jugendlichen…“ ist stark.</p></li>
+<li><p><strong>Welche Gegenmeinungen gibt es?</strong><br>
+Wenn niemand widerspricht, ist etwas faul.</p></li>
+<li><p><strong>Welche Motive könnten im Spiel sein?</strong><br>
+Marketing? Politik? Missverständnisse?</p></li>
+</ol>
+<p>👉 <strong>Wie du die KI diesen Test durchführen lässt</strong></p>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Prüfe die folgende Aussage mit dem 5-Fragen-Test für kritisches Denken:<br>
+<em>›Millennials lesen keine Bücher mehr.‹</em> Analysiere, welche Teile der Aussage überprüfbar sind und wo Manipulation möglich ist.“</p>
+</blockquote>
+<p>Du wirst überrascht sein, wie gut KI den Nebel aus Meinungen zerlegt.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15/ABB152.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 15.2: Der KI-Detektiv prüft jede Quelle – Schritt für Schritt auf Plausibilität</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="fake-informationen-erkennen-auch-wenn-sie-gut-klingen" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="fake-informationen-erkennen-auch-wenn-sie-gut-klingen"><span class="header-section-number">15.10</span> Fake-Informationen erkennen (auch wenn sie gut klingen)</h2>
+<p>Falschinformationen sind heute nicht immer plump.<br>
+Sie sind oft clever, emotional und realistisch formuliert.</p>
+<p>KI hilft dir, Muster zu entlarven.</p>
+<p>👉 <strong>Typische Warnsignale einer Fake-Info</strong></p>
+<ul>
+<li>Zu einfache Erklärungen („Es gibt nur einen Grund…“)<br>
+</li>
+<li>Extreme Formulierungen („immer“, „nie“, „alle“, „niemand“)<br>
+</li>
+<li>Emotionaler Druck („Du wirst schockiert sein…“)<br>
+</li>
+<li>Fehlende Quellen<br>
+</li>
+<li>Quellen, die wie Experten klingen, aber keine sind<br>
+</li>
+<li>Grafiken ohne Datengrundlage</li>
+</ul>
+<p>👉 <strong>Wie du KI zu deinem Anti-Fake-Filter machst</strong></p>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Analysiere die folgende Behauptung auf Manipulationstechniken und rhetorische Tricks. Erstelle eine Liste aller roten Flaggen:<br>
+<em>›Neue Studien beweisen, dass Schokolade das Immunsystem um 300 % stärkt.‹</em>“</p>
+</blockquote>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Was müsste ich überprüfen, bevor ich die Aussage <em>›Kaffee führt zu Höhenwachstum‹</em> glaube? Erstelle eine Checkliste.“</p>
+</blockquote>
+<p>Die KI zeigt dir:<br>
+Viele Fake-Infos verraten sich durch Stil, nicht Fakten.</p>
+<hr>
+</section>
+<section id="tools-strategien-und-workflows-für-wissenschaftliche-aufgaben" class="level2" data-number="15.11">
+<h2 data-number="15.11" class="anchored" data-anchor-id="tools-strategien-und-workflows-für-wissenschaftliche-aufgaben"><span class="header-section-number">15.11</span> Tools, Strategien und Workflows für wissenschaftliche Aufgaben</h2>
+<p>Wenn du für Schule, Studium oder Projekte arbeitest, ist KI ein turbo-starker Co-Pilot.</p>
+<p>Hier findest du den perfekten Workflow:</p>
+<hr>
+<p>👉 <strong>Workflow A: Der „Study-Scientist-Modus“ (für Referate, Hausarbeiten)</strong></p>
+<ol type="1">
+<li><p><strong>Begriff klären</strong><br>
+„Erkläre <em>Stichwort</em> in 3 Sätzen für Schüler.“</p></li>
+<li><p><strong>Vertiefung</strong><br>
+„Welche Konzepte oder Theorien gehören dazu?“</p></li>
+<li><p><strong>Kontroversen herausarbeiten</strong><br>
+„Welche Streitpunkte gibt es in der Forschung?“</p></li>
+<li><p><strong>Datenbasis prüfen</strong><br>
+„Welche Fakten gelten als gut belegt? Gib Begründungen.“</p></li>
+<li><p><strong>Gefahren der Fehlinterpretation</strong><br>
+„Welche Missverständnisse tauchen häufig auf?“</p></li>
+</ol>
+<p>Diese Struktur hilft, keine Wissenslücken zu übersehen.</p>
+<hr>
+<p>👉 <strong>Workflow B: Der „Double-Check-Modus“ (für Fakten)</strong></p>
+<ol type="1">
+<li>KI liefert Info<br>
+</li>
+<li>KI erklärt mögliche Fehler<br>
+</li>
+<li>KI prüft die Info erneut (mit anderem Prompt)<br>
+</li>
+<li>Du vergleichst beide Antworten</li>
+</ol>
+<p>Prompt für Schritt 2:</p>
+<blockquote class="blockquote">
+<p>„Welche Teile deiner Antwort könnten ungenau oder umstritten sein? Analysiere dich selbst kritisch.“</p>
+</blockquote>
+<p>Prompt für Schritt 3:</p>
+<blockquote class="blockquote">
+<p>„Erkläre das gleiche Thema aus Sicht eines Skeptikers. Welche Behauptungen würdest du bezweifeln?“</p>
+</blockquote>
+<p>Dieser Selbstwiderspruchsmodus ist Gold wert.</p>
+<hr>
+<p>👉 <strong>Workflow C: Der „Research-Planner“ (für große Projekte)</strong></p>
+<p>Die KI ist ideal, um ein Forschungsvorhaben zu strukturieren. Ganz ohne Wissenschaftsjargon.</p>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Ich möchte ein Referat über <em>soziale Medien und Konzentration</em> erstellen.<br>
+Erstelle für mich einen Forschungsplan mit:<br>
+– Leitfragen<br>
+– Hypothesen<br>
+– Quellenarten<br>
+– Risiken der Datenauswertung<br>
+– Typischen Fehlschlüssen.“</p>
+</blockquote>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Nenne 5 Wege, wie man Daten zu diesem Thema sammeln könnte, ohne wissenschaftliche Erfahrung zu benötigen.“</p>
+</blockquote>
+<p>Du bekommst einen klaren, sicheren Startpunkt.</p>
+<hr>
+</section>
+<section id="wissenschaftliches-denken-lernen-ohne-mathe" class="level2" data-number="15.12">
+<h2 data-number="15.12" class="anchored" data-anchor-id="wissenschaftliches-denken-lernen-ohne-mathe"><span class="header-section-number">15.12</span> Wissenschaftliches Denken lernen – ohne Mathe</h2>
+<p>Ja, Wissenschaft kann <em>leicht</em> sein.<br>
+Es geht weniger um Zahlen und mehr um:</p>
+<ul>
+<li>Strukturen<br>
+</li>
+<li>Hypothesen<br>
+</li>
+<li>Vergleiche<br>
+</li>
+<li>Fragen<br>
+</li>
+<li>Denkmodelle</li>
+</ul>
+<p>👉 <strong>Drei Denkmodelle, die KI dir beibringen kann</strong></p>
+<p><strong>1. Das Falsifizierungs-Modell (Popper)</strong></p>
+<blockquote class="blockquote">
+<p>„Was müsste passieren, damit die Aussage falsch ist?“</p>
+</blockquote>
+<p>→ Hilft dir, nicht zu schnell zu glauben.</p>
+<p><strong>2. Das Stufen-Modell der Evidenz</strong></p>
+<blockquote class="blockquote">
+<p>„Wie stark ist die Quelle? Meinung &lt; Beobachtung &lt; Studie &lt; Metastudie“</p>
+</blockquote>
+<p>→ Hilft dir, Prioritäten zu setzen.</p>
+<p><strong>3. Das Bayes-Modell (vereinfacht)</strong></p>
+<blockquote class="blockquote">
+<p>„War die Info plausibel <em>bevor</em> ich sie gelesen habe?“</p>
+</blockquote>
+<p>→ Hilft dir, nicht in spektakuläre Fake-News zu tappen.</p>
+<p>Du kannst KI bitten, diese Modelle in einfachen Worten zu erklären – oder mit Beispielen aus deinem Alltag.</p>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Erkläre das Prinzip der Falsifizierbarkeit anhand eines Beispiels aus dem Alltag eines 15-jährigen Schülers.“</p>
+</blockquote>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15/ABB153.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 15.3: KI filtert Fakten aus dem Chaos – klar, strukturiert und verlässlich</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="mini-übungen-dein-persönlicher-faktencheck-trainer" class="level2" data-number="15.13">
+<h2 data-number="15.13" class="anchored" data-anchor-id="mini-übungen-dein-persönlicher-faktencheck-trainer"><span class="header-section-number">15.13</span> Mini-Übungen: Dein persönlicher Faktencheck-Trainer</h2>
+<p>Zum Abschluss gibt es drei praktische Übungen:</p>
+<hr>
+<p>👉 <strong>Übung 1: Der Schlagzeilen-Test</strong></p>
+<p>Wähle eine zufällige (nicht politische!) Online-Schlagzeile.<br>
+Füttere die KI damit:</p>
+<blockquote class="blockquote">
+<p>„Analysiere diese Schlagzeile auf Übertreibung, Auslassungen und rhetorische Tricks. Was müsste ich überprüfen, um sie einzuordnen?“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Übung 2: Die Quellen-Challenge</strong></p>
+<p>Gib der KI einen Fakt:</p>
+<blockquote class="blockquote">
+<p>„Die durchschnittliche Aufmerksamkeitsspanne des Menschen beträgt 8 Sekunden.“</p>
+</blockquote>
+<p>Dann frage:</p>
+<blockquote class="blockquote">
+<p>„Prüfe diese Aussage. Welche Studien werden oft falsch zitiert? Was ist tatsächlich belegt?“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>Übung 3: Der Perspektiven-Wechsel</strong></p>
+<blockquote class="blockquote">
+<p>„Erkläre das Thema <em>Ernährung und Konzentration</em> aus<br>
+1. Sicht eines Arztes<br>
+2. Sicht eines Schülers<br>
+3. Sicht eines Wissenschaftlers“</p>
+</blockquote>
+<p>So erkennst du sofort, wie unterschiedlich Perspektiven funktionieren.</p>
+<hr>
+</section>
+<section id="fazit-von-kapitel-15" class="level2" data-number="15.14">
+<h2 data-number="15.14" class="anchored" data-anchor-id="fazit-von-kapitel-15"><span class="header-section-number">15.14</span> Fazit von Kapitel 15</h2>
+<p>Mit KI kannst du:</p>
+<pre><code>👉 Falschinfos schneller erkennen  
+👉 wissenschaftliche Themen strukturiert prüfen  
+👉 Quellen besser einordnen  
+👉 kritisches Denken trainieren  
+👉 Recherchen sauberer planen  </code></pre>
+<p>Du wirst sicherer, unabhängiger und weniger manipulierbar — ein echter Skill fürs Leben.</p>
+<hr>
+</section>
+<section id="ausblick-auf-kapitel-16" class="level2" data-number="15.15">
+<h2 data-number="15.15" class="anchored" data-anchor-id="ausblick-auf-kapitel-16"><span class="header-section-number">15.15</span> Ausblick auf Kapitel 16</h2>
+<p>Im nächsten Kapitel machen wir einen großen Schritt vom Lernen zum täglichen Nutzen. Du wirst sehen, wie KI nicht nur Wissen erklärt, sondern dir hilft, deinen Alltag besser zu strukturieren. Wir schauen uns an, wie du mit KI Aufgaben planen, Lernziele setzen, Motivation steigern und sogar kleine persönliche Automationen bauen kannst.<br>
+Kurze praktische Beispiele zeigen dir, wie KI zu deinem echten „Produktivitäts-Coach“ wird.</p>
+<p><strong>Kapitel 16 behandelt:</strong></p>
+<ul>
+<li>🗂 <strong>Aufgabenplanung</strong> mit KI<br>
+</li>
+<li>🎯 <strong>Ziele &amp; Motivation</strong> verbessern<br>
+</li>
+<li>🧠 <strong>Lernpläne</strong> erstellen<br>
+</li>
+<li>⏰ <strong>Zeitmanagement</strong> simplifizieren<br>
+</li>
+<li>⚙️ <strong>Mini-Automationen</strong> für deinen Alltag</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./kapitel14.html" class="pagination-link" aria-label="Coding mit KI: Dein persönlicher Mini-Programmiercoach">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Coding mit KI: Dein persönlicher Mini-Programmiercoach</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./kapitel16.html" class="pagination-link" aria-label="Produktiver Alltag mit KI: Die besten Life-Hacks">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Produktiver Alltag mit KI: Die besten Life-Hacks</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>14&nbsp; Coding mit KI: Dein persönlicher Mini-Programmiercoach – Effektives Prompt Engineering – leicht erklärt.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./kapitel15.html" rel="next">
+<link href="./kapitel13.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-74c88ba48ad0bebf983f0ffd06dd1671.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e0fdce12ac1367d4b47c179a2935dd10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./kapitel14.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Coding mit KI: Dein persönlicher Mini-Programmiercoach</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Effektives Prompt Engineering – leicht erklärt.</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Die neue Superkraft: Warum KI dein Leben verändern kann</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Wie KI denkt (aber nicht wirklich denkt)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Deine ersten Prompts: Schnell Erfolge sehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Die Bausteine eines perfekten Prompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Klare Anweisungen, klare Ergebnisse: Instruction Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Beispiele wirken Wunder: In-Context Learning erklärt</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Komplexe Aufgaben in Mini-Schritte zerlegen: Chain Prompting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Lass die KI erst denken: Chain-of-Thought für Einsteiger</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Kreativer arbeiten: Schreib-, Ideen- und Lernprompts</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fehler finden &amp; verbessern: Output Verification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regeln! Grammatik, Struktur und Format steuern</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Schule &amp; Studium: KI als Lern-Turbo</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Kreativprojekte: KI für Texte, Videos &amp; Social Media</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel14.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Coding mit KI: Dein persönlicher Mini-Programmiercoach</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Recherche, Faktencheck &amp; Wissenschaft</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Produktiver Alltag mit KI: Die besten Life-Hacks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Fair, sicher &amp; verantwortungsvoll mit KI umgehen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kapitel18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Der KI-Masterplan: Dein persönliches Prompt-Portfolio</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#warum-ki-coden-so-viel-leichter-macht" id="toc-warum-ki-coden-so-viel-leichter-macht" class="nav-link active" data-scroll-target="#warum-ki-coden-so-viel-leichter-macht"><span class="header-section-number">14.1</span> Warum KI Coden so viel leichter macht</a></li>
+  <li><a href="#story-dein-persönlicher-mini-programmiercoach" id="toc-story-dein-persönlicher-mini-programmiercoach" class="nav-link" data-scroll-target="#story-dein-persönlicher-mini-programmiercoach"><span class="header-section-number">14.2</span> Story: Dein persönlicher Mini-Programmiercoach</a></li>
+  <li><a href="#die-wichtigsten-grundlagen-ohne-fachchinesisch" id="toc-die-wichtigsten-grundlagen-ohne-fachchinesisch" class="nav-link" data-scroll-target="#die-wichtigsten-grundlagen-ohne-fachchinesisch"><span class="header-section-number">14.3</span> Die wichtigsten Grundlagen ohne Fachchinesisch</a></li>
+  <li><a href="#wie-du-die-ki-richtig-einsetzt-die-drei-rollen" id="toc-wie-du-die-ki-richtig-einsetzt-die-drei-rollen" class="nav-link" data-scroll-target="#wie-du-die-ki-richtig-einsetzt-die-drei-rollen"><span class="header-section-number">14.4</span> Wie du die KI richtig einsetzt: Die drei Rollen</a></li>
+  <li><a href="#die-ki-erklärt-fehler-besser-als-jedes-tutorial" id="toc-die-ki-erklärt-fehler-besser-als-jedes-tutorial" class="nav-link" data-scroll-target="#die-ki-erklärt-fehler-besser-als-jedes-tutorial"><span class="header-section-number">14.5</span> Die KI erklärt Fehler besser als jedes Tutorial</a></li>
+  <li><a href="#kleine-projektdemos-was-du-in-30-minuten-schaffen-kannst" id="toc-kleine-projektdemos-was-du-in-30-minuten-schaffen-kannst" class="nav-link" data-scroll-target="#kleine-projektdemos-was-du-in-30-minuten-schaffen-kannst"><span class="header-section-number">14.6</span> Kleine Projektdemos: Was du in 30 Minuten schaffen kannst</a></li>
+  <li><a href="#kein-vorwissen-notwendig-aber-diese-regeln-helfen" id="toc-kein-vorwissen-notwendig-aber-diese-regeln-helfen" class="nav-link" data-scroll-target="#kein-vorwissen-notwendig-aber-diese-regeln-helfen"><span class="header-section-number">14.7</span> Kein Vorwissen notwendig – aber diese Regeln helfen</a></li>
+  <li><a href="#ki-als-freund-nicht-als-magier" id="toc-ki-als-freund-nicht-als-magier" class="nav-link" data-scroll-target="#ki-als-freund-nicht-als-magier"><span class="header-section-number">14.8</span> KI als Freund, nicht als Magier</a></li>
+  <li><a href="#warum-ki-der-perfekte-lernpartner-für-programmieranfänger-ist" id="toc-warum-ki-der-perfekte-lernpartner-für-programmieranfänger-ist" class="nav-link" data-scroll-target="#warum-ki-der-perfekte-lernpartner-für-programmieranfänger-ist"><span class="header-section-number">14.9</span> Warum KI der perfekte Lernpartner für Programmieranfänger ist</a></li>
+  <li><a href="#die-drei-arten-von-coding-hilfen-die-ki-perfekt-beherrscht" id="toc-die-drei-arten-von-coding-hilfen-die-ki-perfekt-beherrscht" class="nav-link" data-scroll-target="#die-drei-arten-von-coding-hilfen-die-ki-perfekt-beherrscht"><span class="header-section-number">14.10</span> Die drei Arten von Coding-Hilfen, die KI perfekt beherrscht</a></li>
+  <li><a href="#typische-anfängerfehler-und-wie-ki-sie-verhindert" id="toc-typische-anfängerfehler-und-wie-ki-sie-verhindert" class="nav-link" data-scroll-target="#typische-anfängerfehler-und-wie-ki-sie-verhindert"><span class="header-section-number">14.11</span> Typische Anfängerfehler — und wie KI sie verhindert</a></li>
+  <li><a href="#ein-kompletter-praxisfall-ein-lernkarten-generator" id="toc-ein-kompletter-praxisfall-ein-lernkarten-generator" class="nav-link" data-scroll-target="#ein-kompletter-praxisfall-ein-lernkarten-generator"><span class="header-section-number">14.12</span> Ein kompletter Praxisfall: Ein Lernkarten-Generator</a></li>
+  <li><a href="#warum-ki-dich-langsam-vom-coach-in-die-selbstständigkeit-führt" id="toc-warum-ki-dich-langsam-vom-coach-in-die-selbstständigkeit-führt" class="nav-link" data-scroll-target="#warum-ki-dich-langsam-vom-coach-in-die-selbstständigkeit-führt"><span class="header-section-number">14.13</span> Warum KI dich langsam vom Coach in die Selbstständigkeit führt</a></li>
+  <li><a href="#drei-mini-übungen-die-du-jetzt-machen-solltest" id="toc-drei-mini-übungen-die-du-jetzt-machen-solltest" class="nav-link" data-scroll-target="#drei-mini-übungen-die-du-jetzt-machen-solltest"><span class="header-section-number">14.14</span> Drei Mini-Übungen, die du jetzt machen solltest</a></li>
+  <li><a href="#der-wichtigste-gedanke-dieses-kapitels" id="toc-der-wichtigste-gedanke-dieses-kapitels" class="nav-link" data-scroll-target="#der-wichtigste-gedanke-dieses-kapitels"><span class="header-section-number">14.15</span> Der wichtigste Gedanke dieses Kapitels</a></li>
+  <li><a href="#ausblick-auf-kapitel-15" id="toc-ausblick-auf-kapitel-15" class="nav-link" data-scroll-target="#ausblick-auf-kapitel-15"><span class="header-section-number">14.16</span> Ausblick auf Kapitel 15</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Coding mit KI: Dein persönlicher Mini-Programmiercoach</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Wenn du bisher geglaubt hast, Programmieren sei etwas für Matheprofis, stille Genies oder Computerfreaks, dann ist dieses Kapitel dein persönlicher Befreiungsschlag. Moderne KI-Tools wie ChatGPT oder Claude haben das Programmieren so sehr vereinfacht, dass du heute ohne Vorkenntnisse kleine Programme bauen, Fehler beheben und sogar Miniprojekte entwickeln kannst — und das mit einer Leichtigkeit, die vor wenigen Jahren noch völlig undenkbar gewesen wäre.</p>
+<p>Die große Idee dieses Kapitels:</p>
+<pre><code>👉 Du brauchst keine Angst vor Code zu haben.</code></pre>
+<p>Mit KI an deiner Seite fühlt sich Coden an wie Lego: Du steckst Bausteine zusammen, veränderst sie, probierst Dinge aus — und wenn etwas nicht funktioniert, erklärt dir die KI, was schiefgelaufen ist. Schritt für Schritt. Geduldig. Verständlich.</p>
+<p>Willkommen im Zeitalter des „Everybody Can Code“ — dank KI.</p>
+<hr>
+<section id="warum-ki-coden-so-viel-leichter-macht" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="warum-ki-coden-so-viel-leichter-macht"><span class="header-section-number">14.1</span> Warum KI Coden so viel leichter macht</h2>
+<p>Wenn du jemandem beim Programmieren zuschaust, wirkt alles oft sehr abstrakt: geschweifte Klammern, kryptische Wörter, Fehlermeldungen in Rot, seltsame Strukturen. Aber: Das Schwierige ist nicht das Schreiben eines Befehls. Das Schwierige ist <strong>alles gleichzeitig zu verstehen</strong> — das Innenleben eines Programms, die Logik dahinter, wie verschiedene Teile zusammenhängen, wie Fehler entstehen und wie man sie wieder beseitigt.</p>
+<p>Und genau hier glänzt KI.</p>
+<p>Eine KI kann:</p>
+<p>👉 <strong>1. Code Zeile für Zeile erklären</strong></p>
+<p>Du kannst fragen:</p>
+<blockquote class="blockquote">
+<p>„Erklär mir diesen Code, so als wäre ich 12.“</p>
+</blockquote>
+<p>Und die KI sagt dir:</p>
+<blockquote class="blockquote">
+<p>„Diese Zeile hier sagt dem Computer, dass er auf einen Knopf warten soll. Wenn er gedrückt wird, passiert dies und das …“</p>
+</blockquote>
+<p>Plötzlich ergibt alles Sinn.</p>
+<p>👉 <strong>2. Ideen in Code umsetzen — ohne dass du Syntax kannst</strong></p>
+<p>Du sagst einfach:</p>
+<blockquote class="blockquote">
+<p>„Erstelle mir ein kleines Programm, das eine zufällige Zahl zwischen 1 und 100 erzeugt.“</p>
+</blockquote>
+<p>Und schon bekommst du lauffähigen Code — inklusive Erklärung.</p>
+<p>👉 <strong>3. Fehler analysieren, die du selbst nicht verstehst</strong></p>
+<p>Du kannst einen langen, verwirrenden Fehler reinkopieren, und die KI sagt dir:</p>
+<blockquote class="blockquote">
+<p>„Das Problem ist, dass du die Variable X definierst, bevor du Y aufrufst.“</p>
+</blockquote>
+<p>Du musst nicht raten. Du musst nicht googlen. Die KI übernimmt die Fehlersuche.</p>
+<p>👉 <strong>4. Projekte modular aufbauen</strong></p>
+<p>Du kannst sagen:</p>
+<blockquote class="blockquote">
+<p>„Bitte erstelle Schritt 1. Warte dann, bis ich weiter sage.“</p>
+</blockquote>
+<p>Und du arbeitest zusammen wie ein Team — du bist der Projektleiter, die KI ist dein persönlicher Coding-Assistent.</p>
+<hr>
+</section>
+<section id="story-dein-persönlicher-mini-programmiercoach" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="story-dein-persönlicher-mini-programmiercoach"><span class="header-section-number">14.2</span> Story: Dein persönlicher Mini-Programmiercoach</h2>
+<p>Stell dir vor, du möchtest ein kleines Spiel für deine Freunde bauen: ein „Glücksrad“, das zufällig Begriffe auswählt, die anschließend als Challenge dienen.</p>
+<p>Du sagst zur KI:</p>
+<blockquote class="blockquote">
+<p>„Ich will ein kleines Challenge-Rad als Spiel. Kannst du mir das programmieren? Ich habe aber keine Ahnung von Code.“</p>
+</blockquote>
+<p>Die KI fragt dich:</p>
+<blockquote class="blockquote">
+<p>„Willst du das Rad grafisch oder als Textversion? Welche Kategorien willst du? Soll es mehrere Runden geben?“</p>
+</blockquote>
+<p>Du entscheidest dich für eine einfache Textversion.<br>
+Die KI schreibt 15 Zeilen Code.<br>
+Du kopierst sie in einen Browser-Editor wie <a href="https://replit.com/">repl.it</a> oder <a href="https://jupyter.org/">JupyterLab</a>.</p>
+<p>Du klickst auf „Run“ — und es funktioniert.</p>
+<p>Dann willst du erweitern:</p>
+<blockquote class="blockquote">
+<p>„Kannst du hinzufügen, dass das Rad drei Begriffe gleichzeitig auswählt?“</p>
+</blockquote>
+<p>Die KI baut es ein.</p>
+<blockquote class="blockquote">
+<p>„Kannst du die Begriffe speichern, damit ich sie später ändern kann?“</p>
+</blockquote>
+<p>Die KI erklärt, wie man eine kleine Datei verwendet.</p>
+<blockquote class="blockquote">
+<p>„Kannst du mir den Code kommentieren, sodass ich ihn selbst verstehe?“</p>
+</blockquote>
+<p>Die KI schreibt verständliche Erklärungen neben jede Zeile.</p>
+<p>Innerhalb einer Stunde hast du nicht nur ein Minigame — du hast <strong>verstanden, wie es funktioniert</strong>.</p>
+<p>Das ist der Unterschied zwischen KI und traditionellen Lernmethoden:<br>
+Die KI passt sich dir an. Deinem Tempo. Deinem Verständnis. Deiner Neugier.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14/ABB141.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 14.1: Dein persönlicher Mini-Coding-Coach</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="die-wichtigsten-grundlagen-ohne-fachchinesisch" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="die-wichtigsten-grundlagen-ohne-fachchinesisch"><span class="header-section-number">14.3</span> Die wichtigsten Grundlagen ohne Fachchinesisch</h2>
+<p>Bevor du mit KI programmierst, brauchst du nur drei Grundideen. Keine Formeln. Keine Syntaxlisten. Nur drei mental models:</p>
+<p>👉 <strong>1. Code = Anweisungen</strong></p>
+<p>Ein Programm besteht aus klaren Befehlen wie:</p>
+<ul>
+<li>„Wiederhole das 10-mal.“<br>
+</li>
+<li>„Wenn das passiert, mache dies.“<br>
+</li>
+<li>„Speichere diese Information unter einem Namen.“</li>
+</ul>
+<p>Mehr ist es nicht.</p>
+<p>👉 <strong>2. Variablen = beschriftete Boxen</strong></p>
+<p>Wenn du etwas speichern willst — z. B. eine Zahl, einen Namen oder eine Liste — kommt es in eine Box. Jede Box bekommt einen Namen wie „score“, „user_name“ oder „liste_der_challenges“.</p>
+<p>👉 <strong>3. Funktionen = kleine Maschinen</strong></p>
+<p>Eine Funktion ist wie ein Toaster:</p>
+<ul>
+<li>Du steckst etwas rein (Input)<br>
+</li>
+<li>Die Funktion macht etwas damit<br>
+</li>
+<li>Du bekommst etwas zurück (Output)</li>
+</ul>
+<p>Das war’s.</p>
+<p>Wenn du diese drei Konzepte grob im Kopf hast, kann die KI <strong>alle</strong> Programming-Frameworks, Sprachen oder Tools für dich übersetzen.</p>
+<p>Du musst nicht entscheiden, welche Programmiersprache du benutzen sollst — die KI macht dir Vorschläge, abhängig von deinem Ziel.</p>
+<hr>
+</section>
+<section id="wie-du-die-ki-richtig-einsetzt-die-drei-rollen" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="wie-du-die-ki-richtig-einsetzt-die-drei-rollen"><span class="header-section-number">14.4</span> Wie du die KI richtig einsetzt: Die drei Rollen</h2>
+<p>👉 <strong>1. Rolle der KI: Übersetzer</strong></p>
+<p>Die KI kann komplizierten Code so umformulieren:</p>
+<blockquote class="blockquote">
+<p>„Erklär das bitte wie für einen totalen Anfänger.“</p>
+</blockquote>
+<p>Oder:</p>
+<blockquote class="blockquote">
+<p>„Erklär das bitte als kurze Geschichte.“</p>
+</blockquote>
+<p>Oder:</p>
+<blockquote class="blockquote">
+<p>„Erklär mir diesen Bug so, als wäre ich 12.“</p>
+</blockquote>
+<p>👉 <strong>2. Rolle der KI: Lehrer</strong></p>
+<p>Du sagst:</p>
+<blockquote class="blockquote">
+<p>„Gib mir eine Mini-Lektion über Arrays in Python, aber bitte mit nur einem Beispiel und ohne Fachwörter.“</p>
+</blockquote>
+<p>Und du bekommst genau das, was du brauchst — nicht mehr.</p>
+<p>👉 <strong>3. Rolle der KI: Co-Programmierer</strong></p>
+<p>Du kannst:</p>
+<ul>
+<li>Ideen beschreiben<br>
+</li>
+<li>Code erzeugen lassen<br>
+</li>
+<li>Code überprüfen lassen<br>
+</li>
+<li>Code erweitern<br>
+</li>
+<li>Code vereinfachen<br>
+</li>
+<li>Code übersetzen (z. B. Python → JavaScript)</li>
+</ul>
+<p>Alles in Echtzeit.</p>
+<hr>
+</section>
+<section id="die-ki-erklärt-fehler-besser-als-jedes-tutorial" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="die-ki-erklärt-fehler-besser-als-jedes-tutorial"><span class="header-section-number">14.5</span> Die KI erklärt Fehler besser als jedes Tutorial</h2>
+<p>Fehlermeldungen wirken oft wie Kryptographie:</p>
+<pre><code>TypeError: unsupported operand type(s) for +: 'int' and 'str'</code></pre>
+<p>Die KI kann das übersetzen in:</p>
+<blockquote class="blockquote">
+<p>„Du versuchst, eine Zahl und einen Text zusammenzurechnen. Das geht nicht. Wandle den Text vorher in eine Zahl um.“</p>
+</blockquote>
+<p>Oder du sagst:</p>
+<blockquote class="blockquote">
+<p>„Was heißt das in einfachen Worten?“</p>
+</blockquote>
+<p>Oder:</p>
+<blockquote class="blockquote">
+<p>„Wie behebt man das?“</p>
+</blockquote>
+<p>Oder:</p>
+<blockquote class="blockquote">
+<p>„Kannst du mir die korrigierte Version geben?“</p>
+</blockquote>
+<p>Dadurch lernst du <em>automatisch</em>, wie man typische Fehler versteht und verhindert — ohne jahrelange Programmiererfahrung.</p>
+<hr>
+</section>
+<section id="kleine-projektdemos-was-du-in-30-minuten-schaffen-kannst" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="kleine-projektdemos-was-du-in-30-minuten-schaffen-kannst"><span class="header-section-number">14.6</span> Kleine Projektdemos: Was du in 30 Minuten schaffen kannst</h2>
+<p>Hier sind typische Projekte, die du mit KI sofort umsetzen kannst — sogar als kompletter Neuling:</p>
+<p>👉 <strong>1. Ein Zufalls-Glücksrad (Textversion)</strong></p>
+<p>Die KI schreibt den Code und erklärt ihn dir.</p>
+<p>👉 <strong>2. Ein kleiner Vokabeltrainer</strong></p>
+<p>Mit:</p>
+<ul>
+<li>Zufallsabfrage<br>
+</li>
+<li>Auswertung<br>
+</li>
+<li>Fortschrittsanzeige</li>
+</ul>
+<p>👉 <strong>3. Eine To-Do-Liste im Terminal</strong></p>
+<p>Mit „Aufgabe hinzufügen“, „zeigen“ und „entfernen“.</p>
+<p>👉 <strong>4. Ein Minirechner</strong></p>
+<p>Addition, Subtraktion, Multiplikation, Division — mit Fehlerprüfung.</p>
+<p>👉 <strong>5. Ein Chat-Simulationstool</strong></p>
+<p>Beispiel:</p>
+<ul>
+<li>„Chatte wie ein netter Drache.“<br>
+</li>
+<li>Du bekommst witzige, kreative Antworten.</li>
+</ul>
+<p>👉 <strong>6. Ein kleines Emoji-Spiel</strong></p>
+<p>Die KI kann dir Spiele bauen wie:</p>
+<ul>
+<li>„Errate das Emoji!“<br>
+</li>
+<li>„Emoji-Memory“<br>
+</li>
+<li>„Emoji-Geschichten-Generator“</li>
+</ul>
+<p>Alles ohne Programmiererfahrung.</p>
+<hr>
+</section>
+<section id="kein-vorwissen-notwendig-aber-diese-regeln-helfen" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="kein-vorwissen-notwendig-aber-diese-regeln-helfen"><span class="header-section-number">14.7</span> Kein Vorwissen notwendig – aber diese Regeln helfen</h2>
+<p>Wenn du schneller und besser mit KI programmieren willst, helfen diese fünf Grundregeln:</p>
+<p>👉 <strong>1. Sag immer, für welches Level du Code brauchst</strong></p>
+<blockquote class="blockquote">
+<p>„Erklär das bitte anfängerfreundlich.“</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>„Bitte kommentiere jede Zeile.“</p>
+</blockquote>
+<p>👉 <strong>2. Gib der KI Kontext</strong></p>
+<blockquote class="blockquote">
+<p>„Ich benutze Python in Replit.“<br>
+„Ich möchte eine Textversion, keine Grafik.“<br>
+„Ich brauche eine Lösung, die ohne Bibliotheken funktioniert.“</p>
+</blockquote>
+<p>👉 <strong>3. Frag nach Alternativen</strong></p>
+<p>Die KI kann mehrere Lösungswege erzeugen:</p>
+<ul>
+<li>„Einfach“<br>
+</li>
+<li>„Clean Code“<br>
+</li>
+<li>„Profiversion“</li>
+</ul>
+<p>👉 <strong>4. Nutze Iterationen</strong></p>
+<p>Sage:</p>
+<blockquote class="blockquote">
+<p>„Mach es kürzer.“<br>
+„Mach es robuster.“<br>
+„Mach es verständlicher.“</p>
+</blockquote>
+<p>👉 <strong>5. Kontrolliere den Output — nicht blind vertrauen</strong></p>
+<p>Auch Code kann Fehler enthalten.<br>
+Du lernst am meisten, wenn du verstehst, <em>warum</em> er funktioniert.</p>
+<hr>
+</section>
+<section id="ki-als-freund-nicht-als-magier" class="level2" data-number="14.8">
+<h2 data-number="14.8" class="anchored" data-anchor-id="ki-als-freund-nicht-als-magier"><span class="header-section-number">14.8</span> KI als Freund, nicht als Magier</h2>
+<p>Ein Missverständnis wäre zu glauben, dass die KI alles automatisch perfekt kann.<br>
+Die Wahrheit:</p>
+<ul>
+<li>Die KI schreibt Code schneller als Profis.<br>
+</li>
+<li>Aber sie macht auch Fehler.<br>
+</li>
+<li>Und sie sieht nicht, was du in deiner Entwicklungsumgebung machst.<br>
+</li>
+<li>Fehler entstehen vor allem dann, wenn du unklare Beschreibungen gibst.</li>
+</ul>
+<p>Der Trick ist deshalb:</p>
+<pre><code>👉 Beschreibe, was du willst — so klar wie möglich.</code></pre>
+<p>Je genauer deine Beschreibung, desto stabiler der Code.</p>
+<p>Und genau das lernst du in diesem Kapitel:<br>
+wie man aus „Mach mal!“ ein klares, sauberes „Bitte erstelle ein Programm, das Folgendes tut …“ macht.</p>
+<hr>
+<p>Jetzt bist du an dem Punkt angekommen, an dem das Zusammenspiel zwischen dir und der KI richtig spannend wird. Du hast im ersten Teil dieses Kapitels gelernt, wie KI dir Code erklärt, Fehler findet und dir kleine Projekte Schritt für Schritt baut. In diesem Teil gehen wir noch tiefer auf typische Anfängerfragen, reale Beispiele und einen kleinen Workflow ein, der dir zeigt: <strong>Du kannst jetzt wirklich selbst programmieren — auch wenn du vorher nie eine einzige Zeile Code gesehen hast.</strong></p>
+<hr>
+</section>
+<section id="warum-ki-der-perfekte-lernpartner-für-programmieranfänger-ist" class="level2" data-number="14.9">
+<h2 data-number="14.9" class="anchored" data-anchor-id="warum-ki-der-perfekte-lernpartner-für-programmieranfänger-ist"><span class="header-section-number">14.9</span> Warum KI der perfekte Lernpartner für Programmieranfänger ist</h2>
+<p>Vielleicht hast du schon beim Lesen gemerkt: Programmieren ist weniger ein „Mathe-Fach“ als ein Denk-Handwerk. Und genau dafür ist KI ein unglaublicher Verstärker. Traditionelle Tutorials haben zwei große Probleme:</p>
+<ol type="1">
+<li><strong>Sie erklären immer zu viel oder zu wenig.</strong><br>
+</li>
+<li><strong>Sie zeigen nicht genau das Beispiel, das du gerade brauchst.</strong></li>
+</ol>
+<p>KI dagegen passt sich an:</p>
+<ul>
+<li>Dein Niveau<br>
+</li>
+<li>Dein Tempo<br>
+</li>
+<li>Deinen Stil<br>
+</li>
+<li>Dein Ziel</li>
+</ul>
+<p>Wenn du sagst:</p>
+<blockquote class="blockquote">
+<p>„Erklär mir das wie einem 12-Jährigen.“</p>
+</blockquote>
+<p>…macht die KI genau das.</p>
+<p>Wenn du sagst:</p>
+<blockquote class="blockquote">
+<p>„Erklär’s mir wie einem Profi, aber ohne unnötigen Jargon.“</p>
+</blockquote>
+<p>…bekommst du auch das.</p>
+<p>Und das Beste: <strong>Du kannst unendlich viele Fragen stellen, ohne dass jemand genervt ist.</strong></p>
+<p>Damit wird KI zu etwas, das früher undenkbar war:<br>
+<strong>Ein persönlicher Programmiercoach, der dir 24/7 erklärt, zeigt, korrigiert und mit dir übt.</strong></p>
+<hr>
+</section>
+<section id="die-drei-arten-von-coding-hilfen-die-ki-perfekt-beherrscht" class="level2" data-number="14.10">
+<h2 data-number="14.10" class="anchored" data-anchor-id="die-drei-arten-von-coding-hilfen-die-ki-perfekt-beherrscht"><span class="header-section-number">14.10</span> Die drei Arten von Coding-Hilfen, die KI perfekt beherrscht</h2>
+<p>Nicht jede Art von Hilfe ist gleich. In der Praxis gibt es drei große Kategorien, und du wirst alle drei brauchen.</p>
+<hr>
+<p>👉 <strong>Kategorie 1: Verstehen – „Was macht dieser Code?“</strong></p>
+<p>Du wirst ständig auf Code stoßen, den du nicht ganz verstehst.<br>
+Die KI kann ihn dir entwirren — in Sekunden.</p>
+<p>Beispiel:</p>
+<pre><code>numbers = [1, 2, 3, 4]
+squared = [n*n for n in numbers]</code></pre>
+<p>Du kannst die KI fragen:</p>
+<blockquote class="blockquote">
+<p>„Erklär mir Zeile für Zeile, was dieser Code macht — so, als wär ich kompletter Anfänger.“</p>
+</blockquote>
+<p>Oder:</p>
+<blockquote class="blockquote">
+<p>„Mach daraus eine Alltagserklärung, als wäre es ein Kochrezept.“</p>
+</blockquote>
+<p>Und die KI sagt dir:</p>
+<ul>
+<li>Was eine Liste ist<br>
+</li>
+<li>Was eine List Comprehension ist<br>
+</li>
+<li>Was dabei herauskommt<br>
+</li>
+<li>Warum man das so schreibt</li>
+</ul>
+<p>Das spart dir Stunden Googeln.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14/ABB142.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 14.2: Die KI findet den Fehler – du die Lösung</figcaption>
+</figure>
+</div>
+<hr>
+<p>👉 <strong>Kategorie 2: Reparieren – „Warum funktioniert das nicht?“</strong></p>
+<p>Fehler gehören dazu. Jeder Anfänger macht sie, sogar Profis.<br>
+KI macht Debugging kinderleicht.</p>
+<p>Du kannst fragen:</p>
+<blockquote class="blockquote">
+<p>„Warum bekomme ich diesen Fehler?“<br>
+„Was bedeutet diese Fehlermeldung?“<br>
+„Welche drei Lösungen wären möglich?“<br>
+„Welche ist die einfachste?“<br>
+„Welche ist die sauberste?“</p>
+</blockquote>
+<p>Und plötzlich ist ein Fehler nicht mehr frustrierend, sondern ein kurzer Lernmoment.</p>
+<hr>
+<p>👉 <strong>Kategorie 3: Erstellen – „Schreib mir ein kleines Programm, das…“</strong></p>
+<p>Hier beginnt der Zauber.</p>
+<p>Du kannst sagen:</p>
+<blockquote class="blockquote">
+<p>„Schreib ein Mini-Programm, das meinen Stundenplan sortiert.“<br>
+„Erstelle einen einfachen Lernkarten-Generator.“<br>
+„Mach mir ein Zufalls-Quiz mit Punkten.“</p>
+</blockquote>
+<p>Und die KI liefert dir:</p>
+<ul>
+<li>Funktionierenden Code<br>
+</li>
+<li>Kommentare, damit du ihn verstehst<br>
+</li>
+<li>Anpassungen auf deine Nachfrage</li>
+</ul>
+<p>Das ist wie LEGO — du baust, aber die KI gibt dir die Steine in der richtigen Form.</p>
+<hr>
+<p>👉 <strong>Der „KI-Coding-Loop“: Dein neuer Workflow</strong></p>
+<p>Damit du beim Coden nicht ins Chaos rutschst, kommt jetzt ein Workflow, der dich durchs ganze Lernjahr tragen kann.<br>
+Ich nenne ihn:</p>
+<p><strong>📌 Der 6-Schritte-Mini-Programmier-Loop</strong></p>
+<p><strong>1. Ziel festlegen (1 Satz)</strong></p>
+<blockquote class="blockquote">
+<p>„Ich will ein kleines Tool, das…“</p>
+</blockquote>
+<p><strong>2. KI nach einer ganz einfachen Version fragen</strong></p>
+<blockquote class="blockquote">
+<p>„Bitte erst die minimalste Version, so simpel wie möglich.“</p>
+</blockquote>
+<p><strong>3. Code generieren lassen</strong></p>
+<p><strong>4. KI bitten, dir den Code zu erklären</strong></p>
+<blockquote class="blockquote">
+<p>„Erklär mir jede Zeile wie einem totalen Anfänger.“</p>
+</blockquote>
+<p><strong>5. Eine Mini-Erweiterung hinzufügen</strong></p>
+<blockquote class="blockquote">
+<p>„Füge eine Auswahloption hinzu.“<br>
+„Mach ein hübscheres Ausgabeformat.“<br>
+„Baue eine Fehlerprüfung ein.“</p>
+</blockquote>
+<p><strong>6. Speichern, testen, weiterschreiben</strong></p>
+<p>Mach das zehnmal und du bist nicht mehr Anfänger.</p>
+<hr>
+</section>
+<section id="typische-anfängerfehler-und-wie-ki-sie-verhindert" class="level2" data-number="14.11">
+<h2 data-number="14.11" class="anchored" data-anchor-id="typische-anfängerfehler-und-wie-ki-sie-verhindert"><span class="header-section-number">14.11</span> Typische Anfängerfehler — und wie KI sie verhindert</h2>
+<p>Hier kommen fünf Fehler, die fast alle machen.</p>
+<hr>
+<p>👉 <strong>Fehler 1: Zu große Projekte</strong></p>
+<p>Wenn du sagst:</p>
+<blockquote class="blockquote">
+<p>„Bau mir eine App wie Instagram.“</p>
+</blockquote>
+<p>…wird die KI sich bemühen, aber du wirst überfordert sein.</p>
+<p><strong>Besser:</strong></p>
+<blockquote class="blockquote">
+<p>„Bau mir ein Mini-Programm, das nur ein Bild anzeigt.“<br>
+„Jetzt soll es zwei Bilder speichern können.“<br>
+„Jetzt einen Filter.“</p>
+</blockquote>
+<p>Mini-Schritte = Mega-Lernen.</p>
+<hr>
+<p>👉 <strong>Fehler 2: Nichts verstehen wollen</strong></p>
+<p>Viele Anfänger kopieren Code und hoffen, dass er einfach funktioniert.</p>
+<p>Schlechte Idee.</p>
+<p>Stell immer Fragen wie:</p>
+<blockquote class="blockquote">
+<p>„Warum nutzt du diese Funktion?“<br>
+„Was wäre eine alternative Schreibweise?“<br>
+„Welche Fehler könnten auftreten?“</p>
+</blockquote>
+<p>So wirst du programmieren lernen — nicht nur kopieren.</p>
+<hr>
+<p>👉 <strong>Fehler 3: Angst vor Fehlern</strong></p>
+<p>Fehler bedeuten, dass du Neues ausprobierst.<br>
+Mit KI sind sie sogar Gold wert, weil:</p>
+<ul>
+<li>du sofort eine Erklärung bekommst<br>
+</li>
+<li>du sofort eine Lösung bekommst<br>
+</li>
+<li>du sofort lernst, worauf du achten musst</li>
+</ul>
+<p>Fehler = eingebautes Lernmodul.</p>
+<hr>
+<p>👉 <strong>Fehler 4: Unklare Prompts</strong></p>
+<blockquote class="blockquote">
+<p>„Mach mir ein Spiel.“</p>
+</blockquote>
+<p>→ führt zu Chaos.</p>
+<blockquote class="blockquote">
+<p>„Mach ein Spiel, bei dem man eine Zahl zwischen 1 und 10 errät.<br>
+Bitte in Python. Ganz einfach. Ausgabe in der Konsole. Kein Menü. Nur fünf Zeilen Code.“</p>
+</blockquote>
+<p>→ funktioniert genial.</p>
+<hr>
+<p>👉 <strong>Fehler 5: Kein Feedback einfordern</strong></p>
+<p>Beispiel:</p>
+<blockquote class="blockquote">
+<p>✘ „Erklär mir, warum das schlecht ist.“<br>
+✔ „Gib mir 3 Verbesserungsvorschläge und einen Grund pro Vorschlag.“</p>
+</blockquote>
+<p>KI wird besser, wenn du klarer verlangst.</p>
+<hr>
+</section>
+<section id="ein-kompletter-praxisfall-ein-lernkarten-generator" class="level2" data-number="14.12">
+<h2 data-number="14.12" class="anchored" data-anchor-id="ein-kompletter-praxisfall-ein-lernkarten-generator"><span class="header-section-number">14.12</span> Ein kompletter Praxisfall: Ein Lernkarten-Generator</h2>
+<p>Dieser Fall zeigt dir, wie du ein echtes Mini-Projekt baust, das du vielleicht sogar für die Schule brauchst.</p>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14/ABB143.png" class="img-fluid figure-img"></p>
+<figcaption>Abb. 14.3: Dein erstes Mini-Coding-Projekt mit KI</figcaption>
+</figure>
+</div>
+<hr>
+<p>Wir beginnen mit Schritt 1:</p>
+<p>👉 <strong>1. Ziel formulieren</strong></p>
+<blockquote class="blockquote">
+<p>„Ich will ein Programm, das Lernkarten speichert, zufällig abfragt und mir zeigt, ob ich richtig lag.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>2. KI nach der simpelsten Version fragen</strong></p>
+<p>Prompt:</p>
+<blockquote class="blockquote">
+<p>„Schreibe mir die minimalste Version eines Lernkarten-Generators in Python.<br>
+Nur: Frage-Antwort-Speichern und zufälliges Abfragen. Kein Menü.<br>
+Danach bitte Zeile für Zeile erklären.“</p>
+</blockquote>
+<hr>
+<p>👉 <strong>3. Beispiel-Ausgabe der KI (verkürzt)</strong></p>
+<pre><code>cards = {
+    "Was ist die Hauptstadt von Frankreich?": "Paris",
+    "Was bedeutet photosynthese?": "Umbau von Lichtenergie in chemische Energie"
+}
+
+import random
+
+while True:
+    q = random.choice(list(cards.keys()))
+    print(q)
+    a = input("Antwort: ")
+    print("Richtig!" if a.lower() == cards[q].lower() else f"Falsch! Es ist: {cards[q]}")</code></pre>
+<hr>
+<p>👉 <strong>4. KI als Lehrer einsetzen</strong></p>
+<p>Du fragst:</p>
+<blockquote class="blockquote">
+<p>„Kann dieses Programm abstürzen? Wann?“<br>
+„Wie kann ich verhindern, dass Groß-/Kleinschreibung Probleme macht?“<br>
+„Wie kann ich neue Karten hinzufügen?“<br>
+„Mach eine schönere Ausgabe.“</p>
+</blockquote>
+<p>Die KI zeigt dir alles — live.</p>
+<hr>
+<p>👉 <strong>5. Mini-Erweiterungen hinzufügen</strong></p>
+<p>Zum Beispiel:</p>
+<ul>
+<li>ein einfaches Menü<br>
+</li>
+<li>ein Speichern der Karten in einer Datei<br>
+</li>
+<li>eine Statistik („Du hast 7 von 10 richtig“)</li>
+</ul>
+<p>Dadurch wächst dein Projekt organisch.<br>
+Du lernst <strong>wirklich</strong> programmieren — aber ohne Stress.</p>
+<hr>
+</section>
+<section id="warum-ki-dich-langsam-vom-coach-in-die-selbstständigkeit-führt" class="level2" data-number="14.13">
+<h2 data-number="14.13" class="anchored" data-anchor-id="warum-ki-dich-langsam-vom-coach-in-die-selbstständigkeit-führt"><span class="header-section-number">14.13</span> Warum KI dich langsam vom Coach in die Selbstständigkeit führt</h2>
+<p>Viele haben Angst, „zu abhängig“ von KI zu werden.</p>
+<p>Aber etwas Spannendes passiert:</p>
+<ul>
+<li>Am Anfang lässt du dir alles erklären.<br>
+</li>
+<li>Nach ein paar Wochen stellst du weniger Fragen.<br>
+</li>
+<li>Plötzlich kannst du einfache Funktionen selbst schreiben.<br>
+</li>
+<li>Dann verstehst du Muster.<br>
+</li>
+<li>Und irgendwann brauchst du die KI nur noch für schwierige Dinge.</li>
+</ul>
+<p>Das ist wie Fahrradfahren:<br>
+Erst Stützräder, dann kurze Strecken allein, dann bergauf, dann Tricks.</p>
+<p>KI ist dein Stützrad — aber du fährst.</p>
+<hr>
+</section>
+<section id="drei-mini-übungen-die-du-jetzt-machen-solltest" class="level2" data-number="14.14">
+<h2 data-number="14.14" class="anchored" data-anchor-id="drei-mini-übungen-die-du-jetzt-machen-solltest"><span class="header-section-number">14.14</span> Drei Mini-Übungen, die du jetzt machen solltest</h2>
+<p>Diese Übungen sind kurz, aber extrem effektiv.</p>
+<hr>
+<p>👉 <strong>Übung 1: Die „Verstehe jede Zeile“-Challenge</strong></p>
+<p>Nimm irgendeinen KI-Code und sag:</p>
+<blockquote class="blockquote">
+<p>„Erklär mir jede Zeile so, als wäre ich 10.“<br>
+„Erklär mir jede Zeile in maximal 3 Wörtern.“<br>
+„Erklär mir jede Zeile in einer Metapher.“</p>
+</blockquote>
+<p>Dein Gehirn liebt solche Perspektivwechsel.</p>
+<hr>
+<p>👉 <strong>Übung 2: Der Debugging-Sprint</strong></p>
+<p>Gib absichtlich Fehler ein:</p>
+<ul>
+<li>falsche Variablennamen</li>
+<li>fehlende Klammern</li>
+<li>falsche Einrückung</li>
+<li>Tippfehler</li>
+</ul>
+<p>Und frag:</p>
+<blockquote class="blockquote">
+<p>„Was ist der Fehler? Wo genau? Wie behebe ich ihn?“</p>
+</blockquote>
+<p>Du wirst in 10 Minuten mehr über Fehler lernen als sonst in 2 Wochen.</p>
+<hr>
+<p>👉 <strong>Übung 3: Bau ein eigenes Mini-Projekt</strong></p>
+<p>Eine Idee:</p>
+<ul>
+<li>ein Zufalls-Motivationsgenerator<br>
+</li>
+<li>ein Hausaufgaben-Organizer<br>
+</li>
+<li>ein Rezept-Zufallstool<br>
+</li>
+<li>ein Mini-Spiel (Zahl erraten)</li>
+</ul>
+<p>Frag die KI:</p>
+<blockquote class="blockquote">
+<p>„Gib mir 3 Varianten.“<br>
+„Welche davon ist am einfachsten?“<br>
+„Welche am nützlichsten?“</p>
+</blockquote>
+<p>Dann baust du los.</p>
+<hr>
+</section>
+<section id="der-wichtigste-gedanke-dieses-kapitels" class="level2" data-number="14.15">
+<h2 data-number="14.15" class="anchored" data-anchor-id="der-wichtigste-gedanke-dieses-kapitels"><span class="header-section-number">14.15</span> Der wichtigste Gedanke dieses Kapitels</h2>
+<pre><code>👉 Du brauchst keine Angst vor Code zu haben.
+👉 Du musst nichts auswendig lernen.
+👉 Du musst nur klare Anweisungen geben und neugierig bleiben.
+👉 Der Rest passiert in kleinen, machbaren Schritten — zusammen mit deinem Mini-Programmiercoach.</code></pre>
+<hr>
+</section>
+<section id="ausblick-auf-kapitel-15" class="level2" data-number="14.16">
+<h2 data-number="14.16" class="anchored" data-anchor-id="ausblick-auf-kapitel-15"><span class="header-section-number">14.16</span> Ausblick auf Kapitel 15</h2>
+<p>Bevor du dich ins nächste Kapitel stürzt, kommt jetzt ein besonders wichtiger Teil deiner KI-Reise: <strong>Wie du Informationen prüfst, bewertest und sicher nutzt</strong>. KI kann beim Recherchieren unglaublich helfen — aber nur, wenn du weißt, wie du ihre Antworten einordnest und überprüfst. In Kapitel 15 erfährst du:</p>
+<pre><code>👉 Wie KI als Rechercheassistent funktioniert  
+👉 Welche Fragen du stellen musst, um Quellenqualität zu prüfen  
+👉 Wie du Fake-Informationen erkennst  
+👉 Welche Tools, Denkmodelle und Strategien dir helfen, verlässliche Ergebnisse zu bekommen  </code></pre>
+<p>Kurz gesagt: Kapitel 15 macht dich „faktenfit“ und zeigt dir, wie du KI sicher für Schule, Studium und eigene Projekte nutzen kannst.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./kapitel13.html" class="pagination-link" aria-label="Kreativprojekte: KI für Texte, Videos &amp; Social Media">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Kreativprojekte: KI für Texte, Videos &amp; Social Media</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./kapitel15.html" class="pagination-link" aria-label="Recherche, Faktencheck &amp; Wissenschaft">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Recherche, Faktencheck &amp; Wissenschaft</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
